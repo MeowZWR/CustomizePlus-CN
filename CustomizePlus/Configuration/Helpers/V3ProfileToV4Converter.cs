@@ -25,7 +25,7 @@ internal static class V3ProfileToV4Converter
 
         var template = new Template
         {
-            Name = $"{profile.Name}'s template",
+            Name = $"{profile.Name}的模板",
             CreationDate = profile.CreationDate,
             ModifiedDate = profile.ModifiedDate,
             UniqueId = Guid.NewGuid(),

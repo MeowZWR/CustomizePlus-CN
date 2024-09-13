@@ -12,7 +12,7 @@ public class CPlusChangeLog
     public CPlusChangeLog(PluginConfiguration config)
     {
         _config = config;
-        Changelog = new Changelog("Customize+ update history", ConfigData, Save);
+        Changelog = new Changelog("Customize+ 更新历史", ConfigData, Save);
 
         Add2_0_0_0(Changelog);
         Add2_0_1_0(Changelog);
@@ -35,63 +35,63 @@ public class CPlusChangeLog
         _config.Save();
     }
 
-    private static void Add2_0_6_0(Changelog log)
-    => log.NextVersion("Version 2.0.6.0")
-        .RegisterHighlight("IPC has been re-enabled.")
-        .RegisterImportant("If you are regular user you have to wait until other plugins implement necessary changes. Please ask developers of those plugins for further information.", 1)
-        .RegisterImportant("Breaking change: IPC version has been bumped to 5.0", 1)
-        .RegisterImportant("Breaking change: All functions now operate using object table indices. This has been made in order to be more in line with how this is being handled by other major plugins and to try to minimize the chances of being affected by broken things in Dalamud again.", 1)
-        .RegisterHighlight("Dawntrail facial bones have been categorized. Contribution by Kaze. (2.0.5.1)")
-        .RegisterEntry("Renamed all mentions of IVCS to \"IVCS Compatible\" to reflect that it is now possible to use alternative IVCS-compatible skeletons for IVCS mods.")
-        .RegisterEntry("Fixed negative values not working with Root bone.")
-        .RegisterEntry("Fixed issues caused by opening Adventurer Plate window.");
+	private static void Add2_0_6_0(Changelog log)
+	    => log.NextVersion("版本 2.0.6.0")
+	        .RegisterHighlight("IPC 已重新启用。")
+	        .RegisterImportant("如果你是普通用户，你需要等待其他插件实施必要的更改。请咨询这些插件的开发者获取更多信息。", 1)
+	        .RegisterImportant("重大变更：IPC 版本已升级至 5.0。", 1)
+	        .RegisterImportant("重大变更：所有功能现在都使用对象表索引进行操作。这是为了与其他主要插件的处理方式保持一致，并尽量减少再度受到 Dalamud 错误影响的可能性。", 1)
+	        .RegisterHighlight("「金曦之遗辉」面部骨骼已分类。由 Kaze 贡献。(2.0.5.1)")
+	        .RegisterEntry("将所有IVCS骨骼重命名为“IVCS 兼容”，以反映现在可以使用其他IVCS兼容的骨架来支持 IVCS 模组。")
+	        .RegisterEntry("修复了根骨无法处理负值的问题。")
+	        .RegisterEntry("修复了打开冒险者名片窗口时引发的问题。");
 
-    private static void Add2_0_5_0(Changelog log)
-    => log.NextVersion("Version 2.0.5.0")
-        .RegisterHighlight("Customize+ has been updated to support Dawntrail.")
-        .RegisterImportant("If you edited any facial bones it is possible that you will have to make adjustments to your edits.", 1)
-        .RegisterImportant("Known issues:", 1)
-        .RegisterImportant("Profiles are not applied on Character Select Screen.", 2)
-        .RegisterImportant("All new Dawntrail bones are placed into the \"Unknown\" category.", 2)
-        .RegisterImportant("IPC needs additional work and has been disabled for now. Expect issues if you decide to call it anyway.", 2)
-        .RegisterEntry("Added \"Copy Support Info to Clipboard\" button to Settings tab.")
-        .RegisterEntry("Renamed \"Default profile\" to \"Apply to all players and retainers\" to try and improve understanding of the function by the users. (2.0.4.5)")
-        .RegisterEntry("Improved UI behavior when \"Apply to all players and retainers\" is enabled. (2.0.4.5)");
+	private static void Add2_0_5_0(Changelog log)
+	    => log.NextVersion("版本 2.0.5.0")
+	        .RegisterHighlight("Customize+ 已更新以支持「金曦之遗辉」。")
+	        .RegisterImportant("如果你编辑了任何面部骨骼，你可能需要调整这些编辑。", 1)
+	        .RegisterImportant("已知问题：", 1)
+	        .RegisterImportant("在登录大厅角色选择界面不会应用配置文件。", 2)
+	        .RegisterImportant("所有新的「金曦之遗辉」骨骼都被归入“未知”类别。", 2)
+	        .RegisterImportant("IPC需要额外的工作，目前已被禁用。如果你仍然调用它，可能会出现问题。", 2)
+	        .RegisterEntry("在设置标签页中添加了“复制支持信息到剪贴板”按钮。")
+	        .RegisterEntry("将“默认配置文件”重命名为“应用于所有玩家和随从”，以帮助用户更好地理解此功能。(2.0.4.5)")
+	        .RegisterEntry("当“应用于所有玩家和随从”启用时，改进了用户界面的行为。(2.0.4.5)");
 
-    private static void Add2_0_4_4(Changelog log)
-    => log.NextVersion("Version 2.0.4.4")
-        .RegisterHighlight("Added edit button to the template selector in the profile editor which allows to quickly begin editing associated template.")
-        .RegisterEntry("Fixed \"Limit to my creatures\" setting not working correctly. (2.0.4.2)")
-        .RegisterEntry("Added additional logging. (2.0.4.2)");
+	private static void Add2_0_4_4(Changelog log)
+	    => log.NextVersion("版本 2.0.4.4")
+	        .RegisterHighlight("在配置文件编辑器的模板选择器中添加了编辑按钮，允许快速开始编辑关联模板。")
+	        .RegisterEntry("修复了“仅限我的从属角色”设置未正常工作的问题。(2.0.4.2)")
+	        .RegisterEntry("添加了额外的日志记录。(2.0.4.2)");
 
-    private static void Add2_0_4_1(Changelog log)
-        => log.NextVersion("Version 2.0.4.1")
-            .RegisterEntry("Added support for new worlds.")
-            .RegisterEntry("Source code maintenance - external libraries update.");
+	private static void Add2_0_4_1(Changelog log)
+	    => log.NextVersion("版本 2.0.4.1")
+	        .RegisterEntry("添加了对新世界的支持。")
+	        .RegisterEntry("源代码维护 - 更新外部库。");
 
     private static void Add2_0_4_0(Changelog log)
-        => log.NextVersion("Version 2.0.4.0")
-            .RegisterImportant("Version 3 IPC has been removed, any plugins still relying on it will stop working until updated.")
-            .RegisterEntry("Mare Synchronos and Dynamic Bridge are not affected.", 1)
-            .RegisterEntry("Added option to configure if profiles should be applied on character select screen during login.")
-            .RegisterEntry("Made information level plugin logs less verbose.")
-            .RegisterEntry("Source code maintenance - external libraries update.");
+        => log.NextVersion("版本 2.0.4.0")
+            .RegisterImportant("已移除 版本 3 IPC，任何仍依赖于它的插件在更新之前将停止工作。")
+            .RegisterEntry("Mare Synchronos 和 Dynamic Bridge 不受影响。", 1)
+            .RegisterEntry("新增选项以配置是否在登录期间的角色选择界面上应用配置文件。")
+            .RegisterEntry("减少信息级插件日志的冗长程度。")
+            .RegisterEntry("源代码维护 - 更新外部库。");
 
-    private static void Add2_0_3_0(Changelog log)
-        => log.NextVersion("Version 2.0.3.0")
-            .RegisterEntry("Added option to configure if profiles should affect various parts of game's user interface:")
-            .RegisterEntry("Character window", 1)
-            .RegisterEntry("Try-On, Dye Preview, Glamour Plate windows", 1)
-            .RegisterEntry("Adventurer Cards (Portraits)", 1)
-            .RegisterEntry("Inspect window", 1)
-            .RegisterEntry("Added option to configure if template editor preview character should be automatically set to current character when you login. This is disabled by default.")
-            .RegisterEntry("Enabled profiles can no longer be set as default profile.")
-            .RegisterEntry("Fixed current player character's profile applying to special actors (portraits, etc) of other characters.")
-            .RegisterEntry("Fixed temporary profile being removed when closing inspection window of character with active temporary profile.")
-            .RegisterEntry("Fixed profile not applying if it was enabled shortly after doing penumbra redraw.")
-            .RegisterEntry("Fixed issue when switching to a different profile did not reflect on special actors (portraits, etc).")
-            .RegisterEntry("Fixed legacy IPC's RevertCharacter method leaking exceptions. (2.0.2.4)")
-            .RegisterEntry("Source code maintenance - external libraries update, refactoring, cleanup.");
+	private static void Add2_0_3_0(Changelog log)
+	    => log.NextVersion("版本 2.0.3.0")
+	        .RegisterEntry("添加了配置选项，用于确定配置文件是否影响游戏用户界面的各个部分：")
+	        .RegisterEntry("角色窗口", 1)
+	        .RegisterEntry("试穿、染色预览、投影窗口", 1)
+	        .RegisterEntry("冒险者铭牌 (肖像)", 1)
+	        .RegisterEntry("调查窗口", 1)
+	        .RegisterEntry("添加了配置选项，用于确定模板编辑器预览角色是否在登录时自动设置为当前角色。默认情况下禁用。")
+	        .RegisterEntry("启用的配置文件不再能被设置为默认配置文件。")
+	        .RegisterEntry("修复了当前玩家角色的配置文件应用于其他角色的特殊角色 (肖像等) 的问题。")
+	        .RegisterEntry("修复了关闭具有活动临时配置文件的角色检查窗口时临时配置文件被移除的问题。")
+	        .RegisterEntry("修复了在做完Penumbra重绘后马上启用另一个配置文件时配置文件未应用的问题。")
+	        .RegisterEntry("修复了切换到不同配置文件时不反映在特殊角色 (肖像等) 上的问题。")
+	        .RegisterEntry("修复了遗留 IPC 的 `RevertCharacter` 方法泄漏异常的问题。 (2.0.2.4)")
+	        .RegisterEntry("源代码维护 - 外部库更新、重构、清理。");
 
     private static void Add2_0_2_2(Changelog log)
         => log.NextVersion("Version 2.0.2.2")

@@ -101,11 +101,11 @@ public class MainWindow : Window, IDisposable
         {
             LockWindowClosureIfNeeded();
             ImGuiEx.EzTabBar("##tabs", null, _switchToTab, [
-                ("Settings", _settingsTab.Draw, null, true),
-                ("Templates", _templatesTab.Draw, null, true),
-                ("Profiles", _profilesTab.Draw, null, true),
-                (_configuration.DebuggingModeEnabled ? "IPC Test" : null, _ipcTestTab.Draw, ImGuiColors.DalamudGrey, true),
-                (_configuration.DebuggingModeEnabled ? "State monitoring" : null, _stateMonitoringTab.Draw, ImGuiColors.DalamudGrey, true),
+                ("插件设置", _settingsTab.Draw, null, true),
+                ("模板设计", _templatesTab.Draw, null, true),
+                ("角色配置", _profilesTab.Draw, null, true),
+                (_configuration.DebuggingModeEnabled ? "IPC测试" : null, _ipcTestTab.Draw, ImGuiColors.DalamudGrey, true),
+                (_configuration.DebuggingModeEnabled ? "状态监测" : null, _stateMonitoringTab.Draw, ImGuiColors.DalamudGrey, true),
             ]);
 
             _switchToTab = null;

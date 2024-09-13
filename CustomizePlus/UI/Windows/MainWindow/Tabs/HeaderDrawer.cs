@@ -54,13 +54,13 @@ public static class HeaderDrawer
             => current
                 ? new Button
                 {
-                    Description = "Toggle incognito mode off.",
+                    Description = "关闭匿名模式。",
                     Icon = FontAwesomeIcon.EyeSlash,
                     OnClick = () => setter(false),
                 }
                 : new Button
                 {
-                    Description = "Toggle incognito mode on.",
+                    Description = "开启匿名模式。",
                     Icon = FontAwesomeIcon.Eye,
                     OnClick = () => setter(true),
                 };

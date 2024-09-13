@@ -79,7 +79,7 @@ public class BoneEditorPanel
             return _editorManager.DisableEditor();
 
         if (_editorManager.HasChanges && !IsEditorActive)
-            throw new Exception("Invalid state in BoneEditorPanel: has changes but editor is not active");
+            throw new Exception("骨骼编辑面板处于无效状态：已更改，但编辑器未处于活动状态。");
 
         _openSavePopup = true;
 
@@ -98,13 +98,13 @@ public class BoneEditorPanel
         {
             using (var table = ImRaii.Table("BasicSettings", 2))
             {
-                ImGui.TableSetupColumn("BasicCol1", ImGuiTableColumnFlags.WidthFixed, ImGui.CalcTextSize("Show editor preview on").X);
+                ImGui.TableSetupColumn("BasicCol1", ImGuiTableColumnFlags.WidthFixed, ImGui.CalcTextSize("在此角色身上预览编辑效果：").X);
                 ImGui.TableSetupColumn("BasicCol2", ImGuiTableColumnFlags.WidthStretch);
                 ImGui.TableNextRow();
 
-                ImGuiUtil.DrawFrameColumn("Show editor preview on");
+                ImGuiUtil.DrawFrameColumn("在此角色身上预览编辑效果：");
                 ImGui.TableNextColumn();
-                var width = new Vector2(ImGui.GetContentRegionAvail().X - ImGui.CalcTextSize("Limit to my creatures").X - 68, 0);
+                var width = new Vector2(ImGui.GetContentRegionAvail().X - ImGui.CalcTextSize("限制为从属于我的角色").X - 68, 0);
                 var name = _newCharacterName ?? _editorManager.CharacterName;
                 ImGui.SetNextItemWidth(width.X);
 
@@ -128,7 +128,7 @@ public class BoneEditorPanel
                         }
                     }
                     else
-                        ImGui.TextUnformatted("Incognito active");
+                        ImGui.TextUnformatted("匿名模式已激活");
 
                     ImGui.SameLine();
                     var enabled = _editorManager.EditorProfile.LimitLookupToOwnedObjects;
@@ -139,8 +139,8 @@ public class BoneEditorPanel
                         _configuration.EditorConfiguration.LimitLookupToOwnedObjects = enabled;
                         _configuration.Save();
                     }
-                    ImGuiUtil.LabeledHelpMarker("Limit to my creatures",
-                        "When enabled limits the character search to only your own summons, mounts and minions.\nUseful when there is possibility there will be another character with that name owned by another player.\n* For battle chocobo use \"Chocobo\" as character name.");
+                    ImGuiUtil.LabeledHelpMarker("限制为从属于我的角色",
+                        "启用时，将角色搜索范围限制为仅您自己的召唤兽、坐骑和宠物。\n在可能会有另一个同名角色被另一个玩家拥有时使用此选项。\n*对于战斗陆行鸟请使用\"Chocobo\"作为角色名称。\n**如果您正在修改坐骑的根骨骼缩放，并希望保留您自己的缩放，请确保您自己的缩放是默认值以外的任何值。");
                 }
             }
 
@@ -153,23 +153,23 @@ public class BoneEditorPanel
                 ImGui.TableNextColumn();
 
                 var modeChanged = false;
-                if (ImGui.RadioButton("Position", _editingAttribute == BoneAttribute.Position))
+                if (ImGui.RadioButton("位置", _editingAttribute == BoneAttribute.Position))
                 {
                     _editingAttribute = BoneAttribute.Position;
                     modeChanged = true;
                 }
-                CtrlHelper.AddHoverText($"May have unintended effects. Edit at your own risk!");
+                CtrlHelper.AddHoverText($"可能会产生意想不到的影响。编辑后风险自负！");
 
                 ImGui.SameLine();
-                if (ImGui.RadioButton("Rotation", _editingAttribute == BoneAttribute.Rotation))
+                if (ImGui.RadioButton("旋转", _editingAttribute == BoneAttribute.Rotation))
                 {
                     _editingAttribute = BoneAttribute.Rotation;
                     modeChanged = true;
                 }
-                CtrlHelper.AddHoverText($"May have unintended effects. Edit at your own risk!");
+                CtrlHelper.AddHoverText($"可能会产生意想不到的影响。编辑后风险自负！");
 
                 ImGui.SameLine();
-                if (ImGui.RadioButton("Scale", _editingAttribute == BoneAttribute.Scale))
+                if (ImGui.RadioButton("缩放", _editingAttribute == BoneAttribute.Scale))
                 {
                     _editingAttribute = BoneAttribute.Scale;
                     modeChanged = true;
@@ -184,32 +184,32 @@ public class BoneEditorPanel
                 using (var disabled = ImRaii.Disabled(!_isUnlocked))
                 {
                     ImGui.SameLine();
-                    if (CtrlHelper.Checkbox("Show Live Bones", ref _isShowLiveBones))
+                    if (CtrlHelper.Checkbox("显示活动骨骼", ref _isShowLiveBones))
                     {
                         _configuration.EditorConfiguration.ShowLiveBones = _isShowLiveBones;
                         _configuration.Save();
                     }
-                    CtrlHelper.AddHoverText($"If selected, present for editing all bones found in the game data,\nelse show only bones for which the profile already contains edits.");
+                    CtrlHelper.AddHoverText($"如果选中，则显示在游戏数据中找到的可编辑的所有骨骼，\n否则仅显示已编辑过的骨骼。");
 
                     ImGui.SameLine();
                     ImGui.BeginDisabled(!_isShowLiveBones);
-                    if (CtrlHelper.Checkbox("Mirror Mode", ref _isMirrorModeEnabled))
+                    if (CtrlHelper.Checkbox("镜像模式", ref _isMirrorModeEnabled))
                     {
                         _configuration.EditorConfiguration.BoneMirroringEnabled = _isMirrorModeEnabled;
                         _configuration.Save();
                     }
-                    CtrlHelper.AddHoverText($"Bone changes will be reflected from left to right and vice versa");
+                    CtrlHelper.AddHoverText($"具有对应关系的骨骼将同时被修改。");
                     ImGui.EndDisabled();
                 }
 
                 ImGui.TableNextColumn();
 
-                if (ImGui.SliderInt("##Precision", ref _precision, 0, 6, $"{_precision} Place{(_precision == 1 ? "" : "s")}"))
+                if (ImGui.SliderInt("##Precision", ref _precision, 0, 6, $"{_precision} 位{(_precision == 1 ? "" : " ")}"))
                 {
                     _configuration.EditorConfiguration.EditorValuesPrecision = _precision;
                     _configuration.Save();
                 }
-                CtrlHelper.AddHoverText("Level of precision to display while editing values");
+                CtrlHelper.AddHoverText("编辑时显示的小数点后的位数");
             }
 
             ImGui.Separator();
@@ -219,12 +219,12 @@ public class BoneEditorPanel
                 if (!table)
                     return;
 
-                var col1Label = _editingAttribute == BoneAttribute.Rotation ? "Roll" : "X";
-                var col2Label = _editingAttribute == BoneAttribute.Rotation ? "Pitch" : "Y";
-                var col3Label = _editingAttribute == BoneAttribute.Rotation ? "Yaw" : "Z";
-                var col4Label = _editingAttribute == BoneAttribute.Scale ? "All" : "N/A";
+                var col1Label = _editingAttribute == BoneAttribute.Rotation ? "翻滚旋转" : "X轴";
+                var col2Label = _editingAttribute == BoneAttribute.Rotation ? "上下旋转" : "Y轴";
+                var col3Label = _editingAttribute == BoneAttribute.Rotation ? "左右旋转" : "Z轴";
+                var col4Label = _editingAttribute == BoneAttribute.Scale ? "全部" : "N/A";
 
-                ImGui.TableSetupColumn("Bones", ImGuiTableColumnFlags.NoReorder | ImGuiTableColumnFlags.WidthFixed, 3 * CtrlHelper.IconButtonWidth);
+                ImGui.TableSetupColumn("骨骼", ImGuiTableColumnFlags.NoReorder | ImGuiTableColumnFlags.WidthFixed, 3 * CtrlHelper.IconButtonWidth);
 
                 ImGui.TableSetupColumn($"{col1Label}", ImGuiTableColumnFlags.NoReorder | ImGuiTableColumnFlags.WidthStretch);
                 ImGui.TableSetupColumn($"{col2Label}", ImGuiTableColumnFlags.NoReorder | ImGuiTableColumnFlags.WidthStretch);
@@ -232,7 +232,7 @@ public class BoneEditorPanel
                 ImGui.TableSetupColumn($"{col4Label}", ImGuiTableColumnFlags.NoReorder | ImGuiTableColumnFlags.WidthStretch);
                 ImGui.TableSetColumnEnabled(4, _editingAttribute == BoneAttribute.Scale);
 
-                ImGui.TableSetupColumn("Name", ImGuiTableColumnFlags.NoReorder | ImGuiTableColumnFlags.WidthStretch);
+                ImGui.TableSetupColumn("名称", ImGuiTableColumnFlags.NoReorder | ImGuiTableColumnFlags.WidthStretch);
 
                 ImGui.TableHeadersRow();
 
@@ -250,7 +250,7 @@ public class BoneEditorPanel
                 foreach (var boneGroup in groupedBones.OrderBy(x => (int)x.Key))
                 {
                     //Hide root bone if it's not enabled in settings or if we are in rotation mode
-                    if (boneGroup.Key == BoneData.BoneFamily.Root &&
+                    if (boneGroup.Key == BoneData.BoneFamily.根骨骼 &&
                         (!_configuration.EditorConfiguration.RootPositionEditingEnabled ||
                             _editingAttribute == BoneAttribute.Rotation))
                         continue;
@@ -313,13 +313,13 @@ public class BoneEditorPanel
             return;
 
         ImGui.SetCursorPos(new Vector2(ImGui.GetWindowWidth() / 4 - 40, ImGui.GetWindowHeight() / 4));
-        ImGuiUtil.TextWrapped("You have unsaved changes in current template, what would you like to do?");
+        ImGuiUtil.TextWrapped("您在当前模板有未保存的修改，请选择需要的操作。");
 
         var buttonWidth = new Vector2(150 * ImGuiHelpers.GlobalScale, 0);
         var yPos = ImGui.GetWindowHeight() - 2 * ImGui.GetFrameHeight();
         var xPos = (ImGui.GetWindowWidth() - ImGui.GetStyle().ItemSpacing.X) / 4 - buttonWidth.X;
         ImGui.SetCursorPos(new Vector2(xPos, yPos));
-        if (ImGui.Button("Save", buttonWidth))
+        if (ImGui.Button("保存", buttonWidth))
         {
             _editorManager.SaveChanges();
             _editorManager.DisableEditor();
@@ -328,7 +328,7 @@ public class BoneEditorPanel
         }
 
         ImGui.SameLine();
-        if (ImGui.Button("Save as a copy", buttonWidth))
+        if (ImGui.Button("另存为副本", buttonWidth))
         {
             _editorManager.SaveChanges(true);
             _editorManager.DisableEditor();
@@ -337,7 +337,7 @@ public class BoneEditorPanel
         }
 
         ImGui.SameLine();
-        if (ImGui.Button("Do not save", buttonWidth))
+        if (ImGui.Button("不保存", buttonWidth))
         {
             _editorManager.DisableEditor();
 
@@ -345,7 +345,7 @@ public class BoneEditorPanel
         }
 
         ImGui.SameLine();
-        if (ImGui.Button("Keep editing", buttonWidth))
+        if (ImGui.Button("继续编辑", buttonWidth))
         {
             ImGui.CloseCurrentPopup();
         }
@@ -357,7 +357,7 @@ public class BoneEditorPanel
     {
         var output = ImGuiComponents.IconButton(bone.BoneCodeName, FontAwesomeIcon.Recycle);
         CtrlHelper.AddHoverText(
-            $"Reset '{BoneData.GetBoneDisplayName(bone.BoneCodeName)}' to default {_editingAttribute} values");
+            $"重设“{BoneData.GetBoneDisplayName(bone.BoneCodeName)}”为默认的{_editingAttribute}值");
 
         if (output)
         {
@@ -373,7 +373,7 @@ public class BoneEditorPanel
     {
         var output = ImGuiComponents.IconButton(bone.BoneCodeName, FontAwesomeIcon.ArrowCircleLeft);
         CtrlHelper.AddHoverText(
-            $"Revert '{BoneData.GetBoneDisplayName(bone.BoneCodeName)}' to last saved {_editingAttribute} values");
+            $"恢复“{BoneData.GetBoneDisplayName(bone.BoneCodeName)}”到上一次保存的{_editingAttribute}值");
 
         if (output)
         {

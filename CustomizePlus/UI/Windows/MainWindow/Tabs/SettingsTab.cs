@@ -84,8 +84,8 @@ public class SettingsTab
             var isChecked = _configuration.PluginEnabled;
 
             //users doesn't really need to know what exactly this checkbox does so we just tell them it toggles all profiles
-            if (CtrlHelper.CheckboxWithTextAndHelp("##pluginenabled", "Enable Customize+",
-                    "Globally enables or disables all plugin functionality.", ref isChecked))
+            if (CtrlHelper.CheckboxWithTextAndHelp("##pluginenabled", "启用 Customize+",
+                    "全局启用或禁用插件的所有功能。", ref isChecked))
             {
                 _configuration.PluginEnabled = isChecked;
                 _configuration.Save();
@@ -98,7 +98,7 @@ public class SettingsTab
     #region Profile application settings
     private void DrawProfileApplicationSettings()
     {
-        var isShouldDraw = ImGui.CollapsingHeader("Profile Application");
+        var isShouldDraw = ImGui.CollapsingHeader("配置应用");
 
         if (!isShouldDraw)
             return;
@@ -114,8 +114,8 @@ public class SettingsTab
     {
         var isChecked = _configuration.ProfileApplicationSettings.ApplyInCharacterWindow;
 
-        if (CtrlHelper.CheckboxWithTextAndHelp("##applyincharwindow", "Apply Profiles in Character Window",
-                "Apply profile for your character in your main character window, if it is set.", ref isChecked))
+        if (CtrlHelper.CheckboxWithTextAndHelp("##applyincharwindow", "应用角色配置到角色窗口",
+                "如果选中，应用角色配置到你的主角色窗口。", ref isChecked))
         {
             _configuration.ProfileApplicationSettings.ApplyInCharacterWindow = isChecked;
             _configuration.Save();
@@ -127,8 +127,8 @@ public class SettingsTab
     {
         var isChecked = _configuration.ProfileApplicationSettings.ApplyInTryOn;
 
-        if (CtrlHelper.CheckboxWithTextAndHelp("##applyintryon", "Apply Profiles in Try-On Window",
-                "Apply profile for your character in your try-on, dye preview or glamour plate window, if it is set.", ref isChecked))
+        if (CtrlHelper.CheckboxWithTextAndHelp("##applyintryon", "应用角色配置到试穿窗口",
+                "如果选中，应用角色配置到试穿、染色预览或投影窗口中的角色。", ref isChecked))
         {
             _configuration.ProfileApplicationSettings.ApplyInTryOn = isChecked;
             _configuration.Save();
@@ -140,8 +140,8 @@ public class SettingsTab
     {
         var isChecked = _configuration.ProfileApplicationSettings.ApplyInCards;
 
-        if (CtrlHelper.CheckboxWithTextAndHelp("##applyincards", "Apply Profiles in Adventurer Cards",
-                "Apply appropriate profile for the adventurer card you are currently looking at.", ref isChecked))
+        if (CtrlHelper.CheckboxWithTextAndHelp("##applyincards", "应用角色配置到冒险者铭牌",
+                "为您当前查看的冒险者铭牌应用合适的角色配置。", ref isChecked))
         {
             _configuration.ProfileApplicationSettings.ApplyInCards = isChecked;
             _configuration.Save();
@@ -153,8 +153,8 @@ public class SettingsTab
     {
         var isChecked = _configuration.ProfileApplicationSettings.ApplyInInspect;
 
-        if (CtrlHelper.CheckboxWithTextAndHelp("##applyininspect", "Apply Profiles in Inspect Window",
-                "Apply appropriate profile for the character you are currently inspecting.", ref isChecked))
+        if (CtrlHelper.CheckboxWithTextAndHelp("##applyininspect", "应用角色配置到调查窗口",
+                "为您当前调查的角色应用合适的角色配置。", ref isChecked))
         {
             _configuration.ProfileApplicationSettings.ApplyInInspect = isChecked;
             _configuration.Save();
@@ -166,8 +166,8 @@ public class SettingsTab
     {
         var isChecked = _configuration.ProfileApplicationSettings.ApplyInLobby;
 
-        if (CtrlHelper.CheckboxWithTextAndHelp("##applyinlobby", "Apply Profiles on Character Select Screen",
-                "Apply appropriate profile for the character you have currently selected on character select screen during login.", ref isChecked))
+        if (CtrlHelper.CheckboxWithTextAndHelp("##applyinlobby", "应用角色配置到角色选择界面",
+                "在登录时，为您当前在角色选择界面上选择的角色应用合适的角色配置。", ref isChecked))
         {
             _configuration.ProfileApplicationSettings.ApplyInLobby = isChecked;
             _configuration.Save();
@@ -179,7 +179,7 @@ public class SettingsTab
     #region Chat Commands Settings
     private void DrawCommands()
     {
-        var isShouldDraw = ImGui.CollapsingHeader("Chat Commands");
+        var isShouldDraw = ImGui.CollapsingHeader("聊天命令");
 
         if (!isShouldDraw)
             return;
@@ -191,8 +191,8 @@ public class SettingsTab
     {
         var isChecked = _configuration.CommandSettings.PrintSuccessMessages;
 
-        if (CtrlHelper.CheckboxWithTextAndHelp("##displaychatcommandconfirms", "Print Successful Command Execution Messages to Chat",
-                "Controls whether successful execution of chat commands will be acknowledged by separate chat message or not.", ref isChecked))
+        if (CtrlHelper.CheckboxWithTextAndHelp("##displaychatcommandconfirms", "将聊天命令执行成功的消息打印到聊天框。",
+                "控制是否输出消息到聊天框，让你可以确认聊天命令已被成功执行。", ref isChecked))
         {
             _configuration.CommandSettings.PrintSuccessMessages = isChecked;
             _configuration.Save();
@@ -204,7 +204,7 @@ public class SettingsTab
 
     private void DrawInterface()
     {
-        var isShouldDraw = ImGui.CollapsingHeader("Interface");
+        var isShouldDraw = ImGui.CollapsingHeader("界面设置");
 
         if (!isShouldDraw)
             return;
@@ -213,8 +213,8 @@ public class SettingsTab
         DrawFoldersDefaultOpen();
         DrawSetPreviewToCurrentCharacterOnLogin();
 
-        if (Widget.DoubleModifierSelector("Template Deletion Modifier",
-            "A modifier you need to hold while clicking the Delete Template button for it to take effect.", 100 * ImGuiHelpers.GlobalScale,
+        if (Widget.DoubleModifierSelector("模板删除组合键",
+            "单击“删除模板”按钮时需要按住此组合键才能生效。", 100 * ImGuiHelpers.GlobalScale,
             _configuration.UISettings.DeleteTemplateModifier, v => _configuration.UISettings.DeleteTemplateModifier = v))
             _configuration.Save();
     }
@@ -223,8 +223,8 @@ public class SettingsTab
     {
         var isChecked = _configuration.UISettings.HideWindowInCutscene;
 
-        if (CtrlHelper.CheckboxWithTextAndHelp("##hidewindowincutscene", "Hide Plugin Windows in Cutscenes",
-                "Controls whether any Customize+ windows are hidden during cutscenes or not.", ref isChecked))
+        if (CtrlHelper.CheckboxWithTextAndHelp("##hidewindowincutscene", "在过场动画中隐藏插件窗口",
+                "控制在过场动画中是否隐藏Customize+的所有窗口。", ref isChecked))
         {
             _configuration.UISettings.HideWindowInCutscene = isChecked;
             _configuration.Save();
@@ -235,8 +235,8 @@ public class SettingsTab
     {
         var isChecked = _configuration.UISettings.FoldersDefaultOpen;
 
-        if (CtrlHelper.CheckboxWithTextAndHelp("##foldersdefaultopen", "Open All Folders by Default",
-                "Controls whether folders in template and profile lists are open by default or not.", ref isChecked))
+        if (CtrlHelper.CheckboxWithTextAndHelp("##foldersdefaultopen", "默认打开所有折叠组",
+                "控制是否默认打开模板设计和角色配置列表中的折叠组。", ref isChecked))
         {
             _configuration.UISettings.FoldersDefaultOpen = isChecked;
             _configuration.Save();
@@ -247,8 +247,8 @@ public class SettingsTab
     {
         var isChecked = _configuration.EditorConfiguration.SetPreviewToCurrentCharacterOnLogin;
 
-        if (CtrlHelper.CheckboxWithTextAndHelp("##setpreviewcharaonlogin", "Automatically Set Current Character as Editor Preview Character",
-                "Controls whether editor character will be automatically set to the current character during login.", ref isChecked))
+        if (CtrlHelper.CheckboxWithTextAndHelp("##setpreviewcharaonlogin", "自动将当前角色设置为编辑器预览角色",
+                "控制编辑器角色是否在登录时自动设置为当前角色。", ref isChecked))
         {
             _configuration.EditorConfiguration.SetPreviewToCurrentCharacterOnLogin = isChecked;
             _configuration.Save();
@@ -261,14 +261,14 @@ public class SettingsTab
     // Advanced Settings
     private void DrawAdvancedSettings()
     {
-        var isShouldDraw = ImGui.CollapsingHeader("Advanced");
+        var isShouldDraw = ImGui.CollapsingHeader("高级设置");
 
         if (!isShouldDraw)
             return;
 
         ImGui.NewLine();
         CtrlHelper.LabelWithIcon(FontAwesomeIcon.ExclamationTriangle,
-            "These are advanced settings. Enable them at your own risk.");
+            "这里是高级设置。启用它们请自负风险。");
         ImGui.NewLine();
 
         DrawEnableRootPositionCheckbox();
@@ -278,8 +278,8 @@ public class SettingsTab
     private void DrawEnableRootPositionCheckbox()
     {
         var isChecked = _configuration.EditorConfiguration.RootPositionEditingEnabled;
-        if (CtrlHelper.CheckboxWithTextAndHelp("##rootpos", "Root editing",
-                "Enables ability to edit the root bones.", ref isChecked))
+        if (CtrlHelper.CheckboxWithTextAndHelp("##rootpos", "根骨骼编辑",
+                "启用编辑根骨骼的功能。", ref isChecked))
         {
             _configuration.EditorConfiguration.RootPositionEditingEnabled = isChecked;
             _configuration.Save();
@@ -289,8 +289,8 @@ public class SettingsTab
     private void DrawDebugModeCheckbox()
     {
         var isChecked = _configuration.DebuggingModeEnabled;
-        if (CtrlHelper.CheckboxWithTextAndHelp("##debugmode", "Debug mode",
-                "Enables debug mode. Requires plugin restart for all features to become properly initialized.", ref isChecked))
+        if (CtrlHelper.CheckboxWithTextAndHelp("##debugmode", "调试模式",
+                "启用调试模式", ref isChecked))
         {
             _configuration.DebuggingModeEnabled = isChecked;
             _configuration.Save();
@@ -302,7 +302,7 @@ public class SettingsTab
     #region Support Area
     private void DrawSupportButtons()
     {
-        var width = ImGui.CalcTextSize("Copy Support Info to Clipboard").X + ImGui.GetStyle().FramePadding.X * 2;
+        var width = ImGui.CalcTextSize("加入Discord寻求支持").X + ImGui.GetStyle().FramePadding.X * 2;
         var xPos = ImGui.GetWindowWidth() - width;
         // Respect the scroll bar width.
         if (ImGui.GetScrollMaxY() > 0)
@@ -312,15 +312,15 @@ public class SettingsTab
         DrawDiscordButton(width);
 
         ImGui.SetCursorPos(new Vector2(xPos, 1 * ImGui.GetFrameHeightWithSpacing()));
-        if (ImGui.Button("Copy Support Info to Clipboard"))
+        if (ImGui.Button("复制支持信息到剪贴板"))
         {
             var text = _supportLogBuilderService.BuildSupportLog();
             ImGui.SetClipboardText(text);
-            _messageService.NotificationMessage($"Copied Support Info to Clipboard.", NotificationType.Success, false);
+            _messageService.NotificationMessage($"复制支持信息到剪贴板。", NotificationType.Success, false);
         }
 
         ImGui.SetCursorPos(new Vector2(xPos, 2 * ImGui.GetFrameHeightWithSpacing()));
-        if (ImGui.Button("Show update history", new Vector2(width, 0)))
+        if (ImGui.Button("显示更新日志", new Vector2(width, 0)))
             _changeLog.Changelog.ForceOpen = true;
     }
 
@@ -329,7 +329,7 @@ public class SettingsTab
     {
         const string address = @"https://discord.gg/KvGJCCnG8t";
         using var color = ImRaii.PushColor(ImGuiCol.Button, DiscordColor);
-        if (ImGui.Button("Join Discord for Support", new Vector2(width, 0)))
+        if (ImGui.Button("加入Discord寻求支持", new Vector2(width, 0)))
             try
             {
                 var process = new ProcessStartInfo(address)
@@ -340,10 +340,10 @@ public class SettingsTab
             }
             catch
             {
-                _messageService.NotificationMessage($"Unable to open Discord at {address}.", NotificationType.Error, false);
+                _messageService.NotificationMessage($"无法以此地址打开Discord：{address}。", NotificationType.Error, false);
             }
 
-        ImGuiUtil.HoverTooltip($"Open {address}");
+        ImGuiUtil.HoverTooltip($"访问{address}");
     }
     #endregion
 }

@@ -26,21 +26,21 @@ public partial class PopupSystem
 
     private void RegisterMessages()
     {
-        RegisterPopup(Messages.ActionError, "Error while performing selected action.\nDetails have been printed to Dalamud log (/xllog in chat).");
+        RegisterPopup(Messages.ActionError, "执行所选操作时出错。\n详细信息已打印到卫月日志（聊天命令为/xllog）。");
 
-        RegisterPopup(Messages.FantasiaPlusDetected, "Customize+ detected that you have Fantasia+ installed.\nPlease delete or turn it off and restart your game to use Customize+.");
+        RegisterPopup(Messages.FantasiaPlusDetected, "Customize+检测到您安装了Fantasia+。\n请删除或关闭它后重新启动游戏，以继续使用Customize+.");
 
-        RegisterPopup(Messages.IPCProfileRemembered, "Current profile has been copied into memory");
-        RegisterPopup(Messages.IPCGetProfileByIdRemembered, "GetProfileByUniqueId result has been copied into memory");
-        RegisterPopup(Messages.IPCSetProfileToChrDone, "SetProfileToCharacter has been called with data from memory, profile id printed to log");
-        RegisterPopup(Messages.IPCRevertDone, "DeleteTemporaryProfileByUniqueId has been called");
-        RegisterPopup(Messages.IPCCopiedToClipboard, "Copied into clipboard");
-        RegisterPopup(Messages.IPCEnableProfileByIdDone, "Enable profile by id has been called");
-        RegisterPopup(Messages.IPCDisableProfileByIdDone, "Disable profile by id has been called");
+        RegisterPopup(Messages.IPCProfileRemembered, "当前配置文件已复制到内存中。");
+        RegisterPopup(Messages.IPCGetProfileByIdRemembered, "GetProfileByUniqueId 结果已复制到内存中");
+        RegisterPopup(Messages.IPCSetProfileToChrDone, "SetProfileToCharacter 已使用内存中的数据调用， 配置文件ID已打印到日志");
+        RegisterPopup(Messages.IPCRevertDone, "DeleteTemporaryProfileByUniqueId 已调用回滚");
+        RegisterPopup(Messages.IPCCopiedToClipboard, "复制到剪贴板");
+        RegisterPopup(Messages.IPCEnableProfileByIdDone, "按ID启用配置文件已被调用");
+        RegisterPopup(Messages.IPCDisableProfileByIdDone, "按ID禁用配置文件已被调用");
 
-        RegisterPopup(Messages.TemplateEditorActiveWarning, "You need to stop bone editing before doing this action");
-        RegisterPopup(Messages.ClipboardDataUnsupported, "Clipboard data you are trying to use cannot be used in this version of Customize+.");
+        RegisterPopup(Messages.TemplateEditorActiveWarning, "执行此操作之前，您需要结束骨骼编辑");
+        RegisterPopup(Messages.ClipboardDataUnsupported, "无法在此版本的Customize+中使用此剪贴板数据。");
 
-        RegisterPopup(Messages.ClipboardDataNotLongTerm, "Warning: clipboard data is not designed to be used as long-term way of storing your templates.\nCompatibility of copied data between different Customize+ versions is not guaranteed.", true, new Vector2(5, 10));
+        RegisterPopup(Messages.ClipboardDataNotLongTerm, "警告：剪贴板数据不是用来长期存储模板的。\n不保证复制的数据在不同的Customize+版本之间的兼容性。", true, new Vector2(5, 10));
     }
 }

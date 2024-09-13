@@ -16,7 +16,7 @@ namespace CustomizePlus.Templates.Data;
 /// </summary>
 public sealed class Template : ISavable
 {
-    public LowerString Name { get; internal set; } = "Template";
+    public LowerString Name { get; internal set; } = "模板设计";
 
     public int Version { get; internal set; } = Constants.ConfigurationVersion;
     public DateTimeOffset CreationDate { get; internal set; } = DateTime.UtcNow;

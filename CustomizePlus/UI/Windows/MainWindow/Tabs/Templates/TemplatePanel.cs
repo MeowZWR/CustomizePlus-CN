@@ -92,14 +92,14 @@ public class TemplatePanel : IDisposable
             : _selector.Selected.IsWriteProtected
                 ? new HeaderDrawer.Button
                 {
-                    Description = "Make this template editable.",
+                    Description = "使此模板可编辑。",
                     Icon = FontAwesomeIcon.Lock,
                     OnClick = () => _manager.SetWriteProtection(_selector.Selected!, false),
                     Disabled = _boneEditor.IsEditorActive
                 }
                 : new HeaderDrawer.Button
                 {
-                    Description = "Write-protect this template.",
+                    Description = "锁定此模板",
                     Icon = FontAwesomeIcon.LockOpen,
                     OnClick = () => _manager.SetWriteProtection(_selector.Selected!, true),
                     Disabled = _boneEditor.IsEditorActive
@@ -119,7 +119,7 @@ public class TemplatePanel : IDisposable
     private HeaderDrawer.Button ExportToClipboardButton()
         => new()
         {
-            Description = "Copy the current template to your clipboard.",
+            Description = "将当前模板的数据复制到剪贴板。",
             Icon = FontAwesomeIcon.Copy,
             OnClick = ExportToClipboard,
             Visible = _selector.Selected != null,
@@ -142,7 +142,7 @@ public class TemplatePanel : IDisposable
         var sizeFolders = availableSizePercent * 65;
 
         ImGui.NewLine();
-        ImGui.TextUnformatted("Currently Selected Templates");
+        ImGui.TextUnformatted("当前选中的模板");
         ImGui.Separator();
         using var table = ImRaii.Table("templates", 3, ImGuiTableFlags.RowBg);
         ImGui.TableSetupColumn("btn", ImGuiTableColumnFlags.WidthFixed, sizeType);
@@ -156,7 +156,7 @@ public class TemplatePanel : IDisposable
             using var id = ImRaii.PushId(i++);
             ImGui.TableNextColumn();
             var icon = (path is TemplateFileSystem.Leaf ? FontAwesomeIcon.FileCircleMinus : FontAwesomeIcon.FolderMinus).ToIconString();
-            if (ImGuiUtil.DrawDisabledButton(icon, new Vector2(sizeType), "Remove from selection.", false, true))
+            if (ImGuiUtil.DrawDisabledButton(icon, new Vector2(sizeType), "从选择中移除。", false, true))
                 _selector.RemovePathFromMultiSelection(path);
 
             ImGui.TableNextColumn();
@@ -165,7 +165,7 @@ public class TemplatePanel : IDisposable
 
             ImGui.TableNextColumn();
             ImGui.AlignTextToFramePadding();
-            ImGui.TextUnformatted(_selector.IncognitoMode ? "Incognito is active" : fullName);
+            ImGui.TextUnformatted(_selector.IncognitoMode ? "匿名模式已激活" : fullName);
         }
     }
 
@@ -188,8 +188,8 @@ public class TemplatePanel : IDisposable
     {
         (bool isEditorAllowed, bool isEditorActive) = CanToggleEditor();
 
-        if (ImGuiUtil.DrawDisabledButton($"{(_boneEditor.IsEditorActive ? "Finish" : "Start")} bone editing", Vector2.Zero,
-            "Toggle the bone editor for this template", !isEditorAllowed))
+        if (ImGuiUtil.DrawDisabledButton($"{(_boneEditor.IsEditorActive ? "结束" : "开始")}骨骼编辑", Vector2.Zero,
+            "开关此模板中的骨骼编辑器", !isEditorAllowed))
         {
             if (!isEditorActive)
                 _boneEditor.EnableEditor(_selector.Selected!);
@@ -212,7 +212,7 @@ public class TemplatePanel : IDisposable
                 ImGui.TableSetupColumn("BasicCol1", ImGuiTableColumnFlags.WidthFixed, ImGui.CalcTextSize("lorem ipsum dolor").X);
                 ImGui.TableSetupColumn("BasicCol2", ImGuiTableColumnFlags.WidthStretch);
 
-                ImGuiUtil.DrawFrameColumn("Template Name");
+                ImGuiUtil.DrawFrameColumn("模板名称");
                 ImGui.TableNextColumn();
                 var width = new Vector2(ImGui.GetContentRegionAvail().X, 0);
                 var name = _newName ?? _selector.Selected!.Name;

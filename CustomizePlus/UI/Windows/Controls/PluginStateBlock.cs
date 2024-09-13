@@ -42,37 +42,37 @@ public class PluginStateBlock
         if(_hookingService.RenderHookFailed || _hookingService.MovementHookFailed)
         {
             severity = PluginStateSeverity.Error;
-            message = $"Detected failure in game hooks. Customize+ disabled.";
+            message = $"检测到游戏钩子失效。Customize+ 已禁用。";
         }
         else if (!_configuration.PluginEnabled)
         {
             severity = PluginStateSeverity.Warning;
-            message = "Plugin is disabled, template bone editing is not available.";
+            message = "插件已禁用，骨骼编辑模板不可用。";
         }
         else if (_boneEditorPanel.IsEditorActive)
         {
             if (!_boneEditorPanel.IsCharacterFound)
             {
                 severity = PluginStateSeverity.Error;
-                message = $"Selected preview character was not found.";
+                message = $"未找到指定的预览角色。";
             }
             else
             {
                 if (_boneEditorPanel.HasChanges)
                     severity = PluginStateSeverity.Warning;
 
-                message = $"Editor is active.{(_boneEditorPanel.HasChanges ? " You have unsaved changes, finish template bone editing to open save/revert dialog." : "")}";
+                message = $"编辑器已激活。{(_boneEditorPanel.HasChanges ? "您有未保存的修改。点击“结束骨骼编辑”来进入保存/还原对话框。" : "")}";
             }
         }
         else if (_gameStateService.GameInPosingMode())
         {
             severity = PluginStateSeverity.Warning;
-            message = $"GPose active. Compatibility with posing tools is limited.";
+            message = $"已进入集体动作。与姿势工具的兼容性有限。";
         }
         else if (_ipcService.IPCFailed) //this is a low priority error
         {
             severity = PluginStateSeverity.Error;
-            message = $"Detected failure in IPC. Integrations with other plugins will not function.";
+            message = $"在IPC中检测到故障。与其他插件的集成将不起作用。";
         }
 
         if (message != null)

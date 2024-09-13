@@ -34,7 +34,7 @@ public class ProfilePanel
     private int _dragIndex = -1;
 
     private string SelectionName
-        => _selector.Selected == null ? "No Selection" : _selector.IncognitoMode ? _selector.Selected.Incognito : _selector.Selected.Name.Text;
+        => _selector.Selected == null ? "未选中" : _selector.IncognitoMode ? _selector.Selected.Incognito : _selector.Selected.Name.Text;
 
     public ProfilePanel(
         ProfileFileSystemSelector selector,
@@ -72,13 +72,13 @@ public class ProfilePanel
             : _selector.Selected.IsWriteProtected
                 ? new HeaderDrawer.Button
                 {
-                    Description = "Make this profile editable.",
+                    Description = "使此配置可编辑。",
                     Icon = FontAwesomeIcon.Lock,
                     OnClick = () => _manager.SetWriteProtection(_selector.Selected!, false)
                 }
                 : new HeaderDrawer.Button
                 {
-                    Description = "Write-protect this profile.",
+                    Description = "锁定此配置。",
                     Icon = FontAwesomeIcon.LockOpen,
                     OnClick = () => _manager.SetWriteProtection(_selector.Selected!, true)
                 };
@@ -99,7 +99,7 @@ public class ProfilePanel
         var sizeFolders = availableSizePercent * 65;
 
         ImGui.NewLine();
-        ImGui.TextUnformatted("Currently Selected Profiles");
+        ImGui.TextUnformatted("当前选中的配置");
         ImGui.Separator();
         using var table = ImRaii.Table("profile", 3, ImGuiTableFlags.RowBg);
         ImGui.TableSetupColumn("btn", ImGuiTableColumnFlags.WidthFixed, sizeType);
@@ -113,7 +113,7 @@ public class ProfilePanel
             using var id = ImRaii.PushId(i++);
             ImGui.TableNextColumn();
             var icon = (path is ProfileFileSystem.Leaf ? FontAwesomeIcon.FileCircleMinus : FontAwesomeIcon.FolderMinus).ToIconString();
-            if (ImGuiUtil.DrawDisabledButton(icon, new Vector2(sizeType), "Remove from selection.", false, true))
+            if (ImGuiUtil.DrawDisabledButton(icon, new Vector2(sizeType), "从选择中移除。", false, true))
                 _selector.RemovePathFromMultiSelection(path);
 
             ImGui.TableNextColumn();
@@ -122,7 +122,7 @@ public class ProfilePanel
 
             ImGui.TableNextColumn();
             ImGui.AlignTextToFramePadding();
-            ImGui.TextUnformatted(_selector.IncognitoMode ? "Incognito is active" : fullName);
+            ImGui.TextUnformatted(_selector.IncognitoMode ? "匿名模式已激活" : fullName);
         }
     }
 
@@ -151,8 +151,8 @@ public class ProfilePanel
             {
                 if (ImGui.Checkbox("##Enabled", ref enabled))
                     _manager.SetEnabled(_selector.Selected!, enabled);
-                ImGuiUtil.LabeledHelpMarker("Enabled",
-                    "Whether the templates in this profile should be applied at all. Only one profile can be enabled for a character at the same time.");
+                ImGuiUtil.LabeledHelpMarker("启用",
+                    "是否应用此角色配置中的模板。一个角色同时只能启用一个配置文件。");
             }
 
             ImGui.SameLine();
@@ -162,8 +162,8 @@ public class ProfilePanel
             {
                 if (ImGui.Checkbox("##DefaultProfile", ref isDefault))
                     _manager.SetDefaultProfile(isDefault ? _selector.Selected! : null);
-                ImGuiUtil.LabeledHelpMarker("Apply to all players and retainers",
-                    "Whether the templates in this profile are applied to all players and retainers without a specific profile. This setting cannot be applied to multiple profiles.");
+                ImGuiUtil.LabeledHelpMarker("默认配置（仅玩家和雇员）",
+                    "是否将此配置应用于没有指定角色配置的所有玩家和雇员。同时只有一个角色配置可以设置为默认配置。");
             }
             if(isDefaultOrCurrentProfilesEnabled)
             {
@@ -171,7 +171,7 @@ public class ProfilePanel
                 ImGui.PushStyleColor(ImGuiCol.Text, Constants.Colors.Warning);
                 ImGuiUtil.PrintIcon(FontAwesomeIcon.ExclamationTriangle);
                 ImGui.PopStyleColor();
-                ImGuiUtil.HoverTooltip("Can only be changed when both currently selected and profile where this checkbox is checked are disabled.");
+                ImGuiUtil.HoverTooltip("只能在当前选定且禁用默认配置文件时更改。");
             }
         }
     }
@@ -185,7 +185,7 @@ public class ProfilePanel
                 ImGui.TableSetupColumn("BasicCol1", ImGuiTableColumnFlags.WidthFixed, ImGui.CalcTextSize("lorem ipsum dolor").X);
                 ImGui.TableSetupColumn("BasicCol2", ImGuiTableColumnFlags.WidthStretch);
 
-                ImGuiUtil.DrawFrameColumn("Profile Name");
+                ImGuiUtil.DrawFrameColumn("配置名称");
                 ImGui.TableNextColumn();
                 var width = new Vector2(ImGui.GetContentRegionAvail().X, 0);
                 var name = _newName ?? _selector.Selected!.Name;
@@ -211,9 +211,9 @@ public class ProfilePanel
 
                 ImGui.TableNextRow();
 
-                ImGuiUtil.DrawFrameColumn("Character Name");
+                ImGuiUtil.DrawFrameColumn("角色名称");
                 ImGui.TableNextColumn();
-                width = new Vector2(ImGui.GetContentRegionAvail().X - ImGui.CalcTextSize("Limit to my creatures").X - 68, 0);
+                width = new Vector2(ImGui.GetContentRegionAvail().X - ImGui.CalcTextSize("限制为从属于我的角色").X - 68, 0);
                 name = _newCharacterName ?? _selector.Selected!.CharacterName;
                 ImGui.SetNextItemWidth(width.X);
 
@@ -235,14 +235,14 @@ public class ProfilePanel
                         }
                     }
                     else
-                        ImGui.TextUnformatted("Incognito active");
+                        ImGui.TextUnformatted("匿名模式已激活");
 
                     ImGui.SameLine();
                     var enabled = _selector.Selected?.LimitLookupToOwnedObjects ?? false;
                     if (ImGui.Checkbox("##LimitLookupToOwnedObjects", ref enabled))
                         _manager.SetLimitLookupToOwned(_selector.Selected!, enabled);
-                    ImGuiUtil.LabeledHelpMarker("Limit to my creatures",
-                        "When enabled limits the character search to only your own summons, mounts and minions.\nUseful when there is possibility there will be another character with that name owned by another player.\n* For battle chocobo use \"Chocobo\" as character name.");
+                    ImGuiUtil.LabeledHelpMarker("限制为从属于我的角色",
+                        "启用时，将角色搜索范围限制为仅您自己的召唤兽、坐骑和宠物。\n在可能会有另一个同名角色被另一个玩家拥有时使用此选项。\n*对于战斗陆行鸟请使用\"Chocobo\"作为角色名称。\n**如果您正在修改坐骑的根骨骼缩放，并希望保留您自己的缩放，请确保您自己的缩放是默认值以外的任何值。");
                 }
                 else
                     ImGui.TextUnformatted("All players and retainers");
@@ -259,7 +259,7 @@ public class ProfilePanel
         ImGui.TableSetupColumn("##del", ImGuiTableColumnFlags.WidthFixed, ImGui.GetFrameHeight());
         ImGui.TableSetupColumn("##Index", ImGuiTableColumnFlags.WidthFixed, 30 * ImGuiHelpers.GlobalScale);
 
-        ImGui.TableSetupColumn("Template", ImGuiTableColumnFlags.WidthFixed, 220 * ImGuiHelpers.GlobalScale);
+        ImGui.TableSetupColumn("模板", ImGuiTableColumnFlags.WidthFixed, 220 * ImGuiHelpers.GlobalScale);
 
         ImGui.TableSetupColumn("##editbtn", ImGuiTableColumnFlags.WidthFixed, 120 * ImGuiHelpers.GlobalScale);
 
@@ -273,8 +273,8 @@ public class ProfilePanel
             ImGui.TableNextColumn();
             var keyValid = _configuration.UISettings.DeleteTemplateModifier.IsActive();
             var tt = keyValid
-                ? "Remove this template from the profile."
-                : $"Remove this template from the profile.\nHold {_configuration.UISettings.DeleteTemplateModifier} to remove.";
+                ? "从配置文件中删除此模板。"
+                : $"从配置文件中删除此模板。\n同时按住{_configuration.UISettings.DeleteTemplateModifier}来删除。";
 
             if (ImGuiUtil.DrawDisabledButton(FontAwesomeIcon.Trash.ToIconString(), new Vector2(ImGui.GetFrameHeight()), tt, !keyValid, true))
                 _endAction = () => _manager.DeleteTemplate(_selector.Selected!, idx);
@@ -288,7 +288,7 @@ public class ProfilePanel
 
             var disabledCondition = _templateEditorManager.IsEditorActive || template.IsWriteProtected;
 
-            if (ImGuiUtil.DrawDisabledButton(FontAwesomeIcon.Edit.ToIconString(), new Vector2(ImGui.GetFrameHeight()), "Open this template in the template editor", disabledCondition, true))
+            if (ImGuiUtil.DrawDisabledButton(FontAwesomeIcon.Edit.ToIconString(), new Vector2(ImGui.GetFrameHeight()), "在模板编辑器中打开此模板", disabledCondition, true))
                 _templateEditorEvent.Invoke(TemplateEditorEvent.Type.EditorEnableRequested, template);
 
             if (disabledCondition)
@@ -298,14 +298,14 @@ public class ProfilePanel
                 ImGui.PushStyleColor(ImGuiCol.Text, Constants.Colors.Warning);
                 ImGuiUtil.PrintIcon(FontAwesomeIcon.ExclamationTriangle);
                 ImGui.PopStyleColor();
-                ImGuiUtil.HoverTooltip("This template cannot be edited because it is either write protected or you are already editing one of the templates.");
+                ImGuiUtil.HoverTooltip("无法编辑此模板，因为它已被锁定，或您正在编辑其他模板。");
             }
         }
 
         ImGui.TableNextColumn();
         ImGui.TableNextColumn();
         ImGui.AlignTextToFramePadding();
-        ImGui.TextUnformatted("New");
+        ImGui.TextUnformatted("新增");
         ImGui.TableNextColumn();
         _templateCombo.Draw(_selector.Selected!, null, -1);
         ImGui.TableNextRow();
@@ -335,7 +335,7 @@ public class ProfilePanel
         {
             if (source)
             {
-                ImGui.TextUnformatted($"Moving template #{index + 1:D2}...");
+                ImGui.TextUnformatted($"移动模板 #{index + 1:D2}...");
                 if (ImGui.SetDragDropPayload(dragDropLabel, nint.Zero, 0))
                 {
                     _dragIndex = index;

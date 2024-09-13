@@ -167,7 +167,7 @@ public class TemplateEditorManager : IDisposable
             throw new Exception($"Fatal editor error: Template with ID {CurrentlyEditedTemplateId} not found in template manager");
 
         if (asCopy)
-            targetTemplate = _templateManager.Clone(targetTemplate, $"{targetTemplate.Name} - Copy {Guid.NewGuid().ToString().Substring(0, 4)}", false);
+            targetTemplate = _templateManager.Clone(targetTemplate, $"{targetTemplate.Name} - 副本 {Guid.NewGuid().ToString().Substring(0, 4)}", false);
 
         _templateManager.ApplyBoneChangesAndSave(targetTemplate, CurrentlyEditedTemplate!);
     }
@@ -311,7 +311,7 @@ public class TemplateEditorManager : IDisposable
             var localPlayerName = _gameObjectService.GetCurrentPlayerName();
             if(string.IsNullOrWhiteSpace(localPlayerName))
             {
-                _logger.Warning("Can't retrieve local player name on login");
+                _logger.Warning("无法在登录时检索本地玩家名称");
                 return;
             }
 

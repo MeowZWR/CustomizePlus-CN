@@ -262,7 +262,7 @@ public class TemplateFileSystemSelector : FileSystemSelector<Template, TemplateS
 
     private void NewButton(Vector2 size)
     {
-        if (!ImGuiUtil.DrawDisabledButton(FontAwesomeIcon.Plus.ToIconString(), size, "Create a new template with default configuration.", false,
+        if (!ImGuiUtil.DrawDisabledButton(FontAwesomeIcon.Plus.ToIconString(), size, "创建一个包含默认设置的模板文件。", false,
                 true))
             return;
 
@@ -277,7 +277,7 @@ public class TemplateFileSystemSelector : FileSystemSelector<Template, TemplateS
 
     private void ClipboardImportButton(Vector2 size)
     {
-        if (!ImGuiUtil.DrawDisabledButton(FontAwesomeIcon.Clipboard.ToIconString(), size, "Try to import a template from your clipboard.", false,
+        if (!ImGuiUtil.DrawDisabledButton(FontAwesomeIcon.Clipboard.ToIconString(), size, "尝试从剪贴板导入模板。", false,
                 true))
             return;
 
@@ -294,13 +294,13 @@ public class TemplateFileSystemSelector : FileSystemSelector<Template, TemplateS
         }
         catch
         {
-            _messageService.NotificationMessage("Could not import data from clipboard.", NotificationType.Error, false);
+            _messageService.NotificationMessage("无法从剪贴板导入数据。", NotificationType.Error, false);
         }
     }
 
     private void AnamnesisImportButton(Vector2 size)
     {
-        if (!ImGuiUtil.DrawDisabledButton(FontAwesomeIcon.FileImport.ToIconString(), size, "Import a template from anamnesis pose file (scaling only)", false,
+        if (!ImGuiUtil.DrawDisabledButton(FontAwesomeIcon.FileImport.ToIconString(), size, "从Anamnesis的pose文件导入模板（仅限缩放）", false,
                 true))
             return;
 
@@ -310,7 +310,7 @@ public class TemplateFileSystemSelector : FileSystemSelector<Template, TemplateS
             return;
         }
 
-        _importFilePicker.OpenFileDialog("Import Pose File", ".pose", (isSuccess, path) =>
+        _importFilePicker.OpenFileDialog("导入Pose文件", ".pose", (isSuccess, path) =>
         {
             if (isSuccess)
             {
@@ -323,7 +323,7 @@ public class TemplateFileSystemSelector : FileSystemSelector<Template, TemplateS
                 {
                     if (bones.Count == 0)
                     {
-                        _messageService.NotificationMessage("Selected anamnesis pose file doesn't contain any scaled bones", NotificationType.Error);
+                        _messageService.NotificationMessage("选择的Anamnesis pose文件不包含任何的骨骼缩放数据。", NotificationType.Error);
                         return;
                     }
 
@@ -332,12 +332,12 @@ public class TemplateFileSystemSelector : FileSystemSelector<Template, TemplateS
                 else
                 {
                     _messageService.NotificationMessage(
-                        $"Error parsing anamnesis pose file at '{path}'", NotificationType.Error);
+                        $"在分析位于'{path}'的Anamnesis pose文件时出错", NotificationType.Error);
                 }
             }
             else
             {
-                _logger.Debug(isSuccess + " NO valid file has been selected. " + path);
+                _logger.Debug(isSuccess + "没有选择有效的文件。" + path);
             }
         }, 1, null, true);
 
@@ -350,8 +350,8 @@ public class TemplateFileSystemSelector : FileSystemSelector<Template, TemplateS
     private void CloneButton(Vector2 size)
     {
         var tt = SelectedLeaf == null
-            ? "No template selected."
-            : "Clone the currently selected template to a duplicate";
+            ? "没有模板被选中。"
+            : "为当前选中的模板克隆一个副本";
         if (!ImGuiUtil.DrawDisabledButton(FontAwesomeIcon.Clone.ToIconString(), size, tt, SelectedLeaf == null, true))
             return;
 
@@ -385,8 +385,8 @@ public class TemplateFileSystemSelector : FileSystemSelector<Template, TemplateS
 
     private void SetFilterTooltip()
     {
-        FilterTooltip = "Filter templates for those where their full paths or names contain the given substring.\n"
-          + "Enter n:[string] to filter only for template names and no paths.";
+        FilterTooltip = "筛选在完整路径或名称中包含指定字符串的模板。\n"
+          + "输入n:[字符串]只筛选模板名称，不筛选路径。";
     }
 
     /// <summary> Appropriately identify and set the string filter and its type. </summary>

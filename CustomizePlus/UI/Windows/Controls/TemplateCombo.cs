@@ -74,7 +74,7 @@ public abstract class TemplateComboBase : FilterComboCache<Tuple<Template, strin
         InnerWidth = 400 * ImGuiHelpers.GlobalScale;
         CurrentSelectionIdx = Math.Max(Items.IndexOf(p => currentTemplate == p.Item1), 0);
         CurrentSelection = Items[CurrentSelectionIdx];
-        var name = label ?? "Select Template Here...";
+        var name = label ?? "在这里选择模板...";
         var ret = Draw("##template", name, string.Empty, width, ImGui.GetTextLineHeightWithSpacing())
          && CurrentSelection != null;
 

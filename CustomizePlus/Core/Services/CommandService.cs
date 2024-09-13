@@ -53,11 +53,11 @@ public class CommandService : IDisposable
 
         foreach (var command in Commands)
         {
-            _commandManager.AddHandler(command, new CommandInfo(OnMainCommand) { HelpMessage = "Toggles main plugin window if no commands passed. Use \"/customize help\" for list of available commands." });
+            _commandManager.AddHandler(command, new CommandInfo(OnMainCommand) { HelpMessage = "不带额外参数开关插件主窗口。使用\"/customize help\"查看可用命令参数列表。" });
         }
 
         if (_pluginConfiguration.CommandSettings.PrintSuccessMessages)
-            chatService.PrintInChat($"Started!"); //safe to assume at this point we have successfully initialized
+            chatService.PrintInChat($"启动！"); //safe to assume at this point we have successfully initialized
     }
 
     public void Dispose()
@@ -72,7 +72,7 @@ public class CommandService : IDisposable
     {
         if (_boneEditorPanel.IsEditorActive)
         {
-            _messageService.NotificationMessage("Customize+ commands cannot be used when editor is active", NotificationType.Error);
+            _messageService.NotificationMessage("当编辑器处于活动状态时无法使用Customize+命令", NotificationType.Error);
             return;
         }
 
@@ -99,12 +99,12 @@ public class CommandService : IDisposable
     private bool PrintHelp(string argument)
     {
         if (!string.Equals(argument, "help", StringComparison.OrdinalIgnoreCase) && argument != "?")
-            _chatService.PrintInChat(new SeStringBuilder().AddText("The given argument ").AddRed(argument, true)
-                .AddText(" is not valid. Valid arguments are:").BuiltString);
+            _chatService.PrintInChat(new SeStringBuilder().AddText("给定的参数 ").AddRed(argument, true)
+                .AddText(" 无效。有效的参数为:").BuiltString);
         else
-            _chatService.PrintInChat(new SeStringBuilder().AddText("Valid arguments for /customize are:").BuiltString);
+            _chatService.PrintInChat(new SeStringBuilder().AddText("/customize 的有效参数为:").BuiltString);
 
-        _chatService.PrintInChat(new SeStringBuilder().AddCommand("profile", "Change the state of profiles. Use without arguments for help.")
+        _chatService.PrintInChat(new SeStringBuilder().AddCommand("profile", "更改角色配置的状态。不带参数使用以获取帮助。")
             .BuiltString);
         return true;
     }
