@@ -23,6 +23,7 @@ public class CPlusChangeLog
         Add2_0_4_4(Changelog);
         Add2_0_5_0(Changelog);
         Add2_0_6_0(Changelog);
+        Add2_0_6_3(Changelog);
     }
 
     private (int, ChangeLogDisplayType) ConfigData()
@@ -35,7 +36,17 @@ public class CPlusChangeLog
         _config.Save();
     }
 
-	private static void Add2_0_6_0(Changelog log)
+    private static void Add2_0_6_3(Changelog log)
+        => log.NextVersion("版本 2.0.6.3")
+            .RegisterEntry("添加了新的 IPC 方法：GameState.GetCutsceneParentIndex, GameState.SetCutsceneParentIndex。")
+            .RegisterImportant("这些方法是 Ktisis 开发者请求的。建议其他开发者除非绝对确定自己在做什么，否则不要使用它们。", 1)
+            .RegisterEntry("改进了支持日志。 (2.0.6.2)")
+            .RegisterEntry("调整了日志记录，使其在 \"Debug+\" 模式下减少冗余。")
+            .RegisterEntry("使在角色选择界面的处理更可靠。 (2.0.6.1, 2.0.6.3)")
+            .RegisterEntry("修复了在集体动作中角色处理不正确的问题。")
+            .RegisterEntry("源代码维护 - 外部库更新。");
+
+    private static void Add2_0_6_0(Changelog log)
 	    => log.NextVersion("版本 2.0.6.0")
 	        .RegisterHighlight("IPC 已重新启用。")
 	        .RegisterImportant("如果你是普通用户，你需要等待其他插件实施必要的更改。请咨询这些插件的开发者获取更多信息。", 1)

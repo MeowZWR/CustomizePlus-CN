@@ -15,6 +15,7 @@ public partial class PopupSystem
         public const string IPCSetProfileToChrDone = "ipc_set_profile_to_character_done";
         public const string IPCRevertDone = "ipc_revert_done";
         public const string IPCCopiedToClipboard = "ipc_copied_to clipboard";
+        public const string IPCSuccessfullyExecuted = "ipc_successfully_executed";
         public const string IPCEnableProfileByIdDone = "ipc_enable_profile_by_id_done";
         public const string IPCDisableProfileByIdDone = "ipc_disable_profile_by_id_done";
 
@@ -35,6 +36,7 @@ public partial class PopupSystem
         RegisterPopup(Messages.IPCSetProfileToChrDone, "SetProfileToCharacter 已使用内存中的数据调用， 配置文件ID已打印到日志");
         RegisterPopup(Messages.IPCRevertDone, "DeleteTemporaryProfileByUniqueId 已调用回滚");
         RegisterPopup(Messages.IPCCopiedToClipboard, "复制到剪贴板");
+        RegisterPopup(Messages.IPCSuccessfullyExecuted, "成功执行");
         RegisterPopup(Messages.IPCEnableProfileByIdDone, "按ID启用配置文件已被调用");
         RegisterPopup(Messages.IPCDisableProfileByIdDone, "按ID禁用配置文件已被调用");
 
