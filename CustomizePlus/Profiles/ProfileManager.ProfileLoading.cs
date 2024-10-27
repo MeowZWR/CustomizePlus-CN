@@ -11,7 +11,6 @@ using System.IO;
 using System.Linq;
 using Penumbra.String;
 using Penumbra.GameData.Structs;
-using Penumbra.GameData.Actors;
 using Dalamud.Game.ClientState.Objects.Enums;
 using Penumbra.GameData.Gui;
 using System.Xml;
