@@ -14,6 +14,7 @@ using CustomizePlus.Templates;
 using CustomizePlus.Core.Helpers;
 using CustomizePlus.Armatures.Services;
 using Dalamud.Interface.ImGuiNotification;
+using Dalamud.Plugin;
 
 namespace CustomizePlus.UI.Windows.MainWindow.Tabs;
 
@@ -21,6 +22,7 @@ public class SettingsTab
 {
     private const uint DiscordColor = 0xFFDA8972;
 
+    private readonly IDalamudPluginInterface _pluginInterface;
     private readonly PluginConfiguration _configuration;
     private readonly ArmatureManager _armatureManager;
     private readonly HookingService _hookingService;
@@ -30,6 +32,7 @@ public class SettingsTab
     private readonly SupportLogBuilderService _supportLogBuilderService;
 
     public SettingsTab(
+        IDalamudPluginInterface pluginInterface,
         PluginConfiguration configuration,
         ArmatureManager armatureManager,
         HookingService hookingService,
@@ -38,6 +41,7 @@ public class SettingsTab
         MessageService messageService,
         SupportLogBuilderService supportLogBuilderService)
     {
+        _pluginInterface = pluginInterface;
         _configuration = configuration;
         _armatureManager = armatureManager;
         _hookingService = hookingService;
@@ -49,6 +53,7 @@ public class SettingsTab
 
     public void Draw()
     {
+        UiHelpers.SetupCommonSizes();
         using var child = ImRaii.Child("MainWindowChild");
         if (!child)
             return;
@@ -209,14 +214,38 @@ public class SettingsTab
         if (!isShouldDraw)
             return;
 
+        DrawOpenWindowAtStart();
         DrawHideWindowInCutscene();
+        DrawHideWindowWhenUiHidden();
+        DrawHideWindowInGPose();
+
+        UiHelpers.DefaultLineSpace();
+
         DrawFoldersDefaultOpen();
+
+        UiHelpers.DefaultLineSpace();
+
         DrawSetPreviewToCurrentCharacterOnLogin();
+
+        UiHelpers.DefaultLineSpace();
 
         if (Widget.DoubleModifierSelector("模板删除组合键",
             "单击“删除模板”按钮时需要按住此组合键才能生效。", 100 * ImGuiHelpers.GlobalScale,
             _configuration.UISettings.DeleteTemplateModifier, v => _configuration.UISettings.DeleteTemplateModifier = v))
             _configuration.Save();
+    }
+
+    private void DrawOpenWindowAtStart()
+    {
+        var isChecked = _configuration.UISettings.OpenWindowAtStart;
+
+        if (CtrlHelper.CheckboxWithTextAndHelp("##openwindowatstart", "游戏启动时打开 Customize+ 窗口",
+                "控制是否在启动游戏时打开 Customize+ 主窗口。", ref isChecked))
+        {
+            _configuration.UISettings.OpenWindowAtStart = isChecked;
+
+            _configuration.Save();
+        }
     }
 
     private void DrawHideWindowInCutscene()
@@ -226,7 +255,35 @@ public class SettingsTab
         if (CtrlHelper.CheckboxWithTextAndHelp("##hidewindowincutscene", "在过场动画中隐藏插件窗口",
                 "控制在过场动画中是否隐藏Customize+的所有窗口。", ref isChecked))
         {
+            _pluginInterface.UiBuilder.DisableCutsceneUiHide = !isChecked;
             _configuration.UISettings.HideWindowInCutscene = isChecked;
+
+            _configuration.Save();
+        }
+    }
+
+    private void DrawHideWindowWhenUiHidden()
+    {
+        var isChecked = _configuration.UISettings.HideWindowWhenUiHidden;
+
+        if (CtrlHelper.CheckboxWithTextAndHelp("##hidewindowwhenuihidden", "用户界面被隐藏时隐藏插件窗口",
+                "控制是否在你手动隐藏游戏内用户界面时隐藏 Customize+ 窗口。", ref isChecked))
+        {
+            _pluginInterface.UiBuilder.DisableUserUiHide = !isChecked;
+            _configuration.UISettings.HideWindowWhenUiHidden = isChecked;
+            _configuration.Save();
+        }
+    }
+
+    private void DrawHideWindowInGPose()
+    {
+        var isChecked = _configuration.UISettings.HideWindowInGPose;
+
+        if (CtrlHelper.CheckboxWithTextAndHelp("##hidewindowingpose", "在集体模式中隐藏插件窗口",
+                "控制是否在你进入集体动作时隐藏 Customize+ 窗口。", ref isChecked))
+        {
+            _pluginInterface.UiBuilder.DisableGposeUiHide = !isChecked;
+            _configuration.UISettings.HideWindowInGPose = isChecked;
             _configuration.Save();
         }
     }

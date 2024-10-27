@@ -13,6 +13,12 @@ using CustomizePlus.UI.Windows.Controls;
 using CustomizePlus.Templates;
 using CustomizePlus.Core.Data;
 using CustomizePlus.Templates.Events;
+using Penumbra.GameData.Actors;
+using Penumbra.String;
+using static FFXIVClientStructs.FFXIV.Client.LayoutEngine.ILayoutInstance;
+using CustomizePlus.GameData.Extensions;
+using CustomizePlus.Core.Extensions;
+using Dalamud.Interface.Components;
 
 namespace CustomizePlus.UI.Windows.MainWindow.Tabs.Profiles;
 
@@ -23,10 +29,12 @@ public class ProfilePanel
     private readonly PluginConfiguration _configuration;
     private readonly TemplateCombo _templateCombo;
     private readonly TemplateEditorManager _templateEditorManager;
+    private readonly ActorAssignmentUi _actorAssignmentUi;
+    private readonly ActorManager _actorManager;
     private readonly TemplateEditorEvent _templateEditorEvent;
 
     private string? _newName;
-    private string? _newCharacterName;
+    private int? _newPriority;
     private Profile? _changedProfile;
 
     private Action? _endAction;
@@ -42,6 +50,8 @@ public class ProfilePanel
         PluginConfiguration configuration,
         TemplateCombo templateCombo,
         TemplateEditorManager templateEditorManager,
+        ActorAssignmentUi actorAssignmentUi,
+        ActorManager actorManager,
         TemplateEditorEvent templateEditorEvent)
     {
         _selector = selector;
@@ -49,6 +59,8 @@ public class ProfilePanel
         _configuration = configuration;
         _templateCombo = templateCombo;
         _templateEditorManager = templateEditorManager;
+        _actorAssignmentUi = actorAssignmentUi;
+        _actorManager = actorManager;
         _templateEditorEvent = templateEditorEvent;
     }
 
@@ -133,9 +145,26 @@ public class ProfilePanel
             return;
 
         DrawEnabledSetting();
+
+        ImGui.Separator();
+
         using (var disabled = ImRaii.Disabled(_selector.Selected?.IsWriteProtected ?? true))
         {
             DrawBasicSettings();
+
+            ImGui.Separator();
+
+            var isShouldDraw = ImGui.CollapsingHeader("Add character");
+
+            if (isShouldDraw)
+                DrawAddCharactersArea();
+
+            ImGui.Separator();
+
+            DrawCharacterListArea();
+
+            ImGui.Separator();
+
             DrawTemplateArea();
         }
     }
@@ -152,26 +181,7 @@ public class ProfilePanel
                 if (ImGui.Checkbox("##Enabled", ref enabled))
                     _manager.SetEnabled(_selector.Selected!, enabled);
                 ImGuiUtil.LabeledHelpMarker("启用",
-                    "是否应用此角色配置中的模板。一个角色同时只能启用一个配置文件。");
-            }
-
-            ImGui.SameLine();
-            var isDefault = _manager.DefaultProfile == _selector.Selected;
-            var isDefaultOrCurrentProfilesEnabled = _manager.DefaultProfile?.Enabled ?? false || enabled;
-            using (ImRaii.Disabled(isDefaultOrCurrentProfilesEnabled))
-            {
-                if (ImGui.Checkbox("##DefaultProfile", ref isDefault))
-                    _manager.SetDefaultProfile(isDefault ? _selector.Selected! : null);
-                ImGuiUtil.LabeledHelpMarker("默认配置（仅玩家和雇员）",
-                    "是否将此配置应用于没有指定角色配置的所有玩家和雇员。同时只有一个角色配置可以设置为默认配置。");
-            }
-            if(isDefaultOrCurrentProfilesEnabled)
-            {
-                ImGui.SameLine();
-                ImGui.PushStyleColor(ImGuiCol.Text, Constants.Colors.Warning);
-                ImGuiUtil.PrintIcon(FontAwesomeIcon.ExclamationTriangle);
-                ImGui.PopStyleColor();
-                ImGuiUtil.HoverTooltip("只能在当前选定且禁用默认配置文件时更改。");
+                    "是否需要完全应用此配置文件中的模板。");
             }
         }
     }
@@ -211,48 +221,206 @@ public class ProfilePanel
 
                 ImGui.TableNextRow();
 
-                ImGuiUtil.DrawFrameColumn("角色名称");
+                ImGuiUtil.DrawFrameColumn("优先级");
                 ImGui.TableNextColumn();
-                width = new Vector2(ImGui.GetContentRegionAvail().X - ImGui.CalcTextSize("限制为从属于我的角色").X - 68, 0);
-                name = _newCharacterName ?? _selector.Selected!.CharacterName;
-                ImGui.SetNextItemWidth(width.X);
 
-                if(_manager.DefaultProfile != _selector.Selected)
+                var priority = _newPriority ?? _selector.Selected!.Priority;
+
+                ImGui.SetNextItemWidth(50);
+                if (ImGui.InputInt("##Priority", ref priority, 0, 0))
                 {
-                    if (!_selector.IncognitoMode)
-                    {
-                        if (ImGui.InputText("##CharacterName", ref name, 128))
-                        {
-                            _newCharacterName = name;
-                            _changedProfile = _selector.Selected;
-                        }
-
-                        if (ImGui.IsItemDeactivatedAfterEdit() && _changedProfile != null)
-                        {
-                            _manager.ChangeCharacterName(_changedProfile, name);
-                            _newCharacterName = null;
-                            _changedProfile = null;
-                        }
-                    }
-                    else
-                        ImGui.TextUnformatted("匿名模式已激活");
-
-                    ImGui.SameLine();
-                    var enabled = _selector.Selected?.LimitLookupToOwnedObjects ?? false;
-                    if (ImGui.Checkbox("##LimitLookupToOwnedObjects", ref enabled))
-                        _manager.SetLimitLookupToOwned(_selector.Selected!, enabled);
-                    ImGuiUtil.LabeledHelpMarker("限制为从属于我的角色",
-                        "启用时，将角色搜索范围限制为仅您自己的召唤兽、坐骑和宠物。\n在可能会有另一个同名角色被另一个玩家拥有时使用此选项。\n*对于战斗陆行鸟请使用\"Chocobo\"作为角色名称。\n**如果您正在修改坐骑的根骨骼缩放，并希望保留您自己的缩放，请确保您自己的缩放是默认值以外的任何值。");
+                    _newPriority = priority;
+                    _changedProfile = _selector.Selected;
                 }
-                else
-                    ImGui.TextUnformatted("All players and retainers");
+
+                if (ImGui.IsItemDeactivatedAfterEdit() && _changedProfile != null)
+                {
+                    _manager.SetPriority(_changedProfile, priority);
+                    _newPriority = null;
+                    _changedProfile = null;
+                }
+
+                ImGuiComponents.HelpMarker("数值较高的配置文件优先于数值较低的配置文件。\n" +
+                    "也就是说，如果两个或多个配置文件影响同一个角色，优先级较高的配置文件将应用于该角色。");
             }
         }
     }
 
+    private void DrawAddCharactersArea()
+    {
+        using (var style = ImRaii.PushStyle(ImGuiStyleVar.ButtonTextAlign, new Vector2(0, 0.5f)))
+        {
+            var width = new Vector2(ImGui.GetContentRegionAvail().X - ImGui.CalcTextSize("仅限我的角色").X - 68, 0);
+
+            ImGui.SetNextItemWidth(width.X);
+
+            bool appliesToMultiple = _manager.DefaultProfile == _selector.Selected || _manager.DefaultLocalPlayerProfile == _selector.Selected;
+            using (ImRaii.Disabled(appliesToMultiple))
+            {
+                _actorAssignmentUi.DrawWorldCombo(width.X / 2);
+                ImGui.SameLine();
+                _actorAssignmentUi.DrawPlayerInput(width.X / 2);
+
+                var buttonWidth = new Vector2(165 * ImGuiHelpers.GlobalScale - ImGui.GetStyle().ItemSpacing.X / 2, 0);
+
+                if (ImGuiUtil.DrawDisabledButton("应用于玩家角色", buttonWidth, string.Empty, !_actorAssignmentUi.CanSetPlayer))
+                    _manager.AddCharacter(_selector.Selected!, _actorAssignmentUi.PlayerIdentifier);
+
+                ImGui.SameLine();
+
+                if (ImGuiUtil.DrawDisabledButton("应用于雇员", buttonWidth, string.Empty, !_actorAssignmentUi.CanSetRetainer))
+                    _manager.AddCharacter(_selector.Selected!, _actorAssignmentUi.RetainerIdentifier);
+
+                ImGui.SameLine();
+
+                if (ImGuiUtil.DrawDisabledButton("应用于服装模特", buttonWidth, string.Empty, !_actorAssignmentUi.CanSetMannequin))
+                    _manager.AddCharacter(_selector.Selected!, _actorAssignmentUi.MannequinIdentifier);
+
+                var currentPlayer = _actorManager.GetCurrentPlayer();
+                if (ImGuiUtil.DrawDisabledButton("应用于当前角色", buttonWidth, string.Empty, !currentPlayer.IsValid))
+                    _manager.AddCharacter(_selector.Selected!, currentPlayer);
+
+                ImGui.Separator();
+
+                _actorAssignmentUi.DrawObjectKindCombo(width.X / 2);
+                ImGui.SameLine();
+                _actorAssignmentUi.DrawNpcInput(width.X / 2);
+
+                if (ImGuiUtil.DrawDisabledButton("应用于选定的NPC", buttonWidth, string.Empty, !_actorAssignmentUi.CanSetNpc))
+                    _manager.AddCharacter(_selector.Selected!, _actorAssignmentUi.NpcIdentifier);
+            }
+        }
+    }
+
+    private void DrawCharacterListArea()
+    {
+        var isDefaultLP = _manager.DefaultLocalPlayerProfile == _selector.Selected;
+        var isDefaultLPOrCurrentProfilesEnabled = (_manager.DefaultLocalPlayerProfile?.Enabled ?? false) || (_selector.Selected?.Enabled ?? false);
+        using (ImRaii.Disabled(isDefaultLPOrCurrentProfilesEnabled))
+        {
+            if (ImGui.Checkbox("##DefaultLocalPlayerProfile", ref isDefaultLP))
+                _manager.SetDefaultLocalPlayerProfile(isDefaultLP ? _selector.Selected! : null);
+            ImGuiUtil.LabeledHelpMarker("应用于您登录的任何角色",
+                "是否应将此配置文件中的模板应用于您当前登录的任何角色。\r\n对该角色而言，此选项优先于下一个选项。\r\n此设置不能应用于多个配置文件。");
+        }
+        if (isDefaultLPOrCurrentProfilesEnabled)
+        {
+            ImGui.SameLine();
+            ImGui.PushStyleColor(ImGuiCol.Text, Constants.Colors.Warning);
+            ImGuiUtil.PrintIcon(FontAwesomeIcon.ExclamationTriangle);
+            ImGui.PopStyleColor();
+            ImGuiUtil.HoverTooltip("只有在当前选定的配置文件和此复选框选中的配置文件都被禁用时，才能更改。");
+        }
+
+        ImGui.SameLine();
+        using(ImRaii.Disabled(true))
+            ImGui.Button("##splitter", new Vector2(1, ImGui.GetFrameHeight()));
+        ImGui.SameLine();
+
+        var isDefault = _manager.DefaultProfile == _selector.Selected;
+        var isDefaultOrCurrentProfilesEnabled = (_manager.DefaultProfile?.Enabled ?? false) || (_selector.Selected?.Enabled ?? false);
+        using (ImRaii.Disabled(isDefaultOrCurrentProfilesEnabled))
+        {
+            if (ImGui.Checkbox("##DefaultProfile", ref isDefault))
+                _manager.SetDefaultProfile(isDefault ? _selector.Selected! : null);
+            ImGuiUtil.LabeledHelpMarker("应用于所有玩家和雇员",
+                "是否应将此配置文件中的模板应用于所有没有特定配置文件的玩家和雇员。\r\n此设置不能应用于多个配置文件。");
+        }
+        if (isDefaultOrCurrentProfilesEnabled)
+        {
+            ImGui.SameLine();
+            ImGui.PushStyleColor(ImGuiCol.Text, Constants.Colors.Warning);
+            ImGuiUtil.PrintIcon(FontAwesomeIcon.ExclamationTriangle);
+            ImGui.PopStyleColor();
+            ImGuiUtil.HoverTooltip("只有在当前选定的配置文件和此复选框选中的配置文件都被禁用时，才能更改。");
+        }
+        bool appliesToMultiple = _manager.DefaultProfile == _selector.Selected || _manager.DefaultLocalPlayerProfile == _selector.Selected;
+
+        ImGui.Separator();
+
+        using var dis = ImRaii.Disabled(appliesToMultiple);
+        using var table = ImRaii.Table("CharacterTable", 2, ImGuiTableFlags.RowBg | ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY, new Vector2(ImGui.GetContentRegionAvail().X, 200));
+        if (!table)
+            return;
+
+        ImGui.TableSetupColumn("##charaDel", ImGuiTableColumnFlags.WidthFixed, ImGui.GetFrameHeight());
+        ImGui.TableSetupColumn("角色", ImGuiTableColumnFlags.WidthFixed, 320 * ImGuiHelpers.GlobalScale);
+        ImGui.TableHeadersRow();
+
+        if (appliesToMultiple)
+        {
+            ImGui.TableNextColumn();
+            ImGui.TableNextColumn();
+            ImGui.AlignTextToFramePadding();
+            ImGui.TextUnformatted("应用于多个目标");
+            return;
+        }
+
+        //warn: .ToList() might be performance critical at some point
+        //the copying via ToList is done because manipulations with .Templates list result in "Collection was modified" exception here
+        var charas = _selector.Selected!.Characters.WithIndex().ToList();
+
+        if (charas.Count == 0)
+        {
+            ImGui.TableNextColumn();
+            ImGui.TableNextColumn();
+            ImGui.AlignTextToFramePadding();
+            ImGui.TextUnformatted("此配置文件没有关联角色");
+        }
+
+        foreach (var (character, idx) in charas)
+        {
+            using var id = ImRaii.PushId(idx);
+            ImGui.TableNextColumn();
+            var keyValid = _configuration.UISettings.DeleteTemplateModifier.IsActive();
+            var tt = keyValid
+                ? "从配置文件中移除此角色。"
+                : $"从配置文件中移除此角色。\n按住 {_configuration.UISettings.DeleteTemplateModifier} 以移除。";
+
+            if (ImGuiUtil.DrawDisabledButton(FontAwesomeIcon.Trash.ToIconString(), new Vector2(ImGui.GetFrameHeight()), tt, !keyValid, true))
+                _endAction = () => _manager.DeleteCharacter(_selector.Selected!, character);
+            ImGui.TableNextColumn();
+            ImGui.AlignTextToFramePadding();
+            ImGui.TextUnformatted(!_selector.IncognitoMode ? $"{character.ToNameWithoutOwnerName()}{character.TypeToString()}" : "匿名模式");
+
+            var profiles = _manager.GetEnabledProfilesByActor(character).ToList();
+            if (profiles.Count > 1)
+            {
+                //todo: make helper
+                ImGui.SameLine();
+                if (profiles.Any(x => x.IsTemporary))
+                {
+                    ImGui.PushStyleColor(ImGuiCol.Text, Constants.Colors.Error);
+                    ImGuiUtil.PrintIcon(FontAwesomeIcon.Lock);
+                }
+                else if (profiles[0] != _selector.Selected!)
+                {
+                    ImGui.PushStyleColor(ImGuiCol.Text, Constants.Colors.Warning);
+                    ImGuiUtil.PrintIcon(FontAwesomeIcon.ExclamationTriangle);
+                }
+                else
+                {
+                    ImGui.PushStyleColor(ImGuiCol.Text, Constants.Colors.Info);
+                    ImGuiUtil.PrintIcon(FontAwesomeIcon.Star);
+                }
+
+                ImGui.PopStyleColor();
+
+                if (profiles.Any(x => x.IsTemporary))
+                    ImGuiUtil.HoverTooltip("此角色正在受到外部插件设置的临时配置文件影响。该配置文件将不会被应用！");
+                else
+                    ImGuiUtil.HoverTooltip(profiles[0] != _selector.Selected! ? "多个配置文件尝试影响此角色。该配置文件将不会被应用！" :
+                        "多个配置文件尝试影响此角色。该配置文件正在被应用。");
+            }
+        }
+
+        _endAction?.Invoke();
+        _endAction = null;
+    }
+
     private void DrawTemplateArea()
     {
-        using var table = ImRaii.Table("SetTable", 4, ImGuiTableFlags.RowBg | ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY);
+        using var table = ImRaii.Table("TemplateTable", 4, ImGuiTableFlags.RowBg | ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY);
         if (!table)
             return;
 
@@ -342,5 +510,10 @@ public class ProfilePanel
                 }
             }
         }
+    }
+
+    private void UpdateIdentifiers()
+    {
+
     }
 }
