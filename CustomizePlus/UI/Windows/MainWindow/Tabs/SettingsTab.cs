@@ -400,7 +400,7 @@ public class SettingsTab
                 _messageService.NotificationMessage($"无法以此地址打开Discord：{address}。", NotificationType.Error, false);
             }
 
-        ImGuiUtil.HoverTooltip($"访问{address}");
+        ImGuiUtil.HoverTooltip($"访问：{address}\n请注意这里暂时不对国服进行支持。");
     }
     #endregion
 }

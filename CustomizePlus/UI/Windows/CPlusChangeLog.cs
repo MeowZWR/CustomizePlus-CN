@@ -41,15 +41,15 @@ public class CPlusChangeLog
         => log.NextVersion("版本 2.0.7.0")
             .RegisterImportant("本次更新中 Customize+ 的某些部分进行了重大重写。如果您遇到任何问题，请报告。")
 
-            .RegisterHighlight("角色管理已被重写。")
-            .RegisterImportant("Customize+ 将尽力自动迁移您的配置到新系统，但在某些少见情况下，您可能需要重新添加某些配置的角色。", 1)
+            .RegisterHighlight("角色配置已被重写。")
+            .RegisterImportant("Customize+ 将尽力自动迁移您的配置到新系统，但在某些少见情况下，您可能需要重新在某些配置里添加角色。", 1)
             .RegisterEntry("角色选择用户界面已重新设计。", 1)
             .RegisterEntry("现在可以将多个角色分配给单个配置。", 2)
             .RegisterEntry("控制台命令的工作方式没有改变。这意味着命令将以与以前相同的方式影响配置，即使配置影响多个角色。", 3)
             .RegisterEntry("\"限制为从属我的角色\"选项已被移除，因为它现在已过时。", 2)
             .RegisterEntry("现在可以选择应用于您登录的任何角色的配置。", 2)
             .RegisterEntry("玩家拥有的 NPC（宠物、坐骑）现在应该可以通过 Mare Synchronos 正确同步。", 1)
-            .RegisterEntry("非英语角色名称现在可能正常工作。请注意，这是一个附带效果，CN/KR 客户端仍然未正式支持。", 1)
+            .RegisterEntry("非英语角色名称现在也许可以正常工作。请注意，这是一个附带效果，CN/KR 客户端仍然未正式支持。", 1)
 
             .RegisterHighlight("添加了配置优先级系统。")
             .RegisterEntry("当多个活动配置影响同一角色时，将使用配置优先级来确定应用于该角色的配置。", 1)
@@ -59,7 +59,7 @@ public class CPlusChangeLog
             .RegisterEntry("添加了配置选项，以决定在进入 GPose 时 Customize+ 窗口是否被隐藏。", 1)
             .RegisterEntry("添加了配置选项，以决定在启动游戏时 Customize+ 主窗口是否自动打开。", 1)
 
-            .RegisterImportant("为自定义骨骼添加了警告。如果您安装了自定义骨骼 - 请阅读。认真点。这些骨骼旁边有一个扳手图标。")
+            .RegisterImportant("为自定义骨骼添加了警告。如果您安装了自定义骨骼 - 请认真仔细地阅读。这些骨骼旁边有一个扳手图标。")
             .RegisterEntry("添加了在测试 Customize+ 的构建时出现的几条警告。")
 
             .RegisterHighlight("修复了 Customize+ 未能检测到角色骨骼变化的问题。这主要发生在通过 Glamourer 和其他插件/工具更改角色外观时。")
@@ -69,7 +69,7 @@ public class CPlusChangeLog
             .RegisterEntry("IPC 说明，仅供开发者使用。")
             .RegisterImportant("IPC 版本现在是 6.0。", 1)
             .RegisterEntry("Profile.GetList 已更新，以包含配置优先级以及带有元数据的角色列表。请参考 Customize+ IPC 源代码文件以获取更多信息。", 1)
-            .RegisterEntry("Profile.OnUpdate 事件现在会为启用了 \"应用于所有玩家和保留者\" 和 \"应用于您登录的任何角色\" 选项的配置触发。", 1)
+            .RegisterEntry("Profile.OnUpdate 事件现在会为启用了 \"应用于所有玩家和雇员\" 和 \"应用于您登录的任何角色\" 选项的配置触发。", 1)
             .RegisterEntry("Profile.SetTemporaryProfileOnCharacter 所需的配置 json 格式已更新。", 1)
             .RegisterEntry("CharacterName 字段已删除。", 2)
             .RegisterEntry("添加了一些为未来功能保留的字段。", 2)
