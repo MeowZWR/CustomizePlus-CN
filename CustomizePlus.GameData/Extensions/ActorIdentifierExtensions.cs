@@ -80,7 +80,7 @@ public static class ActorIdentifierExtensions
 #if DEBUG
             throw;
 #else
-            return "Unknown";
+            return "未知";
 #endif
         }
     }
@@ -89,15 +89,15 @@ public static class ActorIdentifierExtensions
     {
         return identifier.Type switch
         {
-            IdentifierType.Player => $" ({PenumbraExtensions.Manager?.Data.ToWorldName(identifier.HomeWorld) ?? "Unknown"})",
+            IdentifierType.Player => $"（{PenumbraExtensions.Manager?.Data.ToWorldName(identifier.HomeWorld) ?? "未知"}）",
             IdentifierType.Retainer => $"{identifier.Retainer switch
             {
-                ActorIdentifier.RetainerType.Bell => " (Bell)",
-                ActorIdentifier.RetainerType.Mannequin => " (Mannequin)",
-                _ => " (Retainer)",
+                ActorIdentifier.RetainerType.Bell => "（传唤铃雇员）",
+                ActorIdentifier.RetainerType.Mannequin => "（服装模特）",
+                _ => "（雇员）",
             }}",
-            IdentifierType.Owned => " (Companion/Mount)",
-            IdentifierType.Npc => " (NPC)",
+            IdentifierType.Owned => "（宠物/坐骑）",
+            IdentifierType.Npc => "（NPC）",
             _ => "",
         };
     }

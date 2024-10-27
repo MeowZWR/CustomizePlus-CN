@@ -11,6 +11,7 @@ using System.IO;
 using System.Linq;
 using Penumbra.String;
 using Penumbra.GameData.Structs;
+using Penumbra.GameData.Actors;
 using Dalamud.Game.ClientState.Objects.Enums;
 using Penumbra.GameData.Gui;
 using System.Xml;
@@ -95,7 +96,7 @@ public partial class ProfileManager : IDisposable
         if (string.IsNullOrWhiteSpace(characterName))
             return profile;
 
-        var nameWordsCnt = characterName.Split(' ').Length;
+        //var nameWordsCnt = characterName.Split(' ').Length;
 
         //companions come first because they seem to have duplicate entries in NPC dicts
         if (_reverseNameDicts.TryGetID(ObjectKind.Companion, characterName, out var id))
@@ -112,17 +113,17 @@ public partial class ProfileManager : IDisposable
             profile.Characters.Add(_actorManager.CreateNpc(ObjectKind.EventNpc, new NpcId(id)));
         else if (_reverseNameDicts.TryGetID(ObjectKind.BattleNpc, characterName, out id))
             profile.Characters.Add(_actorManager.CreateNpc(ObjectKind.BattleNpc, new NpcId(id)));
-        else if (nameWordsCnt == 2) //players come last
+        else if (FFXIVClientStructs.FFXIV.Client.UI.UIModule.IsPlayerCharacterName(characterName)) //players come last
             profile.Characters.Add(_actorManager.CreatePlayer(ByteString.FromStringUnsafe(characterName, false), WorldId.AnyWorld));
         else
         {
-            _logger.Warning($"Unable to automatically migrate \"{profile.Name}\" to V5, unknown character name: {characterName}");
-            _messageService.NotificationMessage($"Unable to detect character type for profile \"{profile.Name}\", please set character for this profile manually.", Dalamud.Interface.ImGuiNotification.NotificationType.Error);
+            _logger.Warning($"无法将 \"{profile.Name}\" 自动迁移到 V5，未知角色名称: {characterName}");
+            _messageService.NotificationMessage($"无法检测到配置文件 \"{profile.Name}\" 的角色类型，请手动为该配置文件设置角色。", Dalamud.Interface.ImGuiNotification.NotificationType.Error);
         }
 
         if (profile.Characters.Count > 0)
         {
-            _logger.Debug($"Upgraded profile \"{profile.Name}\" to V5: {characterName} -> {profile.Characters[0]}. Save queued.");
+            _logger.Debug($"已将配置文件 \"{profile.Name}\" 升级到 V5: {characterName} -> {profile.Characters[0]}。保存已排队。");
             _saveService.QueueSave(profile);
         }
 

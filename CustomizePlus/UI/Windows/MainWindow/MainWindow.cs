@@ -146,7 +146,7 @@ public class MainWindow : Window, IDisposable
         {
             new TickScheduler(() =>
             {
-                _switchToTab = "Templates";
+                _switchToTab = "模板设计";
 
                 //To make sure the tab has switched, ugly but imgui is shit and I don't trust it.
                 _actionAfterTabSwitch = () => { _templateEditorEvent.Invoke(TemplateEditorEvent.Type.EditorEnableRequestedStage2, template); };

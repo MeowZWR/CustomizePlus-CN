@@ -154,7 +154,7 @@ public class ProfilePanel
 
             ImGui.Separator();
 
-            var isShouldDraw = ImGui.CollapsingHeader("Add character");
+            var isShouldDraw = ImGui.CollapsingHeader("添加角色");
 
             if (isShouldDraw)
                 DrawAddCharactersArea();
@@ -192,7 +192,7 @@ public class ProfilePanel
         {
             using (var table = ImRaii.Table("BasicSettings", 2))
             {
-                ImGui.TableSetupColumn("BasicCol1", ImGuiTableColumnFlags.WidthFixed, ImGui.CalcTextSize("lorem ipsum dolor").X);
+                ImGui.TableSetupColumn("BasicCol1", ImGuiTableColumnFlags.WidthFixed, ImGui.CalcTextSize("配置名称").X);
                 ImGui.TableSetupColumn("BasicCol2", ImGuiTableColumnFlags.WidthStretch);
 
                 ImGuiUtil.DrawFrameColumn("配置名称");

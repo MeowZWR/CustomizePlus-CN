@@ -12,6 +12,7 @@ public static class BoneData //todo: DI, do not show IVCS unless IVCS is install
     public enum BoneFamily
     {
         根骨骼,
+        模组,
         脊柱,
         头发,
         脸部,
@@ -293,6 +294,15 @@ public static class BoneData //todo: DI, do not show IVCS unless IVCS is install
         "j_f_mmayu_r,右中眉,Eyes,TRUE,FALSE,j_f_face,j_f_mmayu_l",
         "j_f_miken_01_r,右内眉1,Eyes,TRUE,FALSE,j_f_mmayu_r,j_f_miken_01_l",
         "j_f_miken_02_r,右内眉2,Eyes,TRUE,FALSE,j_f_miken_01_r,j_f_miken_02_l",
+
+        "butt_l,左臀（Skelomae）,Mod,TRUE,FALSE,j_kosi,butt_r",
+        "butt_r,右臀（Skelomae）,Mod,TRUE,FALSE,j_kosi,butt_l",
+        "thigh_l,左腿（Skelomae）,Mod,TRUE,FALSE,j_asi_a_l,thigh_r",
+        "thigh_r,右腿（Skelomae）,Mod,TRUE,FALSE,j_asi_a_r,thigh_l",
+        "forebreas_l,左乳（Skelomae）,Mod,TRUE,FALSE,j_mune_l,forebreas_r",
+        "forebreas_r,右乳（Skelomae）,Mod,TRUE,FALSE,j_mune_r,forebreas_l",
+        "belly_kosi,下腹（Skelomae）,Mod,TRUE,FALSE,j_kosi,",
+        "belly_sebo_a,上腹（Skelomae）,Mod,TRUE,FALSE,j_sebo_a,",
     };
 
     public static readonly Dictionary<BoneFamily, string?> DisplayableFamilies = new()
@@ -319,6 +329,7 @@ public static class BoneData //todo: DI, do not show IVCS unless IVCS is install
         { BoneFamily.盔甲, null },
         { BoneFamily.裙子, null },
         { BoneFamily.装备, "这些可能表现地很奇怪" },
+        { BoneFamily.模组, "已归类的来自模组的额外骨骼" },
         {
             BoneFamily.未知,
             "这些骨骼无法确认用途。\n如果你能弄清楚它们的用途，请告诉我们，我们会将它们添加到表格中。"
@@ -350,12 +361,12 @@ public static class BoneData //todo: DI, do not show IVCS unless IVCS is install
 
                     if (BoneTable[codename].Family == BoneFamily.未知)
                     {
-                        throw new Exception("what the fuck?");
+                        throw new Exception("啥玩意儿？");
                     }
                 }
                 catch
                 {
-                    throw new InvalidCastException($"Couldn't parse raw bone table @ row {rowIndex}");
+                    throw new InvalidCastException($"无法解析原始骨骼表 @ 行 {rowIndex}");
                 }
 
                 ++rowIndex;
@@ -388,7 +399,7 @@ public static class BoneData //todo: DI, do not show IVCS unless IVCS is install
             {
                 RowIndex = -1,
                 Codename = boneName,
-                DisplayName = $"Unknown ({boneName})",
+                DisplayName = $"未知 ({boneName})",
                 Family = BoneFamily.未知,
                 Parent = "j_kosi",
                 Children = Array.Empty<string>(),
@@ -480,30 +491,31 @@ public static class BoneData //todo: DI, do not show IVCS unless IVCS is install
 
         var fam = simplified switch
         {
-            "root" => BoneFamily.根骨骼,
-            "spine" => BoneFamily.脊柱,
-            "hair" => BoneFamily.头发,
-            "face" => BoneFamily.脸部,
-            "ears" => BoneFamily.耳朵,
-            "chest" => BoneFamily.上身,
-            "arms" => BoneFamily.手臂,
-            "hands" => BoneFamily.手掌,
-            "tail" => BoneFamily.尾巴,
-            "groin" => BoneFamily.下身,
-            "legs" => BoneFamily.腿部,
-            "feet" => BoneFamily.足部,
-            "earrings" => BoneFamily.耳饰,
-            "hat" => BoneFamily.帽子,
-            "cape" => BoneFamily.披风,
-            "armor" => BoneFamily.盔甲,
-            "skirt" => BoneFamily.裙子,
-            "cheeks" => BoneFamily.脸颊,
+            "root"      => BoneFamily.根骨骼,
+            "mod"       => BoneFamily.模组,
+            "spine"     => BoneFamily.脊柱,
+            "hair"      => BoneFamily.头发,
+            "face"      => BoneFamily.脸部,
+            "ears"      => BoneFamily.耳朵,
+            "chest"     => BoneFamily.上身,
+            "arms"      => BoneFamily.手臂,
+            "hands"     => BoneFamily.手掌,
+            "tail"      => BoneFamily.尾巴,
+            "groin"     => BoneFamily.下身,
+            "legs"      => BoneFamily.腿部,
+            "feet"      => BoneFamily.足部,
+            "earrings"  => BoneFamily.耳饰,
+            "hat"       => BoneFamily.帽子,
+            "cape"      => BoneFamily.披风,
+            "armor"     => BoneFamily.盔甲,
+            "skirt"     => BoneFamily.裙子,
+            "cheeks"    => BoneFamily.脸颊,
             "equipment" => BoneFamily.装备,
-            "jaw" => BoneFamily.下颌,
-            "tongue" => BoneFamily.舌头,
-            "lips" => BoneFamily.嘴唇,
-            "eyes" => BoneFamily.眼部,
-            _ => BoneFamily.未知
+            "jaw"       => BoneFamily.下颌,
+            "tongue"    => BoneFamily.舌头,
+            "lips"      => BoneFamily.嘴唇,
+            "eyes"      => BoneFamily.眼部,
+            _           => BoneFamily.未知
         };
 
         return fam;

@@ -18,7 +18,7 @@ public sealed class Template : ISavable
 {
     public const int Version = Constants.ConfigurationVersion;
 
-    public LowerString Name { get; internal set; } = "模板设计";
+    public LowerString Name { get; internal set; } = "Template";
 
     public DateTimeOffset CreationDate { get; internal set; } = DateTime.UtcNow;
     public DateTimeOffset ModifiedDate { get; internal set; } = DateTime.UtcNow;

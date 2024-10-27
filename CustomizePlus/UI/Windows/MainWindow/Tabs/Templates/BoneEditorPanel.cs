@@ -115,7 +115,7 @@ public class BoneEditorPanel
 
             ImGui.Separator();
 
-            var isShouldDraw = ImGui.CollapsingHeader("更改预览角色"");
+            var isShouldDraw = ImGui.CollapsingHeader("更改预览角色");
 
             if (isShouldDraw)
             {
@@ -500,20 +500,20 @@ public class BoneEditorPanel
         //----------------------------------
         ImGui.TableNextColumn();
 
-        if((BoneData.IsIVCSCompatibleBone(codename) || boneFamily == BoneData.BoneFamily.Unknown)
+        if((BoneData.IsIVCSCompatibleBone(codename) || boneFamily == BoneData.BoneFamily.未知 || boneFamily == BoneData.BoneFamily.模组)
             && !codename.StartsWith("j_f_"))
         {
             ImGui.PushStyleColor(ImGuiCol.Text, Constants.Colors.Warning);
             ImGuiUtil.PrintIcon(FontAwesomeIcon.Wrench);
             ImGui.PopStyleColor();
-            CtrlHelper.AddHoverText("This is a bone from modded skeleton." +
-                "\r\nIMPORTANT: The Customize+ team does not provide support for issues related to these bones." +
-                "\r\nThese bones need special clothing and body mods designed specifically for them." +
-                "\r\nEven if they are intended for these bones, not all clothing mods will support every bone." +
-                "\r\nIf you experience issues, try performing the same actions using posing tools.");
+            CtrlHelper.AddHoverText("这是一个来自骨骼模组中的骨骼。" +
+                "\r\n重要提示：Customize+ 团队不提供与这些骨骼相关的问题支持。" +
+                "\r\n这些骨骼需要专门为其设计的特殊服装和身体模组。" +
+                "\r\n即使它们是为这些骨骼设计的，并不是所有服装修改都支持每个骨骼。" +
+                "\r\n如果遇到问题，请尝试使用摆姿势的工具执行相同操作。");
             ImGui.SameLine();
         }
-        CtrlHelper.StaticLabel(displayName, CtrlHelper.TextAlignment.Left, BoneData.IsIVCSCompatibleBone(codename) ? $"(IVCS Compatible) {codename}" : codename);
+        CtrlHelper.StaticLabel(displayName, CtrlHelper.TextAlignment.Left, BoneData.IsIVCSCompatibleBone(codename) ? $"(IVCS 兼容) {codename}" : codename);
 
         if (flagUpdate)
         {
