@@ -12,7 +12,7 @@ public static class BoneData //todo: DI, do not show IVCS unless IVCS is install
     public enum BoneFamily
     {
         根骨骼,
-        抖动,
+        摇晃,
         脊柱,
         头发,
         脸部,
@@ -273,7 +273,7 @@ public static class BoneData //todo: DI, do not show IVCS unless IVCS is install
         "j_f_uslip_r,右上嘴角 A,Lips,TRUE,FALSE,j_f_ago,j_f_uslip_l",
         "j_f_dslip_r,右下嘴角 A,Lips,TRUE,FALSE,j_f_ago,j_f_dslip_l",
 
-        "j_f_mab_l,左眼皮,archived,TRUE,FALSE,j_f_face,j_f_mab_r",
+        "j_f_mab_l,左眼皮,Archived,TRUE,FALSE,j_f_face,j_f_mab_r",
         "j_f_eyepuru_l,左眼拉动,Eyes,TRUE,FALSE,j_f_face,j_f_eyepuru_r",
         "j_f_mabdn_01_l,左下眼皮,Eyes,TRUE,FALSE,j_f_face,j_f_mabdn_01_r",
         "j_f_mabup_01_l,左上眼皮,Eyes,TRUE,FALSE,j_f_face,j_f_mabup_01_r",
@@ -281,7 +281,7 @@ public static class BoneData //todo: DI, do not show IVCS unless IVCS is install
         "j_f_mabdn_03in_l,左下内眼角,Eyes,TRUE,FALSE,j_f_face,j_f_mabdn_03in_r",
         "j_f_mabup_02out_l,左上外眼角,Eyes,TRUE,FALSE,j_f_face,j_f_mabup_02out_r",
         "j_f_mabup_03in_l,左上内眼角,Eyes,TRUE,FALSE,j_f_face,j_f_mabup_03in_r",
-        "j_f_mab_r,右眼皮,archived,TRUE,FALSE,j_f_face,j_f_mab_l",
+        "j_f_mab_r,右眼皮,Archived,TRUE,FALSE,j_f_face,j_f_mab_l",
         "j_f_eyepuru_r,右眼拉动,Eyes,TRUE,FALSE,j_f_face,j_f_eyepuru_l",
         "j_f_mabdn_01_r,右下眼皮,Eyes,TRUE,FALSE,j_f_face,j_f_mabdn_01_l",
         "j_f_mabup_01_r,右上眼皮,Eyes,TRUE,FALSE,j_f_face,j_f_mabup_01_l",
@@ -304,6 +304,11 @@ public static class BoneData //todo: DI, do not show IVCS unless IVCS is install
         "forebreas_r,右乳尖（Skelomae）,Jiggle,TRUE,FALSE,j_mune_r,forebreas_l",
         "belly_sebo_a,上腹（Skelomae）,Jiggle,TRUE,FALSE,j_sebo_a,",
         "belly_kosi,下腹（Skelomae）,Jiggle,TRUE,FALSE,j_kosi,",
+        "ya_shiri_phys_l,左臀（YAS）,Jiggle,TRUE,FALSE,j_kosi,ya_shiri_phys_r",
+        "ya_shiri_phys_r,右臀（YAS）,Jiggle,TRUE,FALSE,j_kosi,ya_shiri_phys_l",
+        "ya_daitai_phys_l,左腿（YAS）,Jiggle,TRUE,FALSE,j_kosi,ya_daitai_phys_r",
+        "ya_daitai_phys_r,右腿（YAS）,Jiggle,TRUE,FALSE,j_kosi,ya_daitai_phys_l",
+        "ya_fukubu_phys,腹部（YAS）,Jiggle,TRUE,FALSE,j_kosi,",
     };
 
     public static readonly Dictionary<BoneFamily, string?> DisplayableFamilies = new()
@@ -330,7 +335,7 @@ public static class BoneData //todo: DI, do not show IVCS unless IVCS is install
         { BoneFamily.盔甲, null },
         { BoneFamily.裙子, null },
         { BoneFamily.装备, "这些可能表现地很奇怪" },
-        { BoneFamily.抖动, "供抖动物理使用的骨骼，目前只有Skelomae，YAS还没用过所以没加入。\n注意需要使用相关服装或身体模组才有效。" },
+        { BoneFamily.摇晃, "供摇晃物理使用的骨骼。\n注意需要使用相关服装或身体模组才有效。" },
         { BoneFamily.归档, "7.0后已失效的骨骼，如果有错误请联系国服维护者。" },
         {
             BoneFamily.未知,
@@ -494,7 +499,7 @@ public static class BoneData //todo: DI, do not show IVCS unless IVCS is install
         var fam = simplified switch
         {
             "root"      => BoneFamily.根骨骼,
-            "jiggle"    => BoneFamily.抖动,
+            "jiggle"    => BoneFamily.摇晃,
             "spine"     => BoneFamily.脊柱,
             "hair"      => BoneFamily.头发,
             "face"      => BoneFamily.脸部,
