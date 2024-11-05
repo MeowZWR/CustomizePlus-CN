@@ -78,8 +78,8 @@ public class PluginStateBlock
         else if(VersionHelper.IsTesting)
         {
             severity = PluginStateSeverity.Warning;
-            message = $"You are running testing version of Customize+, hover for more information.";
-            hoverInfo = "This is a testing build of Customize+. Some features like integration with other plugins might not function correctly.";
+            message = $"您正在运行 Customize+ 的测试版，鼠标悬停查看更多信息。";
+            hoverInfo = "这是 Customize+ 的测试版本。某些功能（例如与其他插件的集成），可能无法正常工作。";
         }
 
         if (message != null)

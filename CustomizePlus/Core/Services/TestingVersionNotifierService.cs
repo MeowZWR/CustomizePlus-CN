@@ -26,7 +26,7 @@ public class TestingVersionNotifierService : IDisposable
     private void OnLogin()
     {
         if (VersionHelper.IsTesting)
-            _chatService.PrintInChat($"You are running testing version of Customize+! Some features like integration with other plugins might not function correctly.",
+            _chatService.PrintInChat($"您正在运行 Customize+ 的测试版！某些功能（例如与其他插件的集成），可能无法正常工作。",
                 ChatService.ChatMessageColor.Warning);
     }
 }
