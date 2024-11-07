@@ -254,8 +254,17 @@ public unsafe class Armature
                         if (currentPose->Skeleton->ParentIndices[boneIndex] is short parentIndex
                             && parentIndex >= 0)
                         {
-                            newBone.AddParent(pSkeleIndex, parentIndex);
-                            newPartials[pSkeleIndex][parentIndex].AddChild(pSkeleIndex, boneIndex);
+                            // Check if parentIndex is within valid range
+                            if (parentIndex < newPartials[pSkeleIndex].Count)
+                            {
+                                newBone.AddParent(pSkeleIndex, parentIndex);
+                                newPartials[pSkeleIndex][parentIndex].AddChild(pSkeleIndex, boneIndex);
+                            }
+                            else
+                            {
+                                // Log a warning if parentIndex is out of range
+                                Plugin.Logger.Error($"Invalid parent index: {parentIndex} for bone {boneName} at {pSkeleIndex}->{boneIndex}");
+                            }
                         }
 
                         foreach (var mb in newPartials.SelectMany(x => x))
