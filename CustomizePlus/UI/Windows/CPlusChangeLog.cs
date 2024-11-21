@@ -39,13 +39,13 @@ public class CPlusChangeLog
     }
 
     private static void Add2_0_7_2(Changelog log)
-        => log.NextVersion("Version 2.0.7.2")
-        .RegisterHighlight("Support for 7.1 and Dalamud API 11.")
+        => log.NextVersion("版本 2.0.7.2")
+        .RegisterHighlight("支持 7.1 和 Dalamud API 11。")
         //.RegisterImportant("As an experiment Customize+ will no longer run if you are running testing or development version of Dalamud. Please leave your feedback about this change in support Discord.")
         //.RegisterEntry("Developers can prevent this from triggering by manually compiling \"Debug\" or \"ReleaseValidate\" builds of Customize+.", 1)
-        .RegisterHighlight("Fixed an issue which prevented owned characters (such as Carbuncles and Trust NPCs) from being detected. (2.0.7.1)")
+        .RegisterHighlight("修复了一个问题，该问题导致无法检测到拥有的角色（例如宝石兽和亲信NPC）。(2.0.7.1)")
 
-        .RegisterEntry("Source code maintenance - external libraries update.");
+        .RegisterEntry("源代码维护 - 外部库更新。");
 
     private static void Add2_0_7_0(Changelog log)
         => log.NextVersion("版本 2.0.7.0")

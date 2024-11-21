@@ -38,7 +38,7 @@ public class TemplatePanel : IDisposable
     private bool _isEditorEnablePending = false;
 
     private string SelectionName
-        => _selector.Selected == null ? "No Selection" : _selector.IncognitoMode ? _selector.Selected.Incognito : _selector.Selected.Name.Text;
+        => _selector.Selected == null ? "未选中" : _selector.IncognitoMode ? _selector.Selected.Incognito : _selector.Selected.Name.Text;
 
     public TemplatePanel(
         TemplateFileSystemSelector selector,
