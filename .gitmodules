@@ -14,7 +14,7 @@
 	path = submodules/Penumbra.String
 	url = https://github.com/MeowZWR/Penumbra.String.git
 	branch = cn
-[submodule "submodules/ECommons"]
-	path = submodules/ECommons
-	url = https://github.com/MeowZWR/ECommons.git
-	branch = cn
+[submodule "submodules/ECommonsLite"]
+	path = submodules/ECommonsLite
+	url = https://github.com/Aether-Tools/ECommonsLite.git
+	branch = main
