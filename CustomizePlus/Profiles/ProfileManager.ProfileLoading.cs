@@ -112,7 +112,7 @@ public partial class ProfileManager : IDisposable
             profile.Characters.Add(_actorManager.CreateNpc(ObjectKind.EventNpc, new NpcId(id)));
         else if (_reverseNameDicts.TryGetID(ObjectKind.BattleNpc, characterName, out id))
             profile.Characters.Add(_actorManager.CreateNpc(ObjectKind.BattleNpc, new NpcId(id)));
-        else if (FFXIVClientStructs.FFXIV.Client.UI.UIModule.IsPlayerCharacterName(characterName)) //players come last
+        else if (FFXIVClientStructs.FFXIV.Client.UI.UIGlobals.IsValidPlayerCharacterName(characterName)) //players come last
             profile.Characters.Add(_actorManager.CreatePlayer(ByteString.FromStringUnsafe(characterName, false), WorldId.AnyWorld));
         else
         {
