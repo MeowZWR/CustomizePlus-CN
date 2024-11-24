@@ -7,6 +7,7 @@ using CustomizePlus.Armatures.Events;
 using CustomizePlus.Core.Data;
 using CustomizePlus.Core.Extensions;
 using CustomizePlus.Game.Services;
+using CustomizePlus.GameData.Data;
 using CustomizePlus.GameData.Extensions;
 using CustomizePlus.GameData.Services;
 using CustomizePlus.Profiles;
@@ -14,6 +15,7 @@ using CustomizePlus.Profiles.Data;
 using CustomizePlus.Profiles.Events;
 using CustomizePlus.Templates.Events;
 using Dalamud.Plugin.Services;
+using Lumina.Excel.Sheets;
 using OtterGui.Classes;
 using OtterGui.Log;
 using Penumbra.GameData.Actors;
@@ -35,6 +37,12 @@ public unsafe sealed class ArmatureManager : IDisposable
     private readonly ObjectManager _objectManager;
     private readonly ActorManager _actorManager;
     private readonly ArmatureChanged _event;
+
+    /// <summary>
+    /// This is a movement flag for every object. Used to prevent calls to ApplyRootTranslation from both movement and render hooks.
+    /// I know there are less than 1000 objects in object table but I want to be semi-protected from object table getting bigger in the future.
+    /// </summary>
+    private readonly bool[] _objectMovementFlagsArr = new bool[1000];
 
     public Dictionary<ActorIdentifier, Armature> Armatures { get; private set; } = new();
 
@@ -96,7 +104,10 @@ public unsafe sealed class ArmatureManager : IDisposable
             return;
 
         if (Armatures.TryGetValue(identifier, out var armature) && armature.IsBuilt && armature.IsVisible)
+        {
+            _objectMovementFlagsArr[actor.AsObject->ObjectIndex] = true;
             ApplyRootTranslation(armature, actor);
+        }
     }
 
     /// <summary>
@@ -170,6 +181,14 @@ public unsafe sealed class ArmatureManager : IDisposable
                     {
                         _logger.Debug($"Removing armature {armature} because it doesn't have any active profiles");
                         RemoveArmature(armature, ArmatureChanged.DeletionReason.NoActiveProfiles);
+
+                        if (obj.Value.Objects != null)
+                        {
+                            //Reset root translation
+                            foreach (var actor in obj.Value.Objects)
+                                ApplyRootTranslation(armature, actor, true);
+                        }
+
                         continue;
                     }
 
@@ -198,7 +217,14 @@ public unsafe sealed class ArmatureManager : IDisposable
             if (armature.IsBuilt && armature.IsVisible && _objectManager.TryGetValue(armature.ActorIdentifier, out var actorData))
             {
                 foreach (var actor in actorData.Objects)
+                {
                     ApplyPiecewiseTransformation(armature, actor, armature.ActorIdentifier);
+
+                    if (!_objectMovementFlagsArr[actor.AsObject->ObjectIndex])
+                        ApplyRootTranslation(armature, actor);
+
+                    _objectMovementFlagsArr[actor.AsObject->ObjectIndex] = false;
+                }
             }
         }
     }
@@ -298,10 +324,15 @@ public unsafe sealed class ArmatureManager : IDisposable
         }
     }
 
-    private void ApplyRootTranslation(Armature arm, Actor actor)
+    /// <summary>
+    /// Apply root bone translation. If reset = true then this will only reset translation if it was edited in supplied armature.
+    /// </summary>
+    private void ApplyRootTranslation(Armature arm, Actor actor, bool reset = false)
     {
         //I'm honestly not sure if we should or even can check if cBase->DrawObject or cBase->DrawObject.Object is a valid object
         //So for now let's assume we don't need to check for that
+
+        //2024/11/21: we no longer check cBase->DrawObject.IsVisible here so we can set object position in render hook.
 
         var cBase = actor.Model.AsCharacterBase;
         if (cBase != null)
@@ -310,13 +341,19 @@ public unsafe sealed class ArmatureManager : IDisposable
             if (rootBoneTransform == null)
                 return;
 
+            if (reset)
+            {
+                cBase->DrawObject.Object.Position = actor.AsObject->Position;
+                return;
+            }
+
             if (rootBoneTransform.Translation.X == 0 &&
                 rootBoneTransform.Translation.Y == 0 &&
                 rootBoneTransform.Translation.Z == 0)
                 return;
 
-            if (!cBase->DrawObject.IsVisible)
-                return;
+            //Reset position so we don't fly away
+            cBase->DrawObject.Object.Position = actor.AsObject->Position;
 
             var newPosition = new FFXIVClientStructs.FFXIV.Common.Math.Vector3
             {
@@ -391,7 +428,15 @@ public unsafe sealed class ArmatureManager : IDisposable
         if (type == TemplateChanged.Type.EditorEnabled ||
             type == TemplateChanged.Type.EditorDisabled)
         {
-            foreach (var armature in GetArmaturesForCharacter((ActorIdentifier)arg3!))
+            ActorIdentifier actor;
+            bool hasChanges;
+
+            if(type == TemplateChanged.Type.EditorEnabled)
+                actor = (ActorIdentifier)arg3;
+            else
+                (actor, hasChanges) = ((ActorIdentifier, bool))arg3;
+
+            foreach (var armature in GetArmaturesForCharacter(actor))
             {
                 armature.IsPendingProfileRebind = true;
                 _logger.Debug($"ArmatureManager.OnTemplateChange template editor enabled/disabled: {type}, pending profile set for {armature}");

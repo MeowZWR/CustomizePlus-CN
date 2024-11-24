@@ -26,6 +26,7 @@ public class CPlusChangeLog
         Add2_0_6_3(Changelog);
         Add2_0_7_0(Changelog);
         Add2_0_7_2(Changelog);
+        Add2_0_7_9(Changelog);
     }
 
     private (int, ChangeLogDisplayType) ConfigData()
@@ -38,14 +39,20 @@ public class CPlusChangeLog
         _config.Save();
     }
 
+    private static void Add2_0_7_9(Changelog log)
+        => log.NextVersion("版本 2.0.7.9")
+            .RegisterEntry("在设置标签页中添加了捐赠按钮。")
+            .RegisterEntry("对当前配置文件所用模板的作出保存更改时，现在会通过发送 OnProfileUpdate IPC 事件通知其他插件配置文件已被更改。（2.0.7.8）")
+            .RegisterEntry("编辑根骨骼位置现在无需角色移动即可生效。（2.0.7.6）")
+            .RegisterEntry("修复了“应用于您登录的任何角色”配置文件选项被 Profile.GetActiveProfileIdOnCharacter IPC 函数忽略的问题，该问题导致其他插件无法检测此选项启用时的活动配置文件。（2.0.7.8）")
+            .RegisterEntry("源代码维护 - 更新外部库。");
+
     private static void Add2_0_7_2(Changelog log)
         => log.NextVersion("版本 2.0.7.2")
         .RegisterHighlight("支持 7.1 和 Dalamud API 11。")
-        //.RegisterImportant("As an experiment Customize+ will no longer run if you are running testing or development version of Dalamud. Please leave your feedback about this change in support Discord.")
-        //.RegisterEntry("Developers can prevent this from triggering by manually compiling \"Debug\" or \"ReleaseValidate\" builds of Customize+.", 1)
         .RegisterHighlight("修复了一个问题，该问题导致无法检测到拥有的角色（例如宝石兽和亲信NPC）。(2.0.7.1)")
 
-        .RegisterEntry("源代码维护 - 外部库更新。");
+        .RegisterEntry("源代码维护 - 更新外部库。");
 
     private static void Add2_0_7_0(Changelog log)
         => log.NextVersion("版本 2.0.7.0")
@@ -95,7 +102,7 @@ public class CPlusChangeLog
             .RegisterEntry("调整了日志记录，使其在 \"Debug+\" 模式下减少冗余。")
             .RegisterEntry("使在角色选择界面的处理更可靠。 (2.0.6.1, 2.0.6.3)")
             .RegisterEntry("修复了在集体动作中角色处理不正确的问题。")
-            .RegisterEntry("源代码维护 - 外部库更新。");
+            .RegisterEntry("源代码维护 - 更新外部库。");
 
     private static void Add2_0_6_0(Changelog log)
 	    => log.NextVersion("版本 2.0.6.0")

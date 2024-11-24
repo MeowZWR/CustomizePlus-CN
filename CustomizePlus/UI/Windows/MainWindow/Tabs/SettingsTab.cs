@@ -21,6 +21,7 @@ namespace CustomizePlus.UI.Windows.MainWindow.Tabs;
 public class SettingsTab
 {
     private const uint DiscordColor = 0xFFDA8972;
+    private const uint DonateColor = 0xFF5B5EFF;
 
     private readonly IDalamudPluginInterface _pluginInterface;
     private readonly PluginConfiguration _configuration;
@@ -60,6 +61,7 @@ public class SettingsTab
 
         DrawGeneralSettings();
 
+        ImGui.NewLine();
         ImGui.NewLine();
         ImGui.NewLine();
         ImGui.NewLine();
@@ -366,9 +368,12 @@ public class SettingsTab
             xPos -= ImGui.GetStyle().ScrollbarSize + ImGui.GetStyle().FramePadding.X;
 
         ImGui.SetCursorPos(new Vector2(xPos, 0));
-        DrawDiscordButton(width);
+        DrawUrlButton("加入Discord寻求支持", "https://discord.gg/KvGJCCnG8t", DiscordColor, width);
 
-        ImGui.SetCursorPos(new Vector2(xPos, 1 * ImGui.GetFrameHeightWithSpacing()));
+        ImGui.SetCursorPos(new Vector2(xPos, ImGui.GetFrameHeightWithSpacing()));
+        DrawUrlButton("Support developer using Ko-fi", "https://ko-fi.com/risadev", DonateColor, width);
+
+        ImGui.SetCursorPos(new Vector2(xPos, 2 * ImGui.GetFrameHeightWithSpacing()));
         if (ImGui.Button("复制支持信息到剪贴板"))
         {
             var text = _supportLogBuilderService.BuildSupportLog();
@@ -376,20 +381,19 @@ public class SettingsTab
             _messageService.NotificationMessage($"复制支持信息到剪贴板。", NotificationType.Success, false);
         }
 
-        ImGui.SetCursorPos(new Vector2(xPos, 2 * ImGui.GetFrameHeightWithSpacing()));
+        ImGui.SetCursorPos(new Vector2(xPos, 3 * ImGui.GetFrameHeightWithSpacing()));
         if (ImGui.Button("显示更新日志", new Vector2(width, 0)))
             _changeLog.Changelog.ForceOpen = true;
     }
 
-    /// <summary> Draw a button to open the official discord server. </summary>
-    private void DrawDiscordButton(float width)
+    /// <summary> Draw a button to open some url. </summary>
+    private void DrawUrlButton(string text, string url, uint buttonColor, float width)
     {
-        const string address = @"https://discord.gg/KvGJCCnG8t";
-        using var color = ImRaii.PushColor(ImGuiCol.Button, DiscordColor);
-        if (ImGui.Button("加入Discord寻求支持", new Vector2(width, 0)))
+        using var color = ImRaii.PushColor(ImGuiCol.Button, buttonColor);
+        if (ImGui.Button(text, new Vector2(width, 0)))
             try
             {
-                var process = new ProcessStartInfo(address)
+                var process = new ProcessStartInfo(url)
                 {
                     UseShellExecute = true,
                 };
@@ -397,10 +401,10 @@ public class SettingsTab
             }
             catch
             {
-                _messageService.NotificationMessage($"无法以此地址打开Discord：{address}。", NotificationType.Error, false);
+                _messageService.NotificationMessage($"无法打开 URL:{url}.", NotificationType.Error, false);
             }
 
-        ImGuiUtil.HoverTooltip($"访问：{address}\n请注意这里暂时不对国服进行支持。");
+        ImGuiUtil.HoverTooltip($"打开 {url}");
     }
     #endregion
 }

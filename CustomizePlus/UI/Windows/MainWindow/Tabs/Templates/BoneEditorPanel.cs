@@ -341,8 +341,7 @@ public class BoneEditorPanel
         ImGui.SetCursorPos(new Vector2(xPos, yPos));
         if (ImGui.Button("保存", buttonWidth))
         {
-            _editorManager.SaveChanges();
-            _editorManager.DisableEditor();
+            _editorManager.SaveChangesAndDisableEditor();
 
             ImGui.CloseCurrentPopup();
         }
@@ -350,8 +349,7 @@ public class BoneEditorPanel
         ImGui.SameLine();
         if (ImGui.Button("另存为副本", buttonWidth))
         {
-            _editorManager.SaveChanges(true);
-            _editorManager.DisableEditor();
+            _editorManager.SaveChangesAndDisableEditor(true);
 
             ImGui.CloseCurrentPopup();
         }
