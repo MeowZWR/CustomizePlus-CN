@@ -361,7 +361,7 @@ public class SettingsTab
     #region Support Area
     private void DrawSupportButtons()
     {
-        var width = ImGui.CalcTextSize("加入Discord寻求支持").X + ImGui.GetStyle().FramePadding.X * 2;
+        var width = ImGui.CalcTextSize("复制支持信息到剪贴板。").X + (ImGui.GetStyle().FramePadding.X * 2);
         var xPos = ImGui.GetWindowWidth() - width;
         // Respect the scroll bar width.
         if (ImGui.GetScrollMaxY() > 0)
@@ -371,7 +371,7 @@ public class SettingsTab
         DrawUrlButton("加入Discord寻求支持", "https://discord.gg/KvGJCCnG8t", DiscordColor, width);
 
         ImGui.SetCursorPos(new Vector2(xPos, ImGui.GetFrameHeightWithSpacing()));
-        DrawUrlButton("Support developer using Ko-fi", "https://ko-fi.com/risadev", DonateColor, width);
+        DrawUrlButton("通过 Ko-fi 支持开发者", "https://ko-fi.com/risadev", DonateColor, width);
 
         ImGui.SetCursorPos(new Vector2(xPos, 2 * ImGui.GetFrameHeightWithSpacing()));
         if (ImGui.Button("复制支持信息到剪贴板"))
