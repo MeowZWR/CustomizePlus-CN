@@ -41,17 +41,17 @@ public class CPlusChangeLog
     }
 
     private static void Add2_0_7_15(Changelog log)
-        => log.NextVersion("Version 2.0.7.15")
-        .RegisterEntry("Optimized JSON payload returned by Profile.GetByUniqueId IPC method. (requested by Mare Synchronos)")
-        .RegisterEntry("Values which are considered default are no longer returned, this drastically reduces the size of returned data.", 1)
-        .RegisterEntry("Fixed clipboard copies missing version data.")
-        .RegisterEntry("You do not need to do anything about this. This just fixes format inconsistencies between clipboard copies and on-disk data.", 1)
-        .RegisterEntry("Fixed (some?) \"ImGui assertation failed\" errors (2.0.7.14)")
-        .RegisterEntry("Improved support log contents (2.0.7.13)")
-        .RegisterEntry("Fixed skeleton changes not being detected when changing to between hairstyles with same amount of bones. (2.0.7.11)")
-        .RegisterEntry("Fixed character flashing in GPose. (Root bone position edits are no longer applied in GPose) (2.0.7.10)")
+        => log.NextVersion("版本 2.0.7.15")
+            .RegisterEntry("优化了 Profile.GetByUniqueId IPC 方法返回的 JSON 数据负载。（由 Mare Synchronos 请求）")
+            .RegisterEntry("不再返回默认值，显著减少了返回数据的大小。", 1)
+            .RegisterEntry("修复剪贴板复制内容缺少版本数据的问题")
+            .RegisterEntry("您无需进行任何操作。此修复仅解决剪贴板复制数据与磁盘数据之间的格式不一致问题。", 1)
+            .RegisterEntry("修复了（部分？）\"ImGui 断言失败\"错误（2.0.7.14）")
+            .RegisterEntry("改进了支持日志的内容（2.0.7.13）")
+            .RegisterEntry("修复了在切换骨骼数量相同的发型时，骨架变更未被检测到的问题（2.0.7.11）")
+            .RegisterEntry("修复了 GPose 中角色闪烁的问题（GPose 中不再应用根骨骼位置编辑）（2.0.7.10）")
 
-        .RegisterEntry("Source code maintenance - external libraries update.");
+            .RegisterEntry("源代码维护 - 更新外部库。");
 
     private static void Add2_0_7_9(Changelog log)
         => log.NextVersion("版本 2.0.7.9")
