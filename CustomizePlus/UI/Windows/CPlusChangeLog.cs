@@ -28,6 +28,7 @@ public class CPlusChangeLog
         Add2_0_7_2(Changelog);
         Add2_0_7_9(Changelog);
         Add2_0_7_15(Changelog);
+        Add2_0_7_16(Changelog);
     }
 
     private (int, ChangeLogDisplayType) ConfigData()
@@ -39,6 +40,10 @@ public class CPlusChangeLog
         _config.ChangelogSettings.ChangeLogDisplayType = type;
         _config.Save();
     }
+
+    private static void Add2_0_7_16(Changelog log)
+        => log.NextVersion("版本 2.0.7.16")
+        .RegisterImportant("支持游戏版本 7.2 和 Dalamud API 12。");
 
     private static void Add2_0_7_15(Changelog log)
         => log.NextVersion("版本 2.0.7.15")
