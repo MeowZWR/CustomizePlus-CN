@@ -63,7 +63,7 @@ public class MainWindow : Window, IDisposable
         HookingService hookingService,
         DalamudBranchService dalamudBranchService,
         TemplateEditorEvent templateEditorEvent
-        ) : base($"Customize+ {VersionHelper.Version}###CPlusMainWindow")
+        ) : base($"Customize+ {VersionHelper.Version}-cn###CPlusMainWindow")
     {
         _settingsTab = settingsTab;
         _templatesTab = templatesTab;
