@@ -308,7 +308,8 @@ public static class BoneData //todo: DI, do not show IVCS unless IVCS is install
         "ya_shiri_phys_r,右臀（YAS）,Jiggle,TRUE,FALSE,j_kosi,ya_shiri_phys_l",
         "ya_daitai_phys_l,左腿（YAS）,Jiggle,TRUE,FALSE,j_kosi,ya_daitai_phys_r",
         "ya_daitai_phys_r,右腿（YAS）,Jiggle,TRUE,FALSE,j_kosi,ya_daitai_phys_l",
-        "ya_fukubu_phys,腹部（YAS）,Jiggle,TRUE,FALSE,j_kosi,",
+        "iv_fukubu_phys,上腹（YAS）,Jiggle,TRUE,FALSE,j_kosi,",
+        "ya_fukubu_phys,下腹（YAS）,Jiggle,TRUE,FALSE,j_kosi,",
     };
 
     public static readonly Dictionary<BoneFamily, string?> DisplayableFamilies = new()
