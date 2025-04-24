@@ -8,6 +8,7 @@ public partial class PopupSystem
     public static class Messages
     {
         public const string ActionError = "action_error";
+        public const string ActionDone = "action_done";
 
         public const string FantasiaPlusDetected = "fantasia_detected_warn";
 
@@ -31,6 +32,7 @@ public partial class PopupSystem
     private void RegisterMessages()
     {
         RegisterPopup(Messages.ActionError, "执行所选操作时出错。\n详细信息已打印到卫月日志（聊天命令为/xllog）。");
+        RegisterPopup(Messages.ActionDone, "操作成功执行。");
 
         RegisterPopup(Messages.FantasiaPlusDetected, "Customize+检测到您安装了Fantasia+。\n请删除或关闭它后重新启动游戏，以继续使用Customize+.");
 
