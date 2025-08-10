@@ -49,7 +49,5 @@ public partial class PopupSystem
         RegisterPopup(Messages.ClipboardDataUnsupported, "无法在此版本的Customize+中使用此剪贴板数据。");
 
         RegisterPopup(Messages.ClipboardDataNotLongTerm, "警告：剪贴板数据不是用来长期存储模板的。\n不保证复制的数据在不同的Customize+版本之间的兼容性。", true, new Vector2(5, 10));
-
-        RegisterPopup(Messages.PluginDisabledNonReleaseDalamud, DalamudBranchService.PluginDisabledMessage + "\n此通知将不再显示。", true, new Vector2(5, 6));
     }
 }

@@ -1,6 +1,6 @@
 ﻿using Dalamud.Interface;
 using Dalamud.Interface.Utility;
-using ImGuiNET;
+using Dalamud.Bindings.ImGui;
 using OtterGui.Classes;
 using OtterGui;
 using OtterGui.Raii;
@@ -368,10 +368,12 @@ public class SettingsTab
             xPos -= ImGui.GetStyle().ScrollbarSize + ImGui.GetStyle().FramePadding.X;
 
         ImGui.SetCursorPos(new Vector2(xPos, 0));
-        DrawUrlButton("加入Discord寻求支持", "https://discord.gg/KvGJCCnG8t", DiscordColor, width);
+        DrawUrlButton("加入Discord寻求支持", "https://discord.gg/KvGJCCnG8t", DiscordColor, width,
+            "加入由社区志愿者运营的Discord服务器，他们可以解答您的问题。将在浏览器中打开：https://discord.gg/KvGJCCnG8t");
 
         ImGui.SetCursorPos(new Vector2(xPos, ImGui.GetFrameHeightWithSpacing()));
-        DrawUrlButton("通过 Ko-fi 支持开发者", "https://ko-fi.com/risadev", DonateColor, width);
+        DrawUrlButton("通过 Ko-fi 支持开发者", "https://ko-fi.com/risadev", DonateColor, width,
+            "所有捐赠均为自愿行为，将被视为对Customize+开发工作的感谢。将在浏览器中打开：https://ko-fi.com/risadev");
 
         ImGui.SetCursorPos(new Vector2(xPos, 2 * ImGui.GetFrameHeightWithSpacing()));
         if (ImGui.Button("复制支持信息到剪贴板"))
@@ -387,7 +389,7 @@ public class SettingsTab
     }
 
     /// <summary> Draw a button to open some url. </summary>
-    private void DrawUrlButton(string text, string url, uint buttonColor, float width)
+    private void DrawUrlButton(string text, string url, uint buttonColor, float width, string? description = null)
     {
         using var color = ImRaii.PushColor(ImGuiCol.Button, buttonColor);
         if (ImGui.Button(text, new Vector2(width, 0)))
@@ -404,7 +406,7 @@ public class SettingsTab
                 _messageService.NotificationMessage($"无法打开 URL:{url}.", NotificationType.Error, false);
             }
 
-        ImGuiUtil.HoverTooltip($"打开 {url}");
+        ImGuiUtil.HoverTooltip(description ?? $"打开 {url}");
     }
     #endregion
 }

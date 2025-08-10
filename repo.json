@@ -9,8 +9,8 @@
     "TestingAssemblyVersion": "2.0.7.20",
     "RepoUrl": "https://github.com/MeowZWR/CustomizePlus",
     "ApplicableVersion": "any",
-    "DalamudApiLevel": 12,
-    "TestingDalamudApiLevel": 12,
+    "DalamudApiLevel": 13,
+    "TestingDalamudApiLevel": 13,
     "IsHide": "False",
     "IsTestingExclusive": "False",
     "DownloadCount": 0,
@@ -20,12 +20,6 @@
     "DownloadLinkUpdate": "https://meowrs.com/https://github.com/MeowZWR/CustomizePlus-CN/releases/download/2.0.7.20-cn/CustomizePlus.zip",
     "DownloadLinkTesting": "https://meowrs.com/https://github.com/MeowZWR/CustomizePlus-CN/releases/download/2.0.7.20-cn/CustomizePlus.zip",
     "IconUrl": "https://static.meowrs.com/Plugins/CustomizePlus/icon.png",
-    "Tags": [
-      "Anamnesis",
-      "Customization",
-      "Appearance",
-      "Character",
-      "Risa"
     ]
   }
 ]

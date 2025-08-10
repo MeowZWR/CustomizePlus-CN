@@ -1,6 +1,6 @@
 ﻿using Dalamud.Interface.Components;
 using Dalamud.Interface;
-using ImGuiNET;
+using Dalamud.Bindings.ImGui;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -144,7 +144,7 @@ public class BoneEditorPanel
                         if (ImGuiUtil.DrawDisabledButton("应用于服装模特", buttonWidth, string.Empty, !_actorAssignmentUi.CanSetMannequin))
                             _editorManager.ChangeEditorCharacter(_actorAssignmentUi.MannequinIdentifier);
 
-                        var currentPlayer = _gameObjectService.GetCurrentPlayerActorIdentifier();
+                        var currentPlayer = _gameObjectService.GetCurrentPlayerActorIdentifier().CreatePermanent();
                         if (ImGuiUtil.DrawDisabledButton("应用于当前角色", buttonWidth, string.Empty, !currentPlayer.IsValid))
                             _editorManager.ChangeEditorCharacter(currentPlayer);
 

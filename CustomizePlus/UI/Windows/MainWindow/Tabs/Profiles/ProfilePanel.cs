@@ -1,6 +1,6 @@
 ﻿using Dalamud.Interface;
 using Dalamud.Interface.Utility;
-using ImGuiNET;
+using Dalamud.Bindings.ImGui;
 using OtterGui;
 using OtterGui.Raii;
 using System;
@@ -19,6 +19,7 @@ using static FFXIVClientStructs.FFXIV.Client.LayoutEngine.ILayoutInstance;
 using CustomizePlus.GameData.Extensions;
 using CustomizePlus.Core.Extensions;
 using Dalamud.Interface.Components;
+using OtterGui.Extensions;
 
 namespace CustomizePlus.UI.Windows.MainWindow.Tabs.Profiles;
 
@@ -276,7 +277,7 @@ public class ProfilePanel
                 if (ImGuiUtil.DrawDisabledButton("应用于服装模特", buttonWidth, string.Empty, !_actorAssignmentUi.CanSetMannequin))
                     _manager.AddCharacter(_selector.Selected!, _actorAssignmentUi.MannequinIdentifier);
 
-                var currentPlayer = _actorManager.GetCurrentPlayer();
+                var currentPlayer = _actorManager.GetCurrentPlayer().CreatePermanent();
                 if (ImGuiUtil.DrawDisabledButton("应用于当前角色", buttonWidth, string.Empty, !currentPlayer.IsValid))
                     _manager.AddCharacter(_selector.Selected!, currentPlayer);
 
@@ -504,7 +505,7 @@ public class ProfilePanel
             if (source)
             {
                 ImGui.TextUnformatted($"移动模板 #{index + 1:D2}...");
-                if (ImGui.SetDragDropPayload(dragDropLabel, nint.Zero, 0))
+                if (ImGui.SetDragDropPayload(dragDropLabel, null, 0))
                 {
                     _dragIndex = index;
                 }
