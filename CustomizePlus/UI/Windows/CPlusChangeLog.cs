@@ -43,16 +43,16 @@ public class CPlusChangeLog
     }
 
     private static void Add2_0_7_23(Changelog log)
-        => log.NextVersion("Version 2.0.7.23")
-        .RegisterImportant("Support for 7.3 and Dalamud API 13.")
-        .RegisterEntry("IPC version updated to 6.1. (2.0.7.20)")
-        .RegisterEntry("Added Profile.AddPlayerCharacter and Profile.RemovePlayerCharacter IPC endpoints. (by Caraxi)", 1)
-        .RegisterEntry("Left side selectors in \"Templates\" and \"Profiles\" tabs can now be resized.")
-        .RegisterEntry("Fixed crashes on login/logout.")
-        .RegisterEntry("This usually happened when when \"Apply Profiles on Character Select Screen\" and/or \"Automatically Set Current Character as Editor Preview Character\" options are enabled in settings.", 1)
-        .RegisterEntry("Fixed root transforms sometimes not resetting when toggling between profiles until character is moved.")
-        .RegisterEntry("Fixed an issue where profiles would attempt to be applied to objects not currently drawn on the screen.")
-        .RegisterEntry("Slight refactoring of user interface code.");
+        => log.NextVersion("版本 2.0.7.23")
+        .RegisterImportant("支持游戏版本 7.3 和 Dalamud API 13。")
+        .RegisterEntry("IPC 版本更新至 6.1。(2.0.7.20)")
+        .RegisterEntry("添加了 Profile.AddPlayerCharacter 和 Profile.RemovePlayerCharacter IPC 端点。（由 Caraxi 提供）", 1)
+        .RegisterEntry("\"模板\"和\"配置文件\"标签页中的左侧选择器现在可以调整大小。")
+        .RegisterEntry("修复了登录/登出时的崩溃问题。")
+        .RegisterEntry("这通常发生在设置中启用了\"在角色选择界面应用配置文件\"和/或\"自动将当前角色设为编辑器预览角色\"选项时。", 1)
+        .RegisterEntry("修复了在配置文件之间切换时，根变换有时不会重置直到角色移动的问题。")
+        .RegisterEntry("修复了配置文件会尝试应用到当前未在屏幕上绘制的对象的问题。")
+        .RegisterEntry("对用户界面代码进行了轻微重构。");
 
     private static void Add2_0_7_16(Changelog log)
         => log.NextVersion("版本 2.0.7.16")
