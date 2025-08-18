@@ -421,12 +421,13 @@ public class ProfilePanel
 
     private void DrawTemplateArea()
     {
-        using var table = ImRaii.Table("TemplateTable", 4, ImGuiTableFlags.RowBg | ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY);
+        using var table = ImRaii.Table("TemplateTable", 5, ImGuiTableFlags.RowBg | ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY);
         if (!table)
             return;
 
         ImGui.TableSetupColumn("##del", ImGuiTableColumnFlags.WidthFixed, ImGui.GetFrameHeight());
         ImGui.TableSetupColumn("##Index", ImGuiTableColumnFlags.WidthFixed, 30 * ImGuiHelpers.GlobalScale);
+        ImGui.TableSetupColumn("##Enabled", ImGuiTableColumnFlags.WidthFixed, 30 * ImGuiHelpers.GlobalScale);
 
         ImGui.TableSetupColumn("模板", ImGuiTableColumnFlags.WidthFixed, 220 * ImGuiHelpers.GlobalScale);
 
@@ -450,9 +451,17 @@ public class ProfilePanel
             ImGui.TableNextColumn();
             ImGui.Selectable($"#{idx + 1:D2}");
             DrawDragDrop(_selector.Selected!, idx);
+
+            ImGui.TableNextColumn();
+            var enabled = !_selector.Selected!.DisabledTemplates.Contains(template.UniqueId);
+            if (ImGui.Checkbox("##EnableCheckbox", ref enabled))
+                _manager.ToggleTemplate(_selector.Selected!, idx);
+            ImGuiUtil.HoverTooltip("Whether this template is applied to the profile.");
+
             ImGui.TableNextColumn();
             _templateCombo.Draw(_selector.Selected!, template, idx);
             DrawDragDrop(_selector.Selected!, idx);
+
             ImGui.TableNextColumn();
 
             var disabledCondition = _templateEditorManager.IsEditorActive || template.IsWriteProtected;
@@ -471,6 +480,7 @@ public class ProfilePanel
             }
         }
 
+        ImGui.TableNextColumn();
         ImGui.TableNextColumn();
         ImGui.TableNextColumn();
         ImGui.AlignTextToFramePadding();

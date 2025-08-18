@@ -17,6 +17,7 @@ using Penumbra.GameData.Structs;
 using Penumbra.GameData.Enums;
 using CustomizePlus.Templates.Data;
 using CustomizePlus.Templates.Events;
+using OtterGui.Extensions;
 using Penumbra.GameData.Actors;
 using Penumbra.String;
 
@@ -142,7 +143,7 @@ public partial class CustomizePlusIpc
         if (!ByteString.FromString(name, out var byteString))
             return (int)ErrorCode.InvalidCharacter;
 
-        var playerIdentifier = this._actorManager.CreatePlayer(byteString, worldId);
+        var playerIdentifier = _actorManager.CreatePlayer(byteString, worldId);
         if (playerIdentifier == ActorIdentifier.Invalid)
             return (int)ErrorCode.InvalidCharacter;
         
@@ -190,7 +191,65 @@ public partial class CustomizePlusIpc
             return ErrorCode.UnknownError;
         }
     }
+    
+    [EzIPC("Profile.GetTemplates")]
+    private (int, List<IPCTemplateStatusTuple>?) GetTemplates(Guid uniqueId)
+    {
+        if (uniqueId == Guid.Empty)
+            return ((int)ErrorCode.ProfileNotFound, null);
 
+        var profile = _profileManager.Profiles.FirstOrDefault(x => x.UniqueId == uniqueId && !x.IsTemporary);
+        if (profile == null)
+            return ((int)ErrorCode.ProfileNotFound, null);
+        
+        var list = new List<IPCTemplateStatusTuple>();
+        foreach (var template in profile.Templates)
+        {
+            var bones = template.Bones.Select(kvp => new IPCBoneDataTuple(kvp.Key, kvp.Value.Translation, kvp.Value.Rotation, kvp.Value.Scaling)).ToList();
+            list.Add(
+                new IPCTemplateStatusTuple(
+                template.UniqueId, 
+                template.Name, 
+                bones,
+                !profile.DisabledTemplates.Contains(template.UniqueId)));
+        }
+            
+
+        return ((int)ErrorCode.Success, list);
+    }
+    
+    [EzIPC("Profile.EnableTemplateByUniqueId")]
+    private int EnableTemplateByUniqueId(Guid profileId, Guid templateId)
+    {
+        if (profileId == Guid.Empty)
+            return (int)ErrorCode.ProfileNotFound;
+
+        var profile = _profileManager.Profiles.FirstOrDefault(x => x.UniqueId == profileId && !x.IsTemporary);
+        if (profile == null)
+            return (int)ErrorCode.ProfileNotFound;
+
+        if (_profileManager.EnableTemplate(profile, templateId))
+            return (int)ErrorCode.Success;
+
+        return (int)ErrorCode.InvalidArgument;
+    }
+    
+    [EzIPC("Profile.DisableTemplateByUniqueId")]
+    private int DisableTemplateByUniqueId(Guid profileId, Guid templateId)
+    {
+        if (profileId == Guid.Empty)
+            return (int)ErrorCode.ProfileNotFound;
+
+        var profile = _profileManager.Profiles.FirstOrDefault(x => x.UniqueId == profileId && !x.IsTemporary);
+        if (profile == null)
+            return (int)ErrorCode.ProfileNotFound;
+
+        if (_profileManager.DisableTemplate(profile, templateId)) 
+            return (int)ErrorCode.Success;
+
+        return (int)ErrorCode.InvalidArgument;
+    }
+    
     /// <summary>
     /// Get unique id of currently active profile for character using its game object table index.
     /// </summary>
