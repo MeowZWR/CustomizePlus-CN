@@ -26,11 +26,11 @@ global using IPCProfileDataTuple = (
     System.Collections.Generic.List<(string Name, ushort WorldId, byte CharacterType, ushort CharacterSubType)> Characters,
     int Priority,
     bool IsEnabled);
-    
-global using IPCBoneDataTuple = (string Name, System.Numerics.Vector3 Translation, System.Numerics.Vector3 Rotation, System.Numerics.Vector3 Scale);
+
+global using IPCBoneDataTuple = (string Name, System.Numerics.Vector3 Translation, System.Numerics.Vector3 Rotation, System.Numerics.Vector3 Scale, bool PropagateTranslation, bool PropagateRotation, bool PropagateScale);
 
 global using IPCTemplateStatusTuple = (
     System.Guid UniqueId,
     string Name,
-    System.Collections.Generic.List<(string Name, System.Numerics.Vector3 Translation, System.Numerics.Vector3 Rotation, System.Numerics.Vector3 Scale)> Bones,
+    System.Collections.Generic.List<(string Name, System.Numerics.Vector3 Translation, System.Numerics.Vector3 Rotation, System.Numerics.Vector3 Scale, bool PropagateTranslation, bool PropagateRotation, bool PropagateScale)> Bones,
     bool IsEnabled);

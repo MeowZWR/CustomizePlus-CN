@@ -71,6 +71,7 @@ public class SettingsTab
             DrawProfileApplicationSettings();
             DrawInterface();
             DrawCommands();
+            DrawExternal();
             DrawAdvancedSettings();
         }
 
@@ -310,6 +311,33 @@ public class SettingsTab
                 "控制编辑器角色是否在登录时自动设置为当前角色。", ref isChecked))
         {
             _configuration.EditorConfiguration.SetPreviewToCurrentCharacterOnLogin = isChecked;
+            _configuration.Save();
+        }
+    }
+
+    #endregion
+
+    #region External Settings
+
+    private void DrawExternal()
+    {
+        var isShouldDraw = ImGui.CollapsingHeader("Integrations");
+
+        if (!isShouldDraw)
+            return;
+
+        DrawHandlePCP();
+    }
+
+    private void DrawHandlePCP()
+    {
+        var isChecked = _configuration.IntegrationSettings.PenumbraPCPIntegrationEnabled;
+
+        if (CtrlHelper.CheckboxWithTextAndHelp("##pcpintegrationenabled", "Enable Penumbra PCP integration",
+                "Controls whether C+ will add the currently active profile data from an actor to .pcp files upon creation, and construct new profile for said actor upon import.", ref isChecked))
+        {
+            _configuration.IntegrationSettings.PenumbraPCPIntegrationEnabled = isChecked;
+
             _configuration.Save();
         }
     }

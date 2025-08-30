@@ -1,25 +1,26 @@
-﻿using CustomizePlus.Profiles.Enums;
+﻿using CustomizePlus.Api.Data;
+using CustomizePlus.Api.Enums;
+using CustomizePlus.Armatures.Data;
+using CustomizePlus.Armatures.Events;
+using CustomizePlus.Core.Extensions;
+using CustomizePlus.GameData.Extensions;
+using CustomizePlus.Profiles.Data;
+using CustomizePlus.Profiles.Enums;
+using CustomizePlus.Profiles.Exceptions;
+using CustomizePlus.Templates.Data;
+using CustomizePlus.Templates.Events;
+using Dalamud.Game.ClientState.Objects.Types;
+using ECommonsLite.EzIpcManager;
+using Newtonsoft.Json;
+using OtterGui.Extensions;
+using Penumbra.GameData.Actors;
+using Penumbra.GameData.Enums;
+using Penumbra.GameData.Structs;
+using Penumbra.String;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using ECommonsLite.EzIpcManager;
-using Newtonsoft.Json;
-using CustomizePlus.Api.Data;
-using CustomizePlus.Api.Enums;
-using CustomizePlus.Profiles.Exceptions;
-using CustomizePlus.Profiles.Data;
-using CustomizePlus.Core.Extensions;
-using CustomizePlus.Armatures.Data;
-using CustomizePlus.Armatures.Events;
-using CustomizePlus.GameData.Extensions;
-using Dalamud.Game.ClientState.Objects.Types;
-using Penumbra.GameData.Structs;
-using Penumbra.GameData.Enums;
-using CustomizePlus.Templates.Data;
-using CustomizePlus.Templates.Events;
-using OtterGui.Extensions;
-using Penumbra.GameData.Actors;
-using Penumbra.String;
+using static System.Windows.Forms.AxHost;
 
 namespace CustomizePlus.Api;
 
@@ -191,7 +192,32 @@ public partial class CustomizePlusIpc
             return ErrorCode.UnknownError;
         }
     }
-    
+
+    /// <summary>
+    /// Set profile priority by Unique ID. Does not work on temporary profiles.
+    /// </summary>
+    [EzIPC("Profile.SetPriorityByUniqueId")]
+    private int SetProfilePriorityByUniqueId(Guid uniqueId, int priority)
+    {
+        if (uniqueId == Guid.Empty)
+            return (int)ErrorCode.ProfileNotFound;
+
+        try
+        {
+            _profileManager.SetPriority(uniqueId, priority);
+            return (int)ErrorCode.Success;
+        }
+        catch (ProfileNotFoundException ex)
+        {
+            return (int)ErrorCode.ProfileNotFound;
+        }
+        catch (Exception ex)
+        {
+            _logger.Error($"Exception in SetProfilePriorityByUniqueId. Unique id: {uniqueId}, priority: {priority}, exception: {ex}.");
+            return (int)ErrorCode.UnknownError;
+        }
+    }
+
     [EzIPC("Profile.GetTemplates")]
     private (int, List<IPCTemplateStatusTuple>?) GetTemplates(Guid uniqueId)
     {
@@ -201,23 +227,31 @@ public partial class CustomizePlusIpc
         var profile = _profileManager.Profiles.FirstOrDefault(x => x.UniqueId == uniqueId && !x.IsTemporary);
         if (profile == null)
             return ((int)ErrorCode.ProfileNotFound, null);
-        
+
         var list = new List<IPCTemplateStatusTuple>();
         foreach (var template in profile.Templates)
         {
-            var bones = template.Bones.Select(kvp => new IPCBoneDataTuple(kvp.Key, kvp.Value.Translation, kvp.Value.Rotation, kvp.Value.Scaling)).ToList();
+            var bones = template.Bones.Select(kvp => new IPCBoneDataTuple(
+                kvp.Key,
+                kvp.Value.Translation,
+                kvp.Value.Rotation,
+                kvp.Value.Scaling,
+                kvp.Value.PropagateTranslation,
+                kvp.Value.PropagateRotation,
+                kvp.Value.PropagateScale)).ToList();
+
             list.Add(
                 new IPCTemplateStatusTuple(
-                template.UniqueId, 
-                template.Name, 
+                template.UniqueId,
+                template.Name,
                 bones,
                 !profile.DisabledTemplates.Contains(template.UniqueId)));
         }
-            
+
 
         return ((int)ErrorCode.Success, list);
     }
-    
+
     [EzIPC("Profile.EnableTemplateByUniqueId")]
     private int EnableTemplateByUniqueId(Guid profileId, Guid templateId)
     {
@@ -233,7 +267,7 @@ public partial class CustomizePlusIpc
 
         return (int)ErrorCode.InvalidArgument;
     }
-    
+
     [EzIPC("Profile.DisableTemplateByUniqueId")]
     private int DisableTemplateByUniqueId(Guid profileId, Guid templateId)
     {
@@ -244,12 +278,12 @@ public partial class CustomizePlusIpc
         if (profile == null)
             return (int)ErrorCode.ProfileNotFound;
 
-        if (_profileManager.DisableTemplate(profile, templateId)) 
+        if (_profileManager.DisableTemplate(profile, templateId))
             return (int)ErrorCode.Success;
 
         return (int)ErrorCode.InvalidArgument;
     }
-    
+
     /// <summary>
     /// Get unique id of currently active profile for character using its game object table index.
     /// </summary>
