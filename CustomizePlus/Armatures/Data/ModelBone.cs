@@ -237,7 +237,7 @@ public unsafe class ModelBone
         var targetPose = pSkelly.GetHavokPose(Constants.TruePoseIndex);
         //hkaPose* targetPose = cBase->Skeleton->PartialSkeletons[PartialSkeletonIndex].GetHavokPose(Constants.TruePoseIndex);
 
-        if (targetPose == null) 
+        if (targetPose == null)
             return null;
 
         // It's really gonna crash without it, skeleton changes aren't getting picked up fast enough

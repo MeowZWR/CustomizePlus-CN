@@ -21,18 +21,22 @@ public class SupportLogBuilderService
     private readonly ProfileManager _profileManager;
     private readonly ArmatureManager _armatureManager;
     private readonly IDalamudPluginInterface _dalamudPluginInterface;
+    private readonly PcpService _pcpService;
+
     public SupportLogBuilderService(
         PluginConfiguration configuration,
         TemplateManager templateManager,
         ProfileManager profileManager,
         ArmatureManager armatureManager,
-        IDalamudPluginInterface dalamudPluginInterface)
+        IDalamudPluginInterface dalamudPluginInterface,
+        PcpService pcpService)
     {
         _configuration = configuration;
         _templateManager = templateManager;
         _profileManager = profileManager;
         _armatureManager = armatureManager;
         _dalamudPluginInterface = dalamudPluginInterface;
+        _pcpService = pcpService;
     }
 
     public string BuildSupportLog()
@@ -54,6 +58,8 @@ public class SupportLogBuilderService
         sb.Append($"> **`Lobby:                          `** {_configuration.ProfileApplicationSettings.ApplyInLobby}\n");
         sb.AppendLine("**Relevant plugins**");
         GatherRelevantPlugins(sb);
+        sb.AppendLine("**Integrations**");
+        sb.Append($"> **`Penumbra (PCP):                 `** {_configuration.IntegrationSettings.PenumbraPCPIntegrationEnabled} (Penumbra is{(!_pcpService.IsPenumbraAvailable ? " NOT " : " ")}available)\n");
         sb.AppendLine("**Templates**");
         sb.Append($"> **`Count:                          `** {_templateManager.Templates.Count}\n");
         foreach (var template in _templateManager.Templates)
@@ -75,7 +81,7 @@ public class SupportLogBuilderService
             sb.Append($">   >   > **`Count:                  `** {profile.Templates.Count}\n");
             foreach (var template in profile.Templates)
             {
-                sb.Append($">   >   > **`{template.ToString(), -32}`**\n");
+                sb.Append($">   >   > **`{template.ToString(),-32}`**\n");
 
                 if (profile.DisabledTemplates.Contains(template.UniqueId))
                     sb.Append($">   >   >   >  **`Disabled`**\n");
@@ -84,7 +90,7 @@ public class SupportLogBuilderService
             sb.Append($">   >   > **`Count:                  `** {profile.Armatures.Count}\n");
             foreach (var armature in profile.Armatures)
             {
-                sb.Append($">   >   > **`{armature.ToString(), -32}`**\n");
+                sb.Append($">   >   > **`{armature.ToString(),-32}`**\n");
             }
             sb.Append($">   > =====\n");
         }

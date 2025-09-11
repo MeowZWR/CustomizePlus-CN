@@ -20,19 +20,22 @@ public class PluginStateBlock
     private readonly GameStateService _gameStateService;
     private readonly HookingService _hookingService;
     private readonly CustomizePlusIpc _ipcService;
+    private readonly PcpService _pcpService;
 
     public PluginStateBlock(
         BoneEditorPanel boneEditorPanel,
         PluginConfiguration configuration,
         GameStateService gameStateService,
         HookingService hookingService,
-        CustomizePlusIpc ipcService)
+        CustomizePlusIpc ipcService,
+        PcpService pcpService)
     {
         _boneEditorPanel = boneEditorPanel;
         _configuration = configuration;
         _gameStateService = gameStateService;
         _hookingService = hookingService;
         _ipcService = ipcService;
+        _pcpService = pcpService;
     }
 
     public void Draw(float yPos)
@@ -76,7 +79,12 @@ public class PluginStateBlock
             severity = PluginStateSeverity.Error;
             message = "在IPC中检测到故障。与其他插件的集成将不起作用。";
         }
-        else if(VersionHelper.IsTesting)
+        else if (_pcpService.IsEnabled && !_pcpService.IsPenumbraAvailable)
+        {
+            severity = PluginStateSeverity.Error;
+            message = "Unable to connect to Penumbra. PCP integration will not function.";
+        }
+        else if (VersionHelper.IsTesting)
         {
             severity = PluginStateSeverity.Warning;
             message = "您正在运行 Customize+ 的测试版本，悬停查看更多信息。";

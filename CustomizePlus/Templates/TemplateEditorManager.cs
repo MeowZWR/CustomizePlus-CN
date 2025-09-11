@@ -72,14 +72,14 @@ public class TemplateEditorManager : IDisposable
     /// Checks if preview character exists at the time of call
     /// </summary>
     public bool IsCharacterFound
-    { 
+    {
         get
         {
             var playerName = _gameObjectService.GetCurrentPlayerName();
             return _gameObjectService.FindActorsByIdentifierIgnoringOwnership(Character)
                 .Where(x => x.Item1.Type != Penumbra.GameData.Enums.IdentifierType.Owned || x.Item1.IsOwnedByLocalPlayer())
                 .Any();
-        } 
+        }
     }
 
     public bool IsKeepOnlyEditorProfileActive { get; set; } //todo
@@ -182,7 +182,7 @@ public class TemplateEditorManager : IDisposable
         if (!IsEditorActive || IsEditorPaused)
             return;
 
-        if(!HasChanges)
+        if (!HasChanges)
         {
             DisableEditor();
             return;
@@ -343,7 +343,7 @@ public class TemplateEditorManager : IDisposable
             !_configuration.EditorConfiguration.PreviewCharacter.IsValid)
         {
             var localPlayer = _gameObjectService.GetCurrentPlayerActorIdentifier();
-            if(!localPlayer.IsValid)
+            if (!localPlayer.IsValid)
             {
                 _logger.Warning("无法在登录时检索本地玩家");
                 return;

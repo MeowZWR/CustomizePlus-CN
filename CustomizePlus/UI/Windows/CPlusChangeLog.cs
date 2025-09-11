@@ -28,10 +28,11 @@ public class CPlusChangeLog
         Add2_0_7_2(Changelog);
         Add2_0_7_9(Changelog);
         Add2_0_7_15(Changelog);
-        Add2_0_7_16(Changelog);
+        Add2_0_7_16(Changelog); 
         Add2_0_7_23(Changelog);
         Add2_0_7_27(Changelog);
         Add2_0_8_0(Changelog);
+        Add2_0_8_2(Changelog);
     }
 
     private (int, ChangeLogDisplayType) ConfigData()
@@ -44,35 +45,42 @@ public class CPlusChangeLog
         _config.Save();
     }
 
+    private static void Add2_0_8_2(Changelog log)
+        => log.NextVersion("版本 2.0.8.2")
+        .RegisterEntry("提升了 Penumbra PCP 集成的稳定性。（由 abelfreyja 提供）")
+        .RegisterEntry("Customize+ 现在如果无法连接 Penumbra，会在菜单栏显示警告。（由 Risa 提供）", 1)
+        .RegisterEntry("修复了根位置重置在不应生效时被应用的问题。（由 abelfreyja 提供）")
+        .RegisterEntry("修复了配置文件文件夹会被重置的问题。（由 Risa 提供）");
+
     private static void Add2_0_8_0(Changelog log)
-        => log.NextVersion("Version 2.0.8.0")
-        .RegisterHighlight("Added support for Penumbra PCP files. (by abelfreyja)")
-        .RegisterEntry("This feature is enabled by default and can be disabled in Settings -> Integrations menu.", 1)
-        .RegisterHighlight("Added bone edits propagation. (by d87)")
-        .RegisterEntry("This feature might not work correctly with some bones and with some combinations of bone edits.", 1)
-        .RegisterEntry("Added search filter and undo/redo functionality during bone editing. (by abelfreyja)")
-        .RegisterEntry("Added the ability to copy bone groups to clipboard and import them. (by abelfreyja)")
-        .RegisterEntry("Right click on group name to access this functionality.", 1)
-        .RegisterEntry("Added the ability to have favorite bones. (by abelfreyja and Risa)")
-        .RegisterEntry("IPC version updated to 6.3.")
-        .RegisterEntry("Added Profile.SetPriorityByUniqueId IPC endpoint. (by CordeliaMist)", 1)
-        .RegisterEntry("Bone propagation settings are now returned where applicable. (by abelfreyja)", 1);
+        => log.NextVersion("版本 2.0.8.0")
+        .RegisterHighlight("新增对 Penumbra PCP 文件的支持。（由 abelfreyja 提供）")
+        .RegisterEntry("该功能默认启用，可在设置 -> 集成菜单中关闭。", 1)
+        .RegisterHighlight("新增骨骼编辑传播功能。（由 d87 提供）")
+        .RegisterEntry("该功能在某些骨骼或某些骨骼编辑组合下可能无法正常工作。", 1)
+        .RegisterEntry("骨骼编辑时新增搜索过滤和撤销/重做功能。（由 abelfreyja 提供）")
+        .RegisterEntry("新增将骨骼分组复制到剪贴板及导入的功能。（由 abelfreyja 提供）")
+        .RegisterEntry("右键点击分组名称可访问此功能。", 1)
+        .RegisterEntry("新增收藏骨骼功能。（由 abelfreyja 和 Risa 提供）")
+        .RegisterEntry("IPC 版本更新至 6.3。")
+        .RegisterEntry("新增 Profile.SetPriorityByUniqueId IPC 端点。（由 CordeliaMist 提供）", 1)
+        .RegisterEntry("骨骼传播设置现在会在适用时返回。（由 abelfreyja 提供）", 1);
 
     private static void Add2_0_7_27(Changelog log)
-        => log.NextVersion("Version 2.0.7.27")
-        .RegisterEntry("Added ability to toggle template in a profile without removing it. (by Caraxi)")
-        .RegisterEntry("IPC version updated to 6.2.")
-        .RegisterEntry("Added Profile.GetTemplates, Profile.EnableTemplateByUniqueId, Profile.DisableTemplateByUniqueId IPC endpoints. (by Caraxi)", 1)
-        .RegisterEntry("Fixed crash when trying to open template/profile tab if there is a template/profile with empty name. (2.0.7.25)");
+        => log.NextVersion("版本 2.0.7.27")
+        .RegisterEntry("新增可在不移除模板的情况下切换配置文件中的模板启用状态。（由 Caraxi 提供）")
+        .RegisterEntry("IPC 版本更新至 6.2。")
+        .RegisterEntry("新增 Profile.GetTemplates、Profile.EnableTemplateByUniqueId、Profile.DisableTemplateByUniqueId IPC 端点。（由 Caraxi 提供）", 1)
+        .RegisterEntry("修复当存在空名称模板/配置文件时，尝试打开模板/配置文件标签页会崩溃的问题。（2.0.7.25）");
 
     private static void Add2_0_7_23(Changelog log)
         => log.NextVersion("版本 2.0.7.23")
         .RegisterImportant("支持游戏版本 7.3 和 Dalamud API 13。")
         .RegisterEntry("IPC 版本更新至 6.1。(2.0.7.20)")
         .RegisterEntry("添加了 Profile.AddPlayerCharacter 和 Profile.RemovePlayerCharacter IPC 端点。（由 Caraxi 提供）", 1)
-        .RegisterEntry("\"模板\"和\"配置文件\"标签页中的左侧选择器现在可以调整大小。")
+        .RegisterEntry("“模板”和“配置文件”标签页中的左侧选择器现在可以调整大小。")
         .RegisterEntry("修复了登录/登出时的崩溃问题。")
-        .RegisterEntry("这通常发生在设置中启用了\"在角色选择界面应用配置文件\"和/或\"自动将当前角色设为编辑器预览角色\"选项时。", 1)
+        .RegisterEntry("这通常发生在设置中启用了“在角色选择界面应用配置文件”和/或“自动将当前角色设为编辑器预览角色”选项时。", 1)
         .RegisterEntry("修复了在配置文件之间切换时，根变换有时不会重置直到角色移动的问题。")
         .RegisterEntry("修复了配置文件会尝试应用到当前未在屏幕上绘制的对象的问题。")
         .RegisterEntry("对用户界面代码进行了轻微重构。");
