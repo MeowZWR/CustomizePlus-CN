@@ -101,8 +101,13 @@ public static class ActorIdentifierExtensions
                 ActorIdentifier.RetainerType.Mannequin => "（服装模特）",
                 _ => "（雇员）",
             }}",
-            IdentifierType.Owned => "（宠物/坐骑）",
-            IdentifierType.Npc => "（NPC）",
+            IdentifierType.Owned => $" ({identifier.Kind switch {
+                ObjectKind.MountType => "坐骑",
+                ObjectKind.Companion => "宠物",
+                ObjectKind.Ornament => "配饰",
+                _ => $"所属 {identifier.Kind}",
+            }})",
+            IdentifierType.Npc => " (NPC)",
             _ => "",
         };
     }
@@ -127,7 +132,8 @@ public static class ActorIdentifierExtensions
                 return
                     identifier.Kind == ObjectKind.BattleNpc ||
                     //identifier.Kind == ObjectKind.MountType ||
-                    identifier.Kind == ObjectKind.Companion;
+                    identifier.Kind == ObjectKind.Companion ||
+                    identifier.Kind == ObjectKind.Ornament;
             default:
                 return false;
         }
