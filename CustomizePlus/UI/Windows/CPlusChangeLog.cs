@@ -47,10 +47,10 @@ public class CPlusChangeLog
     }
 
     private static void Add2_0_8_4(Changelog log)
-        => log.NextVersion("Version 2.0.8.4")
-        .RegisterEntry("Accessories can now be manipulated by Customize+. (by Caraxi)")
-        .RegisterEntry("The extent of possible manipulations depend on the chosen accessory.", 1)
-        .RegisterEntry("Bones with their values set to 0 will no longer be removed from the editor when \"Show Live Bones\" is off and option to apply transformation to children is on. (by Caraxi and Risa) (2.0.8.3)");
+        => log.NextVersion("版本 2.0.8.4")
+        .RegisterEntry("Customize+ 现在可以操纵配饰。（由 Caraxi 提供）")
+        .RegisterEntry("可操纵的范围取决于所选配饰。", 1)
+        .RegisterEntry("当“显示实时骨骼”关闭且启用了对子节点应用变换选项时，数值为 0 的骨骼不再会从编辑器中移除。（由 Caraxi 和 Risa 提供）（2.0.8.3）");
 
     private static void Add2_0_8_2(Changelog log)
         => log.NextVersion("版本 2.0.8.2")
