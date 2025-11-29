@@ -34,6 +34,7 @@ public class CPlusChangeLog
         Add2_0_8_0(Changelog);
         Add2_0_8_2(Changelog);
         Add2_0_8_4(Changelog);
+        Add2_0_9_0(Changelog);
     }
 
     private (int, ChangeLogDisplayType) ConfigData()
@@ -45,7 +46,11 @@ public class CPlusChangeLog
         _config.ChangelogSettings.ChangeLogDisplayType = type;
         _config.Save();
     }
-
+    private static void Add2_0_9_0(Changelog log)
+        => log.NextVersion("版本 2.0.9.0")
+        .RegisterEntry("新增：现在可以在骨骼启用传播功能时，对子骨骼应用独立的缩放比例。（由 Midona 提供）")
+        .RegisterEntry("当在“缩放”选项上启用变换传播时，您现在将看到一个额外的“子骨骼”（Child Bones）条目，它允许您更精细地控制骨骼的缩放。这对于修改角色尾巴的形状特别有用。", 1);
+    
     private static void Add2_0_8_4(Changelog log)
         => log.NextVersion("版本 2.0.8.4")
         .RegisterEntry("Customize+ 现在可以操纵配饰。（由 Caraxi 提供）")
