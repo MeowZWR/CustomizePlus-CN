@@ -12,7 +12,8 @@ public static class BoneData //todo: DI, do not show IVCS unless IVCS is install
     public enum BoneFamily
     {
         根骨骼,
-        摇晃,
+        摇晃,        
+        Meowz,
         脊柱,
         头发,
         脸部,
@@ -310,6 +311,17 @@ public static class BoneData //todo: DI, do not show IVCS unless IVCS is install
         "ya_daitai_phys_r,右腿（YAS）,Jiggle,TRUE,FALSE,j_kosi,ya_daitai_phys_l",
         "iv_fukubu_phys,上腹（YAS）,Jiggle,TRUE,FALSE,j_kosi,",
         "ya_fukubu_phys,下腹（YAS）,Jiggle,TRUE,FALSE,j_kosi,",
+
+        "pifeng_a_l,左披风 A,Meowz,TRUE,FALSE,j_f_face,pifeng_a_r",
+        "pifeng_a_r,右披风 A,Meowz,TRUE,FALSE,j_f_face,pifeng_a_l",
+        "pifeng_b_l,左披风 B,Meowz,TRUE,FALSE,j_f_face,pifeng_b_r",
+        "pifeng_b_r,右披风 B,Meowz,TRUE,FALSE,j_f_face,pifeng_b_l",
+        "pifeng_c_l,左披风 C,Meowz,TRUE,FALSE,j_f_face,pifeng_c_r",
+        "pifeng_c_r,右披风 C,Meowz,TRUE,FALSE,j_f_face,pifeng_c_l",
+        "pifeng_d_l,左披风 D,Meowz,TRUE,FALSE,j_f_face,pifeng_d_r",
+        "pifeng_d_r,右披风 D,Meowz,TRUE,FALSE,j_f_face,pifeng_d_l",
+        "pifeng_e_l,左披风 E,Meowz,TRUE,FALSE,j_f_face,pifeng_e_r",
+        "pifeng_e_r,右披风 E,Meowz,TRUE,FALSE,j_f_face,pifeng_e_l",
     };
 
     public static readonly Dictionary<BoneFamily, string?> DisplayableFamilies = new()
@@ -337,6 +349,7 @@ public static class BoneData //todo: DI, do not show IVCS unless IVCS is install
         { BoneFamily.裙子, null },
         { BoneFamily.装备, "这些可能表现地很奇怪" },
         { BoneFamily.摇晃, "供摇晃物理使用的骨骼。\n注意需要使用相关服装或身体模组才有效。" },
+        { BoneFamily.Meowz, "为了方便自己偷偷添加的分类。" },
         { BoneFamily.归档, "7.0后已失效的骨骼，如果有错误请联系国服维护者。" },
         {
             BoneFamily.未知,
@@ -501,6 +514,7 @@ public static class BoneData //todo: DI, do not show IVCS unless IVCS is install
         {
             "root"      => BoneFamily.根骨骼,
             "jiggle"    => BoneFamily.摇晃,
+            "meowz"     => BoneFamily.Meowz,
             "spine"     => BoneFamily.脊柱,
             "hair"      => BoneFamily.头发,
             "face"      => BoneFamily.脸部,
