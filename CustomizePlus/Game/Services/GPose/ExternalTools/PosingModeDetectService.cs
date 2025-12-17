@@ -1,4 +1,4 @@
-﻿using Dalamud.Game;
+﻿using Dalamud.Plugin.Services;
 
 namespace CustomizePlus.Game.Services.GPose.ExternalTools;
 
