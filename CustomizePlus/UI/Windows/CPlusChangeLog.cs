@@ -55,7 +55,7 @@ public class CPlusChangeLog
     }
 
     private static void Add2_1_0_0(Changelog log)
-        => log.NextVersion("Version 2.1.0.0")
+        => log.NextVersion("版本 2.1.0.0")
         .RegisterImportant("Support for 7.4 and Dalamud API 14. (by Risa)");
 
     private static void Add2_0_9_0(Changelog log)
