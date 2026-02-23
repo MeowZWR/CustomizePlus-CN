@@ -13,7 +13,7 @@ public static class BoneData //todo: DI, do not show IVCS unless IVCS is install
     {
         根骨骼,
         摇晃,        
-        Meowz,
+        自定义,
         脊柱,
         头发,
         脸部,
@@ -322,7 +322,7 @@ public static class BoneData //todo: DI, do not show IVCS unless IVCS is install
         "pifeng_d_r,右臂披风 D,Meowz,FALSE,FALSE,j_ude_c_r,pifeng_d_l",
         "pifeng_e_l,左臂披风 E,Meowz,FALSE,FALSE,j_ude_d_l,pifeng_e_r",
         "pifeng_e_r,右臂披风 E,Meowz,FALSE,FALSE,j_ude_d_r,pifeng_e_l",
-        "j_ex_pf_a_l,左肩披风 A,Meowz,FALSE,FALSE,j_sako_l,"
+        "j_ex_pf_a_l,左肩披风 A,Meowz,FALSE,FALSE,j_sako_l,",
         "j_ex_pf_b_l,左肩披风 B,Meowz,FALSE,FALSE,j_ex_pf_a_l,",
         "j_ex_pf_c_l,左肩披风 C,Meowz,FALSE,FALSE,j_ex_pf_b_l,",
         "j_ex_pf_d_l,左肩披风 D,Meowz,FALSE,FALSE,j_ex_pf_c_l,",
@@ -337,7 +337,7 @@ public static class BoneData //todo: DI, do not show IVCS unless IVCS is install
         "j_toushi_e_l,左头饰 E,Meowz,FALSE,FALSE,j_kao,j_toushi_e_r",
         "j_toushi_e_r,右头饰 E,Meowz,FALSE,FALSE,j_kao,j_toushi_e_l",
         "j_succu_condom,魅魔宝宝嘴叼套套,Meowz,FALSE,FALSE,j_kao,",
-        "j_succu_fold,魅魔宝宝勒嘴布条,Meowz,FALSE,FALSE,j_kao,",
+        "j_succu_folds,魅魔宝宝勒嘴布条,Meowz,FALSE,FALSE,j_kao,",
         "j_succu_blind,魅魔宝宝遮眼布条,Meowz,FALSE,FALSE,j_kao,",
         "j_succu_bandaids,魅魔宝宝脸部创可贴,Meowz,FALSE,FALSE,j_kao,",
         "j_succu_eyeacc_l,魅魔宝宝左眼角爱心,Meowz,FALSE,FALSE,j_kao,",
@@ -369,7 +369,7 @@ public static class BoneData //todo: DI, do not show IVCS unless IVCS is install
         { BoneFamily.裙子, null },
         { BoneFamily.装备, "这些可能表现地很奇怪" },
         { BoneFamily.摇晃, "供摇晃物理使用的骨骼。\n注意需要使用相关服装或身体模组才有效。" },
-        { BoneFamily.Meowz, "自用自定义骨骼归类" },
+        { BoneFamily.自定义, "自用自定义骨骼归类" },
         { BoneFamily.归档, "7.0后已失效的骨骼，如果有错误请联系国服维护者。" },
         {
             BoneFamily.未知,
@@ -534,7 +534,7 @@ public static class BoneData //todo: DI, do not show IVCS unless IVCS is install
         {
             "root"      => BoneFamily.根骨骼,
             "jiggle"    => BoneFamily.摇晃,
-            "meowz"     => BoneFamily.Meowz,
+            "meowz"     => BoneFamily.自定义,
             "spine"     => BoneFamily.脊柱,
             "hair"      => BoneFamily.头发,
             "face"      => BoneFamily.脸部,
