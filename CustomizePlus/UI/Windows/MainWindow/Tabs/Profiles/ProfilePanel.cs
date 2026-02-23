@@ -106,7 +106,7 @@ public class ProfilePanel
          => _selector.Selected == null
         ? HeaderDrawer.Button.Invisible
         :new HeaderDrawer.Button {
-            Description = "Copy the current profile combined into one template to your clipboard.",
+            Description = "将当前角色配置合并为单一模板后复制到剪贴板。",
             Icon = FontAwesomeIcon.Copy,
             OnClick = ExportToClipboard,
             Visible = _selector.Selected != null,
