@@ -55,12 +55,12 @@ public class CPlusChangeLog
         _config.Save();
     }
     private static void Add2_1_1_0(Changelog log)
-        => log.NextVersion("Version 2.1.1.0")
-        .RegisterEntry("Added button to export the entire profile as a single template. (by MBadea21)");
+        => log.NextVersion("版本 2.1.1.0")
+        .RegisterEntry("新增将整个角色配置导出为单一模板的按钮。（由 MBadea21 提供）");
 
     private static void Add2_1_0_0(Changelog log)
         => log.NextVersion("版本 2.1.0.0")
-        .RegisterImportant("Support for 7.4 and Dalamud API 14. (by Risa)");
+        .RegisterImportant("支持 7.4 和 Dalamud API 14.（由 Risa 提供）");
 
     private static void Add2_0_9_0(Changelog log)
         => log.NextVersion("版本 2.0.9.0")
