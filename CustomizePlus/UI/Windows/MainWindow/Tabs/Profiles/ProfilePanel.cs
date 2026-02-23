@@ -4,6 +4,8 @@ using Dalamud.Bindings.ImGui;
 using OtterGui;
 using OtterGui.Raii;
 using OtterGui.Extensions;
+using OtterGui.Log;
+using OtterGui.Text;
 using System;
 using System.Linq;
 using System.Numerics;
@@ -13,14 +15,11 @@ using CustomizePlus.Profiles.Data;
 using CustomizePlus.UI.Windows.Controls;
 using CustomizePlus.Templates;
 using CustomizePlus.Core.Data;
+using CustomizePlus.Core.Helpers;
 using CustomizePlus.Templates.Events;
 using Penumbra.GameData.Actors;
-using Penumbra.String;
-using static FFXIVClientStructs.FFXIV.Client.LayoutEngine.ILayoutInstance;
 using CustomizePlus.GameData.Extensions;
-using CustomizePlus.Core.Extensions;
 using Dalamud.Interface.Components;
-using OtterGui.Extensions;
 
 namespace CustomizePlus.UI.Windows.MainWindow.Tabs.Profiles;
 
@@ -34,6 +33,8 @@ public class ProfilePanel
     private readonly ActorAssignmentUi _actorAssignmentUi;
     private readonly ActorManager _actorManager;
     private readonly TemplateEditorEvent _templateEditorEvent;
+    private readonly PopupSystem _popupSystem;
+    private readonly Logger _logger;
 
     private string? _newName;
     private int? _newPriority;
@@ -54,7 +55,9 @@ public class ProfilePanel
         TemplateEditorManager templateEditorManager,
         ActorAssignmentUi actorAssignmentUi,
         ActorManager actorManager,
-        TemplateEditorEvent templateEditorEvent)
+        TemplateEditorEvent templateEditorEvent,
+        PopupSystem popupSystem,
+        Logger logger)
     {
         _selector = selector;
         _manager = manager;
@@ -64,6 +67,8 @@ public class ProfilePanel
         _actorAssignmentUi = actorAssignmentUi;
         _actorManager = actorManager;
         _templateEditorEvent = templateEditorEvent;
+        _popupSystem = popupSystem;
+        _logger = logger;
     }
 
     public void Draw()
@@ -97,9 +102,20 @@ public class ProfilePanel
                     OnClick = () => _manager.SetWriteProtection(_selector.Selected!, true)
                 };
 
+    private HeaderDrawer.Button ExportToClipboardButton()
+         => _selector.Selected == null
+        ? HeaderDrawer.Button.Invisible
+        :new HeaderDrawer.Button {
+            Description = "Copy the current profile combined into one template to your clipboard.",
+            Icon = FontAwesomeIcon.Copy,
+            OnClick = ExportToClipboard,
+            Visible = _selector.Selected != null,
+            Disabled = false
+        };
+
     private void DrawHeader()
         => HeaderDrawer.Draw(SelectionName, 0, ImGui.GetColorU32(ImGuiCol.FrameBg),
-            0, LockButton(),
+            1, ExportToClipboardButton(), LockButton(),
             HeaderDrawer.Button.IncognitoButton(_selector.IncognitoMode, v => _selector.IncognitoMode = v));
 
     private void DrawMultiSelection()
@@ -245,6 +261,20 @@ public class ProfilePanel
                 ImGuiComponents.HelpMarker("数值较高的配置文件优先于数值较低的配置文件。\n" +
                     "也就是说，如果两个或多个配置文件影响同一个角色，优先级较高的配置文件将应用于该角色。");
             }
+        }
+    }
+
+     private void ExportToClipboard()
+    {
+        try
+        {
+            ImUtf8.SetClipboardText(Base64Helper.ExportProfileToBase64(_selector.Selected!));
+            _popupSystem.ShowPopup(PopupSystem.Messages.ClipboardDataNotLongTerm);
+        }
+        catch (Exception ex)
+        {
+            _logger.Error($"Could not copy data from profile {_selector.Selected!.UniqueId} to clipboard: {ex}");
+            _popupSystem.ShowPopup(PopupSystem.Messages.ActionError);
         }
     }
 
