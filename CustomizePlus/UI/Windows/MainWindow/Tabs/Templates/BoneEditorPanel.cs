@@ -852,7 +852,7 @@ public class BoneEditorPanel
 
         ImGui.TableNextColumn();
 
-        if ((BoneData.IsIVCSCompatibleBone(codename) || boneFamily == BoneData.BoneFamily.未知 || boneFamily == BoneData.BoneFamily.摇晃 || boneFamily == BoneData.BoneFamily.Meowz)
+        if ((BoneData.IsIVCSCompatibleBone(codename) || boneFamily == BoneData.BoneFamily.未知 || boneFamily == BoneData.BoneFamily.摇晃 || boneFamily == BoneData.BoneFamily.自定义)
             && !codename.StartsWith("j_f_"))
         {
             ImGui.PushStyleColor(ImGuiCol.Text, Constants.Colors.Warning);
