@@ -52,7 +52,7 @@ public sealed class ReverseNameDicts(
         npcId = default;
         return kind switch
         {
-            ObjectKind.MountType => Mounts.TryGetValue(name, out npcId),
+            ObjectKind.Mount => Mounts.TryGetValue(name, out npcId),
             ObjectKind.Companion => Companions.TryGetValue(name, out npcId),
             ObjectKind.BattleNpc => BNpcs.TryGetValue(name, out npcId),
              ObjectKind.EventNpc => ENpcs.TryGetValue(name, out npcId),

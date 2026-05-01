@@ -101,7 +101,7 @@ public static class ActorIdentifierExtensions
                 _ => "（雇员）",
             }}",
             IdentifierType.Owned => $" ({identifier.Kind switch {
-                ObjectKind.MountType => "坐骑",
+                ObjectKind.Mount => "坐骑",
                 ObjectKind.Companion => "宠物",
                 ObjectKind.Ornament => "配饰",
                 _ => $"所属 {identifier.Kind}",
