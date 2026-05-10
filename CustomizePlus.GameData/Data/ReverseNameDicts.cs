@@ -1,6 +1,6 @@
 ﻿using CustomizePlus.GameData.ReverseSearchDictionaries;
 using Dalamud.Game.ClientState.Objects.Enums;
-using OtterGui.Services;
+using Luna;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 

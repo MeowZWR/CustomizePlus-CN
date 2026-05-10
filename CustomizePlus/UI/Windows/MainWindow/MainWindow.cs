@@ -2,57 +2,34 @@
 using CustomizePlus.Core.Helpers;
 using CustomizePlus.Core.Services;
 using CustomizePlus.Templates;
-using CustomizePlus.Templates.Data;
 using CustomizePlus.Templates.Events;
 using CustomizePlus.UI.Windows.Controls;
-using CustomizePlus.UI.Windows.MainWindow.Tabs;
-using CustomizePlus.UI.Windows.MainWindow.Tabs.Debug;
-using CustomizePlus.UI.Windows.MainWindow.Tabs.Profiles;
-using CustomizePlus.UI.Windows.MainWindow.Tabs.Templates;
-using Dalamud.Bindings.ImGui;
-using Dalamud.Interface.Colors;
-using Dalamud.Interface.Windowing;
-using Dalamud.Plugin;
-using ECommonsLite.ImGuiMethods;
 using ECommonsLite.Schedulers;
-using OtterGui.Raii;
-using System;
-using System.Numerics;
+using LunaWindow = Luna.Window;
+using WindowSizeConstraints = Dalamud.Interface.Windowing.WindowSizeConstraints;
 
 namespace CustomizePlus.UI.Windows.MainWindow;
 
-public class MainWindow : Window, IDisposable
+public class MainWindow : LunaWindow, IDisposable
 {
-    private readonly SettingsTab _settingsTab;
-    private readonly TemplatesTab _templatesTab;
-    private readonly ProfilesTab _profilesTab;
-    private readonly MessagesTab _messagesTab;
-    private readonly IPCTestTab _ipcTestTab;
-    private readonly StateMonitoringTab _stateMonitoringTab;
-
     private readonly PluginStateBlock _pluginStateBlock;
 
     private readonly TemplateEditorManager _templateEditorManager;
-    private readonly PluginConfiguration _configuration;
     private readonly HookingService _hookingService;
 
     private readonly TemplateEditorEvent _templateEditorEvent;
 
+    private readonly MainTabBar _mainTabBar;
+
     /// <summary>
     /// Used to force the main window to switch to specific tab
     /// </summary>
-    private string? _switchToTab = null;
+    private MainTabType? _switchToTab = null;
 
     private Action? _actionAfterTabSwitch = null;
 
     public MainWindow(
-        IDalamudPluginInterface pluginInterface,
-        SettingsTab settingsTab,
-        TemplatesTab templatesTab,
-        ProfilesTab profilesTab,
-        MessagesTab messagesTab,
-        IPCTestTab ipcTestTab,
-        StateMonitoringTab stateMonitoringTab,
+        MainTabBar mainTabBar,
         PluginStateBlock pluginStateBlock,
         TemplateEditorManager templateEditorManager,
         PluginConfiguration configuration,
@@ -60,17 +37,11 @@ public class MainWindow : Window, IDisposable
         TemplateEditorEvent templateEditorEvent
         ) : base($"Customize+ {VersionHelper.Version}-cn###CPlusMainWindow")
     {
-        _settingsTab = settingsTab;
-        _templatesTab = templatesTab;
-        _profilesTab = profilesTab;
-        _messagesTab = messagesTab;
-        _ipcTestTab = ipcTestTab;
-        _stateMonitoringTab = stateMonitoringTab;
+        _mainTabBar = mainTabBar;
 
         _pluginStateBlock = pluginStateBlock;
 
         _templateEditorManager = templateEditorManager;
-        _configuration = configuration;
         _hookingService = hookingService;
 
         _templateEditorEvent = templateEditorEvent;
@@ -80,10 +51,14 @@ public class MainWindow : Window, IDisposable
         SizeConstraints = new WindowSizeConstraints()
         {
             MinimumSize = new Vector2(700, 675),
-            MaximumSize = ImGui.GetIO().DisplaySize,
+            MaximumSize = Im.Viewport.Main.Size,
         };
 
         IsOpen = configuration.UISettings.OpenWindowAtStart;
+
+        //override some Luna settings
+        AllowClickthrough = true;
+        AllowPinning = true;
     }
 
     public void Dispose()
@@ -93,20 +68,19 @@ public class MainWindow : Window, IDisposable
 
     public override void Draw()
     {
-        var yPos = ImGui.GetCursorPosY();
+        var yPos = Im.Cursor.Position.Y - 5; //remember starting position to draw plugin state block in a proper place
 
-        using (var disabled = ImRaii.Disabled(_hookingService.RenderHookFailed || _hookingService.MovementHookFailed))
+        using (var disabled = Im.Disabled(_hookingService.RenderHookFailed || _hookingService.MovementHookFailed))
         {
             LockWindowClosureIfNeeded();
-            ImGuiEx.EzTabBar("##tabs", null, _switchToTab, [
-                ("插件设置", _settingsTab.Draw, null, true),
-                ("模板设计", _templatesTab.Draw, null, true),
-                ("角色配置", _profilesTab.Draw, null, true),
-                (_configuration.DebuggingModeEnabled ? "IPC测试" : null, _ipcTestTab.Draw, ImGuiColors.DalamudGrey, true),
-                (_configuration.DebuggingModeEnabled ? "状态监测" : null, _stateMonitoringTab.Draw, ImGuiColors.DalamudGrey, true),
-            ]);
 
-            _switchToTab = null;
+            if (_switchToTab != null)
+            {
+                _mainTabBar.NextTab = _switchToTab;
+                _switchToTab = null;
+            }
+
+            _mainTabBar.Draw();
 
             if (_actionAfterTabSwitch != null)
             {
@@ -115,14 +89,28 @@ public class MainWindow : Window, IDisposable
             }
         }
 
-        _pluginStateBlock.Draw(yPos);
+        _pluginStateBlock.Draw(yPos, CalculatePluginStateLeftEdge(_mainTabBar.Tabs));
     }
 
     public void OpenSettings()
     {
         IsOpen = true;
-        _switchToTab = "Settings";
+        _switchToTab = MainTabType.Settings;
     }
+
+    private static float CalculatePluginStateLeftEdge(IEnumerable<ITab> tabs)
+    {
+        var leftEdge = Im.Window.MinimumContentRegion.X;
+        foreach (var tab in tabs)
+        {
+            leftEdge += CalculateTabWidth(tab.Label);
+        }
+
+        return leftEdge + Im.Style.ItemSpacing.X;
+    }
+
+    private static float CalculateTabWidth(Utf8StringHandler<ImSharp.TextStringHandlerBuffer> label)
+        => Im.Font.CalculateSize(label, false).X + (2 * Im.Style.FramePadding.X) + Im.Style.ItemInnerSpacing.X;
 
     private void LockWindowClosureIfNeeded()
     {
@@ -138,8 +126,9 @@ public class MainWindow : Window, IDisposable
         }
     }
 
-    private void OnTemplateEditorEvent(TemplateEditorEvent.Type type, Template? template)
+    private void OnTemplateEditorEvent(in TemplateEditorEvent.Arguments args)
     {
+        var (type, template) = args;
         if (type != TemplateEditorEvent.Type.EditorEnableRequested)
             return;
 
@@ -150,11 +139,21 @@ public class MainWindow : Window, IDisposable
         {
             new TickScheduler(() =>
             {
-                _switchToTab = "模板设计";
+                _switchToTab = MainTabType.Templates;
 
                 //To make sure the tab has switched, ugly but imgui is shit and I don't trust it.
-                _actionAfterTabSwitch = () => { _templateEditorEvent.Invoke(TemplateEditorEvent.Type.EditorEnableRequestedStage2, template); };
+                _actionAfterTabSwitch = () => { _templateEditorEvent.Invoke(new TemplateEditorEvent.Arguments(TemplateEditorEvent.Type.EditorEnableRequestedStage2, template)); };
             });
         }
     }
+}
+
+public enum MainTabType
+{
+    None = -1,
+    Settings = 0,
+    Templates = 1,
+    Profiles = 2,
+    IPCTest = 3,
+    StateMonitoring = 4,
 }

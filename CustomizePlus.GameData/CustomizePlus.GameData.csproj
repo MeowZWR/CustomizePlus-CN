@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\submodules\Luna\Luna\Luna.csproj" />
     <ProjectReference Include="..\submodules\Penumbra.GameData\Penumbra.GameData.csproj" />
   </ItemGroup>
 

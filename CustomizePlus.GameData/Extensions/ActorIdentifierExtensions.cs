@@ -130,7 +130,7 @@ public static class ActorIdentifierExtensions
             case IdentifierType.Owned:
                 return
                     identifier.Kind == ObjectKind.BattleNpc ||
-                    //identifier.Kind == ObjectKind.MountType ||
+                    //identifier.Kind == ObjectKind.Mount ||
                     identifier.Kind == ObjectKind.Companion ||
                     identifier.Kind == ObjectKind.Ornament;
             default:

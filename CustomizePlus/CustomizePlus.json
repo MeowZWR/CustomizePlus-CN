@@ -6,8 +6,7 @@
 	"InternalName": "CustomizePlus",
 	"ApplicableVersion": "any",
 	"AssemblyVersion": "2.0.0.0",
-	"DalamudApiLevel": 15,
-	"TestingDalamudApiLevel": 15,
+	"RepoUrl": "https://github.com/Aether-Tools/CustomizePlus",
 	"Tags": [
 		"Anamnesis",
 		"Customization",

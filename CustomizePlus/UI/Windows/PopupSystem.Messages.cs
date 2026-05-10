@@ -1,6 +1,4 @@
-﻿using System.Numerics;
-
-namespace CustomizePlus.UI.Windows;
+﻿namespace CustomizePlus.UI.Windows;
 
 public partial class PopupSystem
 {
@@ -30,23 +28,23 @@ public partial class PopupSystem
 
     private void RegisterMessages()
     {
-        RegisterPopup(Messages.ActionError, "执行所选操作时出错。\n详细信息已打印到卫月日志（聊天命令为/xllog）。");
-        RegisterPopup(Messages.ActionDone, "操作成功执行。");
+        RegisterPopup(Messages.ActionError, "操作失败", "执行所选操作时出错。\n详细信息已打印到卫月日志（聊天命令为 /xllog）。");
+        RegisterPopup(Messages.ActionDone, "操作完成", "操作已成功执行。");
 
-        RegisterPopup(Messages.FantasiaPlusDetected, "Customize+检测到您安装了Fantasia+。\n请删除或关闭它后重新启动游戏，以继续使用Customize+.");
+        RegisterPopup(Messages.FantasiaPlusDetected, "检测到 Fantasia+", "Customize+ 检测到您已安装 Fantasia+。\n请删除或禁用该插件并重启游戏后再使用 Customize+。");
 
-        RegisterPopup(Messages.IPCProfileRemembered, "当前配置文件已复制到内存中。");
-        RegisterPopup(Messages.IPCGetProfileByIdRemembered, "GetProfileByUniqueId 结果已复制到内存中");
-        RegisterPopup(Messages.IPCSetProfileToChrDone, "SetProfileToCharacter 已使用内存中的数据调用， 配置文件ID已打印到日志");
-        RegisterPopup(Messages.IPCRevertDone, "DeleteTemporaryProfileByUniqueId 已调用回滚");
-        RegisterPopup(Messages.IPCCopiedToClipboard, "复制到剪贴板");
-        RegisterPopup(Messages.IPCSuccessfullyExecuted, "成功执行");
-        RegisterPopup(Messages.IPCEnableProfileByIdDone, "按ID启用配置文件已被调用");
-        RegisterPopup(Messages.IPCDisableProfileByIdDone, "按ID禁用配置文件已被调用");
+        RegisterPopup(Messages.IPCProfileRemembered, "配置文件已复制", "当前配置文件已复制到内存。");
+        RegisterPopup(Messages.IPCGetProfileByIdRemembered, "配置文件已复制", "GetProfileByUniqueId 的结果已复制到内存。");
+        RegisterPopup(Messages.IPCSetProfileToChrDone, "IPC 已执行", "已使用内存中的数据调用 SetProfileToCharacter；配置文件 ID 已写入日志。");
+        RegisterPopup(Messages.IPCRevertDone, "IPC 已执行", "已调用 DeleteTemporaryProfileByUniqueId 进行回滚。");
+        RegisterPopup(Messages.IPCCopiedToClipboard, "已复制", "已复制到剪贴板。");
+        RegisterPopup(Messages.IPCSuccessfullyExecuted, "IPC 已执行", "已成功执行。");
+        RegisterPopup(Messages.IPCEnableProfileByIdDone, "IPC 已执行", "已调用按 ID 启用配置文件。");
+        RegisterPopup(Messages.IPCDisableProfileByIdDone, "IPC 已执行", "已调用按 ID 禁用配置文件。");
 
-        RegisterPopup(Messages.TemplateEditorActiveWarning, "执行此操作之前，您需要结束骨骼编辑");
-        RegisterPopup(Messages.ClipboardDataUnsupported, "无法在此版本的Customize+中使用此剪贴板数据。");
+        RegisterPopup(Messages.TemplateEditorActiveWarning, "骨骼编辑进行中", "请先结束骨骼编辑后再执行此操作。");
+        RegisterPopup(Messages.ClipboardDataUnsupported, "不支持的剪贴板数据", "您尝试使用的剪贴板数据无法在此版本的 Customize+ 中使用。");
 
-        RegisterPopup(Messages.ClipboardDataNotLongTerm, "警告：剪贴板数据不是用来长期存储模板的。\n不保证复制的数据在不同的Customize+版本之间的兼容性。", true, new Vector2(5, 10));
+        RegisterPopup(Messages.ClipboardDataNotLongTerm, "剪贴板警告", "剪贴板数据并非用于长期保存模板。\n无法保证不同 Customize+ 版本之间复制数据的兼容性。", true, new Vector2(5, 10));
     }
 }

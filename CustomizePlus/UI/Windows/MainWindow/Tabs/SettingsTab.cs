@@ -3,21 +3,15 @@ using CustomizePlus.Configuration.Data;
 using CustomizePlus.Core.Helpers;
 using CustomizePlus.Core.Services;
 using CustomizePlus.Templates;
-using Dalamud.Bindings.ImGui;
 using Dalamud.Interface;
 using Dalamud.Interface.ImGuiNotification;
 using Dalamud.Interface.Utility;
 using Dalamud.Plugin;
-using OtterGui;
-using OtterGui.Classes;
-using OtterGui.Raii;
-using OtterGui.Widgets;
-using System.Diagnostics;
-using System.Numerics;
+using Dalamud.Utility;
 
 namespace CustomizePlus.UI.Windows.MainWindow.Tabs;
 
-public class SettingsTab
+public class SettingsTab : ITab<MainTabType>
 {
     private const uint DiscordColor = 0xFFDA8972;
     private const uint DonateColor = 0xFF5B5EFF;
@@ -54,21 +48,27 @@ public class SettingsTab
         _pcpService = pcpService;
     }
 
-    public void Draw()
+    public ReadOnlySpan<byte> Label
+        => "Settings"u8;
+
+    public MainTabType Identifier
+        => MainTabType.Settings;
+
+    public void DrawContent()
     {
         UiHelpers.SetupCommonSizes();
-        using var child = ImRaii.Child("MainWindowChild");
+        using var child = Im.Child.Begin("MainWindowChild"u8);
         if (!child)
             return;
 
         DrawGeneralSettings();
 
-        ImGui.NewLine();
-        ImGui.NewLine();
-        ImGui.NewLine();
-        ImGui.NewLine();
+        Im.Line.New();
+        Im.Line.New();
+        Im.Line.New();
+        Im.Line.New();
 
-        using (var child2 = ImRaii.Child("SettingsChild"))
+        using (var child2 = Im.Child.Begin("SettingsChild"u8))
         {
             DrawProfileApplicationSettings();
             DrawInterface();
@@ -89,7 +89,7 @@ public class SettingsTab
 
     private void DrawPluginEnabledCheckbox()
     {
-        using (var disabled = ImRaii.Disabled(_templateEditorManager.IsEditorActive))
+        using (var disabled = Im.Disabled(_templateEditorManager.IsEditorActive))
         {
             var isChecked = _configuration.PluginEnabled;
 
@@ -108,7 +108,7 @@ public class SettingsTab
     #region Profile application settings
     private void DrawProfileApplicationSettings()
     {
-        var isShouldDraw = ImGui.CollapsingHeader("配置应用");
+        var isShouldDraw = Im.Tree.Header("配置应用"u8);
 
         if (!isShouldDraw)
             return;
@@ -189,7 +189,7 @@ public class SettingsTab
     #region Chat Commands Settings
     private void DrawCommands()
     {
-        var isShouldDraw = ImGui.CollapsingHeader("聊天命令");
+        var isShouldDraw = Im.Tree.Header("聊天命令"u8);
 
         if (!isShouldDraw)
             return;
@@ -214,7 +214,7 @@ public class SettingsTab
 
     private void DrawInterface()
     {
-        var isShouldDraw = ImGui.CollapsingHeader("界面设置");
+        var isShouldDraw = Im.Tree.Header("界面设置"u8);
 
         if (!isShouldDraw)
             return;
@@ -234,9 +234,9 @@ public class SettingsTab
 
         UiHelpers.DefaultLineSpace();
 
-        if (Widget.DoubleModifierSelector("模板删除组合键",
+        if (KeySelector.DoubleModifier("模板删除组合键"u8,
             "单击“删除模板”按钮时需要按住此组合键才能生效。", 100 * ImGuiHelpers.GlobalScale,
-            _configuration.UISettings.DeleteTemplateModifier, v => _configuration.UISettings.DeleteTemplateModifier = v))
+            _configuration.UISettings.DeleteModifier, v => _configuration.UISettings.DeleteModifier = v))
             _configuration.Save();
     }
 
@@ -323,7 +323,7 @@ public class SettingsTab
 
     private void DrawExternal()
     {
-        var isShouldDraw = ImGui.CollapsingHeader("Integrations");
+        var isShouldDraw = Im.Tree.Header("Integrations"u8);
 
         if (!isShouldDraw)
             return;
@@ -350,15 +350,15 @@ public class SettingsTab
     // Advanced Settings
     private void DrawAdvancedSettings()
     {
-        var isShouldDraw = ImGui.CollapsingHeader("高级设置");
+        var isShouldDraw = Im.Tree.Header("高级设置"u8);
 
         if (!isShouldDraw)
             return;
 
-        ImGui.NewLine();
+        Im.Line.New();
         CtrlHelper.LabelWithIcon(FontAwesomeIcon.ExclamationTriangle,
             "这里是高级设置。启用它们请自负风险。");
-        ImGui.NewLine();
+        Im.Line.New();
 
         DrawEnableRootPositionCheckbox();
         DrawDebugModeCheckbox();
@@ -391,52 +391,48 @@ public class SettingsTab
     #region Support Area
     private void DrawSupportButtons()
     {
-        var width = ImGui.CalcTextSize("复制支持信息到剪贴板。").X + (ImGui.GetStyle().FramePadding.X * 2);
-        var xPos = ImGui.GetWindowWidth() - width;
+        var width = Im.Font.CalculateSize("复制支持信息到剪贴板。"u8).X + Im.Style.FramePadding.X * 2;
+        var xPos = Im.Window.Width - width;
         // Respect the scroll bar width.
-        if (ImGui.GetScrollMaxY() > 0)
-            xPos -= ImGui.GetStyle().ScrollbarSize + ImGui.GetStyle().FramePadding.X;
+        if (Im.Scroll.MaximumY > 0)
+            xPos -= Im.Style.ScrollbarSize + Im.Style.FramePadding.X;
 
-        ImGui.SetCursorPos(new Vector2(xPos, 0));
+        Im.Cursor.Position = new Vector2(xPos, 0);
         DrawUrlButton("加入Discord寻求支持", "https://discord.gg/KvGJCCnG8t", DiscordColor, width,
             "加入由社区志愿者运营的Discord服务器，他们可以解答您的问题。将在浏览器中打开：https://discord.gg/KvGJCCnG8t");
 
-        ImGui.SetCursorPos(new Vector2(xPos, ImGui.GetFrameHeightWithSpacing()));
+        Im.Cursor.Position = new Vector2(xPos, Im.Style.FrameHeightWithSpacing);
         DrawUrlButton("通过 Ko-fi 支持开发者", "https://ko-fi.com/risadev", DonateColor, width,
             "所有捐赠均为自愿行为，将被视为对Customize+开发工作的感谢。将在浏览器中打开：https://ko-fi.com/risadev");
 
-        ImGui.SetCursorPos(new Vector2(xPos, 2 * ImGui.GetFrameHeightWithSpacing()));
-        if (ImGui.Button("复制支持信息到剪贴板"))
+        Im.Cursor.Position = new Vector2(xPos, 2 * Im.Style.FrameHeightWithSpacing);
+        if (Im.Button("复制支持信息到剪贴板"u8))
         {
             var text = _supportLogBuilderService.BuildSupportLog();
-            ImGui.SetClipboardText(text);
+            Im.Clipboard.Set(text);
             _messageService.NotificationMessage($"复制支持信息到剪贴板。", NotificationType.Success, false);
         }
 
-        ImGui.SetCursorPos(new Vector2(xPos, 3 * ImGui.GetFrameHeightWithSpacing()));
-        if (ImGui.Button("显示更新日志", new Vector2(width, 0)))
+        Im.Cursor.Position = new Vector2(xPos, 3 * Im.Style.FrameHeightWithSpacing);
+        if (Im.Button("显示更新日志"u8, new Vector2(width, 0)))
             _changeLog.Changelog.ForceOpen = true;
     }
 
     /// <summary> Draw a button to open some url. </summary>
     private void DrawUrlButton(string text, string url, uint buttonColor, float width, string? description = null)
     {
-        using var color = ImRaii.PushColor(ImGuiCol.Button, buttonColor);
-        if (ImGui.Button(text, new Vector2(width, 0)))
+        using var color = ImGuiColor.Button.Push(buttonColor);
+        if (Im.Button(text, new Vector2(width, 0)))
             try
             {
-                var process = new ProcessStartInfo(url)
-                {
-                    UseShellExecute = true,
-                };
-                Process.Start(process);
+                Util.OpenLink(url);
             }
             catch
             {
                 _messageService.NotificationMessage($"无法打开 URL:{url}.", NotificationType.Error, false);
             }
 
-        ImGuiUtil.HoverTooltip(description ?? $"打开 {url}");
+        UiHelpers.DrawHoverTooltip(description ?? $"打开 {url}");
     }
     #endregion
 }
