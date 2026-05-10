@@ -646,7 +646,7 @@ public class BoneEditorPanel
         var output = DrawIconButton(
             id,
             icon,
-            $"Apply '{BoneData.GetBoneDisplayName(bone.BoneCodeName)}' transformations to its child bones");
+            $"将“{BoneData.GetBoneDisplayName(bone.BoneCodeName)}”的变换应用于其子骨骼");
 
         if (output)
             enabled = !enabled;
@@ -665,7 +665,7 @@ public class BoneEditorPanel
         var output = DrawIconButton(
             id,
             icon,
-            $"Toggle favorite on '{BoneData.GetBoneDisplayName(bone.BoneCodeName)}' bone");
+            $"切换“{BoneData.GetBoneDisplayName(bone.BoneCodeName)}”骨骼的收藏状态");
 
         if (output)
         {
@@ -691,15 +691,15 @@ public class BoneEditorPanel
     {
         Im.Table.NextRow(TableRowFlags.Headers);
 
-        DrawHeaderCell("Bones");
+        DrawHeaderCell("骨骼");
         DrawHeaderCell(col1Label, AxisXHeaderColor);
         DrawHeaderCell(col2Label, AxisYHeaderColor);
         DrawHeaderCell(col3Label, AxisZHeaderColor);
 
         if (showAllColumn)
-            DrawHeaderCell("All");
+            DrawHeaderCell("全部");
 
-        DrawHeaderCell("Name");
+        DrawHeaderCell("名称");
     }
 
     private static void DrawHeaderCell(string label, Vector4? color = null)

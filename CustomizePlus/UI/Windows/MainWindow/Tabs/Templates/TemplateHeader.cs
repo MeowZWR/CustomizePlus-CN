@@ -13,8 +13,8 @@ public sealed class TemplateHeader : SplitButtonHeader, IDisposable
     private readonly TemplateChanged _templateChanged;
     private readonly PluginConfiguration _config;
 
-    private StringU8 _header = new("No Selection"u8);
-    private StringU8 _incognito = new("No Selection"u8);
+    private StringU8 _header = new("未选中"u8);
+    private StringU8 _incognito = new("未选中"u8);
 
     public TemplateHeader(
         TemplateFileSystem fileSystem,
@@ -58,12 +58,12 @@ public sealed class TemplateHeader : SplitButtonHeader, IDisposable
         }
         else if (_fileSystem.Selection.OrderedNodes.Count > 0)
         {
-            _header = new StringU8($"{_fileSystem.Selection.OrderedNodes.Count} Objects Selected");
+            _header = new StringU8($"{_fileSystem.Selection.OrderedNodes.Count} 对象已选中");
             _incognito = _header;
         }
         else
         {
-            _header = new StringU8("No Selection"u8);
+            _header = new StringU8("未选中"u8);
             _incognito = _header;
         }
     }
@@ -91,8 +91,8 @@ public sealed class TemplateHeader : SplitButtonHeader, IDisposable
 
         public override void DrawTooltip()
             => Im.Text(((Template)fileSystem.Selection.Selection!.Value).IsWriteProtected
-                ? "Make this template editable."u8
-                : "Write-protect this template."u8);
+                ? "使此模板可编辑。"u8
+                : "锁定此模板。"u8);
 
         public override void OnClick()
             => manager.SetWriteProtection((Template)fileSystem.Selection.Selection!.Value,

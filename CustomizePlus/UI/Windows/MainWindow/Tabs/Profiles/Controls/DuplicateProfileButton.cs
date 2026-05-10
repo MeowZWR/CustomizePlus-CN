@@ -19,7 +19,7 @@ public sealed class DuplicateProfileButton(
         => fileSystem.Selection.Selection is not null;
 
     public override void DrawTooltip()
-        => Im.Text(fileSystem.Selection.Selection is null ? "No profile selected."u8 : "Clone the currently selected profile to a duplicate."u8);
+        => Im.Text(fileSystem.Selection.Selection is null ? "未选中配置文件。"u8 : "复制当前选中的配置文件到新配置文件。"u8);
 
     public override void OnClick()
     {

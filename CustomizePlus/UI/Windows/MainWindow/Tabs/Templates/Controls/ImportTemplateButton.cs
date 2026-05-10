@@ -22,7 +22,7 @@ public sealed class ImportTemplateButton(
         => true;
 
     public override void DrawTooltip()
-        => Im.Text("Try to import a design from your clipboard."u8);
+        => Im.Text("尝试从剪贴板导入设计。"u8);
 
     public override void OnClick()
     {
@@ -71,7 +71,7 @@ public sealed class ImportTemplateButton(
         }
         catch (Exception ex)
         {
-            Logger.GlobalPluginLogger.Error($"Error while performing clipboard/clone/create template action: {ex}");
+            Logger.GlobalPluginLogger.Error($"剪贴板/复制/创建模板操作时出错：{ex}");
             popupSystem.ShowPopup(PopupSystem.Messages.ActionError);
         }
         finally
@@ -102,7 +102,7 @@ public sealed class ImportTemplateButton(
         if (profile != null)
         {
             if (profile.ConfigVersion != 3)
-                throw new Exception("Incompatible profile version");
+                throw new Exception("不兼容的配置文件版本");
 
             (var _, var template) = V3ProfileToV4Converter.Convert(profile);
 

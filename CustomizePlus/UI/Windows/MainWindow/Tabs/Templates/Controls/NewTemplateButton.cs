@@ -15,7 +15,7 @@ public sealed class NewTemplateButton(
         => true;
 
     public override void DrawTooltip()
-        => Im.Text("Create a new template with default configuration."u8);
+        => Im.Text("新建一个具有默认配置的模板。"u8);
 
     public override void OnClick()
     {

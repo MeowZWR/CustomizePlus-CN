@@ -24,7 +24,7 @@ public sealed class AnamnesisImportButton(
         => true;
 
     public override void DrawTooltip()
-        => Im.Text("Import a template from anamnesis pose file (scaling only)"u8);
+        => Im.Text("从 Anamnesis 姿势文件导入模板（仅缩放）"u8);
 
     public override void OnClick()
     {
@@ -34,7 +34,7 @@ public sealed class AnamnesisImportButton(
             return;
         }
 
-        fileDialogManager.OpenFileDialog("Import Pose File", ".pose", (isSuccess, path) =>
+        fileDialogManager.OpenFileDialog("导入姿势文件", ".pose", (isSuccess, path) =>
         {
             if (isSuccess)
             {
@@ -48,7 +48,7 @@ public sealed class AnamnesisImportButton(
                 {
                     if (bones.Count == 0)
                     {
-                        messageService.NotificationMessage("Selected anamnesis pose file doesn't contain any scaled bones", NotificationType.Error);
+                        messageService.NotificationMessage("选中的 Anamnesis 姿势文件不包含任何缩放骨骼", NotificationType.Error);
                         return;
                     }
 
@@ -57,12 +57,12 @@ public sealed class AnamnesisImportButton(
                 else
                 {
                     messageService.NotificationMessage(
-                        $"Error parsing anamnesis pose file at '{path}'", NotificationType.Error);
+                        $"解析 Anamnesis 姿势文件时出错：'{path}'", NotificationType.Error);
                 }
             }
             else
             {
-                Logger.GlobalPluginLogger.Debug(isSuccess + " NO valid file has been selected. " + path);
+                Logger.GlobalPluginLogger.Debug(isSuccess + " 未选择有效文件。" + path);
             }
         }, 1, null, true);
     }

@@ -49,7 +49,7 @@ public class SettingsTab : ITab<MainTabType>
     }
 
     public ReadOnlySpan<byte> Label
-        => "Settings"u8;
+        => "插件设置"u8;
 
     public MainTabType Identifier
         => MainTabType.Settings;
@@ -323,7 +323,7 @@ public class SettingsTab : ITab<MainTabType>
 
     private void DrawExternal()
     {
-        var isShouldDraw = Im.Tree.Header("Integrations"u8);
+        var isShouldDraw = Im.Tree.Header("插件集成"u8);
 
         if (!isShouldDraw)
             return;

@@ -75,7 +75,7 @@ public sealed class TemplateFileSystemDrawer : FileSystemDrawer<TemplateFileSyst
         => ISortMode.Valid.Values;
 
     public override ReadOnlySpan<byte> Id
-        => "Templates"u8;
+        => "模板预设"u8;
 
     protected override FileSystemCache<TemplateFileSystemCache.TemplateData> CreateCache()
         => new TemplateFileSystemCache(this);

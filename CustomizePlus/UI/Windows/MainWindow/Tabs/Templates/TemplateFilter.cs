@@ -20,22 +20,22 @@ public sealed class TemplateFilter : TokenizedFilter<TemplateFilterTokenType, Te
 
         using var tt = Im.Tooltip.Begin();
         var highlightColor = ColorId.EnabledProfile.Value().ToVector();
-        Im.Text("Filter templates for those where their full paths or names contain the given strings, split by spaces."u8);
-        ImEx.TextMultiColored("Enter "u8).Then("n:[string]"u8, highlightColor).Then(" to filter only for templates names, ignoring the paths."u8)
+        Im.Text("按空格分隔多个字符串，筛选完整路径或名称中包含这些字符串的模板。"u8);
+        ImEx.TextMultiColored("输入 "u8).Then("n:[string]"u8, highlightColor).Then(" 可仅按模板名称筛选，忽略路径。"u8)
             .End();
-        ImEx.TextMultiColored("Enter "u8).Then("f:[string]"u8, highlightColor).Then(
-                " to filter for templates containing the text in name or path."u8)
+        ImEx.TextMultiColored("输入 "u8).Then("f:[string]"u8, highlightColor).Then(
+                " 可筛选名称或路径中包含该文字的模板。"u8)
             .End();
         Im.Line.New();
-        ImEx.TextMultiColored("Use "u8).Then("None"u8, highlightColor).Then(" as a placeholder value that only matches empty lists or names."u8)
+        ImEx.TextMultiColored("使用 "u8).Then("None"u8, highlightColor).Then(" 作为占位符，仅匹配空列表或空名称。"u8)
             .End();
-        Im.Text("Regularly, a template has to match all supplied criteria separately."u8);
-        ImEx.TextMultiColored("Put a "u8).Then("'-'"u8, highlightColor)
-            .Then(" in front of a search token to search only for template not matching the criterion."u8).End();
-        ImEx.TextMultiColored("Put a "u8).Then("'?'"u8, highlightColor)
-            .Then(" in front of a search token to search for template matching at least one of the '?'-criteria."u8).End();
-        ImEx.TextMultiColored("Wrap spaces in "u8).Then("\"[string with space]\""u8, highlightColor)
-            .Then(" to match this exact combination of words."u8).End();
+        Im.Text("通常情况下，模板必须分别满足所有给定条件。"u8);
+        ImEx.TextMultiColored("在搜索词前加 "u8).Then("'-'"u8, highlightColor)
+            .Then("，仅查找不满足该条件的模板。"u8).End();
+        ImEx.TextMultiColored("在搜索词前加 "u8).Then("'?'"u8, highlightColor)
+            .Then("，查找至少满足任一“?”条件的模板。"u8).End();
+        ImEx.TextMultiColored("用 "u8).Then("\"[string with space]\""u8, highlightColor)
+            .Then(" 包裹含空格的内容，以匹配这组词的精确组合。"u8).End();
     }
 
     protected override bool Matches(in TemplateFilterToken token, in TemplateFileSystemCache.TemplateData cacheItem)

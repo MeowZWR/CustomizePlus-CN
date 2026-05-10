@@ -1,4 +1,4 @@
-using CustomizePlus.Configuration.Data;
+﻿using CustomizePlus.Configuration.Data;
 using CustomizePlus.Templates;
 
 namespace CustomizePlus.UI.Windows.MainWindow.Tabs.Profiles;
@@ -28,7 +28,7 @@ public class ProfilesTab : TwoPanelLayout, ITab<MainTabType>
     }
 
     public override ReadOnlySpan<byte> Label
-        => "Profiles"u8;
+        => "角色配置"u8;
 
     public MainTabType Identifier
         => MainTabType.Profiles;

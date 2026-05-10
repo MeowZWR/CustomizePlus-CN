@@ -21,7 +21,7 @@ public sealed class DuplicateTemplateButton(
         => fileSystem.Selection.Selection is not null;
 
     public override void DrawTooltip()
-        => Im.Text(fileSystem.Selection.Selection is null ? "No template selected."u8 : "Clone the currently selected template to a duplicate."u8);
+        => Im.Text(fileSystem.Selection.Selection is null ? "未选中模板。"u8 : "复制当前选中的模板到新模板。"u8);
 
     public override void OnClick()
     {

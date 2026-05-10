@@ -11,7 +11,7 @@ public sealed class NewProfileButton(ProfileManager profileManager) : BaseIconBu
         => true;
 
     public override void DrawTooltip()
-        => Im.Text("Create a new profile with default configuration."u8);
+        => Im.Text("新建一个具有默认配置的配置文件。"u8);
 
     public override void OnClick()
     {

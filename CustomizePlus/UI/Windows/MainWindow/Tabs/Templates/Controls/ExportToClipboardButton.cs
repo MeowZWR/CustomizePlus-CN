@@ -16,7 +16,7 @@ public sealed class ExportToClipboardButton(TemplateFileSystem fileSystem, Popup
         => true;
 
     public override void DrawTooltip()
-        => Im.Text("Copy the current template to your clipboard."u8);
+        => Im.Text("复制当前模板到剪贴板。"u8);
 
     public override void OnClick()
     {
@@ -30,7 +30,7 @@ public sealed class ExportToClipboardButton(TemplateFileSystem fileSystem, Popup
         }
         catch (Exception ex)
         {
-            CustomizePlus.Logger.Error($"Could not copy data from template {template.UniqueId} to clipboard: {ex}");
+            CustomizePlus.Logger.Error($"无法从模板 {template.UniqueId} 复制数据到剪贴板：{ex}");
             popupSystem.ShowPopup(PopupSystem.Messages.ActionError);
         }
     }

@@ -1,4 +1,4 @@
-using CustomizePlus.Configuration.Data;
+﻿using CustomizePlus.Configuration.Data;
 using CustomizePlus.Templates;
 
 namespace CustomizePlus.UI.Windows.MainWindow.Tabs.Templates;
@@ -28,7 +28,7 @@ public class TemplatesTab : TwoPanelLayout, ITab<MainTabType>
     }
 
     public override ReadOnlySpan<byte> Label
-        => "Templates"u8;
+        => "模板预设"u8;
 
     public MainTabType Identifier
         => MainTabType.Templates;

@@ -14,7 +14,7 @@ public sealed class IncognitoButton(PluginConfiguration config) : BaseIconButton
 
     public override void DrawTooltip()
     {
-        Im.Text(config.UISettings.IncognitoMode ? "Toggle incognito mode off."u8 : "Toggle incognito mode on."u8);
+        Im.Text(config.UISettings.IncognitoMode ? "关闭匿名模式。"u8 : "启用匿名模式。"u8);
     }
 
     public override void OnClick()

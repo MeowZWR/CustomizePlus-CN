@@ -26,10 +26,10 @@ public sealed class DeleteTemplateButton(
         var modifier = Enabled;
 
         Im.Text(anySelected
-            ? "Delete the currently selected templates entirely from your drive\nThis can not be undone."u8
-            : "No templates selected."u8);
+            ? "从您的驱动器中完全删除当前选中的模板\n此操作无法撤销。"u8
+            : "未选中模板。"u8);
         if (!modifier)
-            Im.Text($"\nHold {config.UISettings.DeleteModifier} while clicking to delete the templates.");
+            Im.Text($"\n按住 {config.UISettings.DeleteModifier} 单击以删除模板。");
     }
 
     /// <inheritdoc/>
