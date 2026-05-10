@@ -1,7 +1,3 @@
-[submodule "submodules/OtterGui"]
-	path = submodules/OtterGui
-	url = https://github.com/MeowZWR/OtterGui.git
-	branch = cn
 [submodule "submodules/Penumbra.GameData"]
 	path = submodules/Penumbra.GameData
 	url = https://github.com/MeowZWR/Penumbra.GameData
@@ -9,7 +5,7 @@
 [submodule "submodules/Penumbra.Api"]
 	path = submodules/Penumbra.Api
 	url = https://github.com/MeowZWR/Penumbra.Api.git
-	branch = cn-temp
+	branch = cn
 [submodule "submodules/Penumbra.String"]
 	path = submodules/Penumbra.String
 	url = https://github.com/MeowZWR/Penumbra.String.git
@@ -17,4 +13,8 @@
 [submodule "submodules/ECommonsLite"]
 	path = submodules/ECommonsLite
 	url = https://github.com/MeowZWR/ECommonsLite.git
+	branch = main
+[submodule "submodules/Luna"]
+	path = submodules/Luna
+	url = https://github.com/MeowZWR/Luna.git
 	branch = main
