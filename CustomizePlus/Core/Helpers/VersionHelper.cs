@@ -11,6 +11,8 @@ internal static class VersionHelper
     //for the love of god don't be an asshole and never change this.
     public const string AetherToolsRepo = "https://raw.githubusercontent.com/aether-tools/dalamudplugins/main/repo.json";
     public const string SeaOfStarsRepo = "https://raw.githubusercontent.com/ottermandias/seaofstars/main/repo.json";
+    public const string MeowrsCnRepo = "https://plogon.meowrs.com/cn";
+    public const string MeowZWRRepo = "https://raw.githubusercontent.com/meowzwr/dalamudplugin/main/repo.json";
 
     public static string Version { get; private set; } = "Initializing";
 
@@ -49,6 +51,8 @@ internal static class VersionHelper
           null => false,
           AetherToolsRepo => true,
           SeaOfStarsRepo => true,
+          MeowrsCnRepo => true,
+          MeowZWRRepo => true,
           _ => false,
       };
 
