@@ -1,3 +1,4 @@
+using CustomizePlus.Core.Data;
 using CustomizePlus.Profiles.Data;
 using CustomizePlus.Profiles.Events;
 using CustomizePlus.Templates.Data;
@@ -27,17 +28,17 @@ public partial class ProfileManager : IDisposable
 
         Profiles.Clear();
         List<(Profile, string)> invalidNames = new();
-        foreach (var file in _saveService.FileNames.Profiles())
+        foreach (var filename in _saveService.FileNames.Profiles()) //todo: 26/09/08 this is not in line with glamourer implementation, see DesignManager in glamourer.
         {
-            _logger.Debug($"Reading profile {file.FullName}");
+            _logger.Debug($"Reading profile {filename}");
 
             try
             {
-                var text = File.ReadAllText(file.FullName);
+                var text = File.ReadAllText(filename);
                 var data = JObject.Parse(text);
                 var profile = LoadIndividualProfile(data);
-                if (profile.UniqueId.ToString() != Path.GetFileNameWithoutExtension(file.Name))
-                    invalidNames.Add((profile, file.FullName));
+                if (profile.UniqueId.ToString() != Path.GetFileNameWithoutExtension(filename))
+                    invalidNames.Add((profile, filename));
                 if (Profiles.Any(f => f.UniqueId == profile.UniqueId))
                     throw new Exception($"ID {profile.UniqueId} was not unique.");
 
@@ -82,6 +83,7 @@ public partial class ProfileManager : IDisposable
             //Ignore everything below v4
             4 => LoadV4(obj),
             5 or 6 => LoadV6(obj),
+            7 => LoadV7(obj),
             _ => throw new Exception("The profile to be loaded has no valid Version."),
         };
     }
@@ -125,6 +127,15 @@ public partial class ProfileManager : IDisposable
             _logger.Debug($"已将配置文件 \"{profile.Name}\" 升级到 V5: {characterName} -> {profile.Characters[0]}。保存已排队。");
             _saveService.QueueSave(profile);
         }
+
+        return profile;
+    }
+
+    private Profile LoadV7(JObject obj)
+    {
+        var profile = LoadV6(obj);
+
+        profile.Source = obj["Source"]?.ToObject<DataSource>() ?? throw new ArgumentNullException("Source");
 
         return profile;
     }

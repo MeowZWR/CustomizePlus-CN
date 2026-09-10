@@ -49,16 +49,16 @@ public class TemplateManager : IDisposable
 
         _templates.Clear();
         List<(Template, string)> invalidNames = new();
-        foreach (var file in _saveService.FileNames.Templates())
+        foreach (var filename in _saveService.FileNames.Templates()) //todo: 26/09/08 this is not in line with glamourer implementation, see DesignManager in glamourer.
         {
-            _logger.Debug($"Reading template {file.FullName}");
+            _logger.Debug($"Reading template {filename}");
             try
             {
-                var text = File.ReadAllText(file.FullName);
+                var text = File.ReadAllText(filename);
                 var data = JObject.Parse(text);
                 var template = Template.Load(data);
-                if (template.UniqueId.ToString() != Path.GetFileNameWithoutExtension(file.Name))
-                    invalidNames.Add((template, file.FullName));
+                if (template.UniqueId.ToString() != Path.GetFileNameWithoutExtension(filename))
+                    invalidNames.Add((template, filename));
                 if (_templates.Any(f => f.UniqueId == template.UniqueId))
                     throw new Exception($"ID {template.UniqueId} was not unique.");
 
@@ -257,6 +257,17 @@ public class TemplateManager : IDisposable
         return true;
     }
 
+    /// <summary>
+    /// Set template's source and save
+    /// </summary>
+    internal void SetSource(Template template, DataSource source)
+    {
+        if (template.Source == source)
+            return;
+
+        SaveTemplate(template, source);
+    }
+
     private void DeleteBoneTransform(Template template, string boneName)
     {
         if (!template.Bones.ContainsKey(boneName))
@@ -279,9 +290,12 @@ public class TemplateManager : IDisposable
         }
     }
 
-    private void SaveTemplate(Template template)
+    private void SaveTemplate(Template template, DataSource source = DataSource.User)
     {
         PruneUneditedBones(template);
+
+        if (template.Source != source)
+            template.Source = source;
 
         template.ModifiedDate = DateTimeOffset.UtcNow;
         _saveService.QueueSave(template);

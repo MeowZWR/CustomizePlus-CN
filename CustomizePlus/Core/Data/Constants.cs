@@ -12,6 +12,16 @@ internal static class Constants
     public const int ConfigurationVersion = 6;
 
     /// <summary>
+    /// Version of the profile files, when increased new loading/saving code should be implemented.
+    /// </summary>
+    public const int ProfileVersion = 6;
+
+    /// <summary>
+    /// Version of the template files, when increased new loading/saving code should be implemented.
+    /// </summary>
+    public const int TemplateVersion = 7;
+
+    /// <summary>
     /// The name of the root bone.
     /// </summary>
     public const string RootBoneName = "n_root";
@@ -25,12 +35,6 @@ internal static class Constants
     /// Maximum allowed value for any of the vector values.
     /// </summary>
     public const int MaxVectorValueLimit = 512;
-
-    /// <summary>
-    /// Predicate function for determining if the given object table index represents an
-    /// NPC in a busy area (i.e. there are ~245 other objects already).
-    /// </summary>
-    public static bool IsInObjectTableBusyNPCRange(int index) => index > 245;
 
     /// <summary>
     /// A "null" havok vector. Since the type isn't inherently nullable, and the default value (0, 0, 0, 0)

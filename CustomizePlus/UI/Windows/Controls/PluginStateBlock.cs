@@ -78,7 +78,7 @@ public class PluginStateBlock
         else if (_pcpService.IsEnabled && !_pcpService.IsPenumbraAvailable)
         {
             severity = PluginStateSeverity.Error;
-            message = "Unable to connect to Penumbra. PCP integration will not function.";
+            message = "无法连接到 Penumbra。PCP 集成将无法使用。";
         }
         else if (VersionHelper.IsTesting)
         {

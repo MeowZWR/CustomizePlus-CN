@@ -15,6 +15,7 @@ public class SettingsTab : ITab<MainTabType>
 {
     private const uint DiscordColor = 0xFFDA8972;
     private const uint DonateColor = 0xFF5B5EFF;
+    private const uint DeleteColor = 0xFF0000FF;
 
     private readonly IDalamudPluginInterface _pluginInterface;
     private readonly PluginConfiguration _configuration;
@@ -328,10 +329,10 @@ public class SettingsTab : ITab<MainTabType>
         if (!isShouldDraw)
             return;
 
-        DrawHandlePCP();
+        DrawPenumbraIntegrationSettings();
     }
 
-    private void DrawHandlePCP()
+    public void DrawPenumbraIntegrationSettings()
     {
         var isChecked = _configuration.IntegrationSettings.PenumbraPCPIntegrationEnabled;
 
@@ -342,6 +343,17 @@ public class SettingsTab : ITab<MainTabType>
             _pcpService.SetEnabled(isChecked);
             _configuration.Save();
         }
+
+        var active = _configuration.UISettings.DeleteModifier.IsActive();
+        Im.Line.Same();
+        if (ImEx.Button("删除所有已导入的 PCP 数据"u8, default,
+            "删除所有已导入的 PCP 数据。此操作无法撤销。已修改过的 PCP 模板或配置文件不会被删除。"u8, !active))
+        {
+            _pcpService.DeletePCPData();
+        }
+
+        if (!active)
+            Im.Tooltip.OnHover(HoveredFlags.AllowWhenDisabled, $"\n按住 {_configuration.UISettings.DeleteModifier} 单击。");
     }
 
     #endregion

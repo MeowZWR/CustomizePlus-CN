@@ -44,6 +44,7 @@ public class CPlusChangeLog
         Add2_1_1_0(Changelog);
         Add2_2_0_0(Changelog);
         Add2_2_0_1(Changelog);
+        Add2_2_1_0(Changelog);
     }
 
     private (int, ChangeLogDisplayType) ConfigData()
@@ -56,12 +57,22 @@ public class CPlusChangeLog
         _configuration.Save();
     }
 
+    private static void Add2_2_1_0(Changelog log)
+        => log.NextVersion("版本 2.2.1.0"u8)
+        .RegisterHighlight("模板编辑器的撤销/重做功能已重写，现在应能正常工作。（由 Risa 提供）"u8)
+        .RegisterHighlight("PCP 功能变更（由 Risa 提供）"u8)
+        .RegisterEntry("PCP 模板与配置文件现在会放入独立的「PCP」文件夹。"u8, 1)
+        .RegisterEntry("所有导入的 PCP 数据默认写保护。"u8, 1)
+        .RegisterEntry("所有导入的 PCP 数据现在可通过「设置 -> 插件集成 -> 删除所有已导入的 PCP 数据」按钮删除。"u8, 1)
+        .RegisterImportant("对通过 PCP 导入的配置文件或模板进行任何更改（例如更改写保护设置或进行编辑）后，将无法再用该按钮删除它们。"u8, 2)
+        .RegisterEntry("Customize+ 的 PCP 集成设置现在也可在 Penumbra 设置中使用。"u8, 1)
+        .RegisterImportant("若你是工具开发者，请参阅 GitHub 上「Changelog for external tool developers」部分，了解本版本中可能影响你工具的变更。"u8);
 
     private static void Add2_2_0_1(Changelog log)
-        => log.NextVersion("Version 2.2.0.1"u8)
-        .RegisterEntry("Fixed profile export button missing. (by Risa)"u8)
-        .RegisterEntry("Fixed incorrect profile caption behavior on Profiles tab. (by Risa)"u8)
-        .RegisterEntry("Fixed incorrect tracking of temporary profiles. (by Risa)"u8);
+        => log.NextVersion("版本 2.2.0.1"u8)
+        .RegisterEntry("修复配置文件导出按钮缺失的问题。（由 Risa 提供）"u8)
+        .RegisterEntry("修复角色配置页中配置标题行为不正确的问题。（由 Risa 提供）"u8)
+        .RegisterEntry("修复临时配置文件跟踪不正确的问题。（由 Risa 提供）"u8);
 
     private static void Add2_2_0_0(Changelog log)
         => log.NextVersion("版本 2.2.0.0"u8)
